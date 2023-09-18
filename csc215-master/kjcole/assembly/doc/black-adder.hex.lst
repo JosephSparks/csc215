@@ -1,0 +1,522 @@
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm - Page 1 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+       1/       0 :                     	PAGE	40		; 40 lines per page
+       2/       0 :                     	TITLE	"Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)"
+       3/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+       4/       0 :                     ;
+       5/       0 :                     ; NAME:    black-adder.asm
+       6/       0 :                     ; EDITOR:  Kevin Cole ("The Ubuntourist") <kevin.cole@novawebdevelopment.org>
+       7/       0 :                     ; LASTMOD: 2020.11.03 (kjc)
+       8/       0 :                     ;
+       9/       0 :                     ; DESCRIPTION:
+      10/       0 :                     ;
+      11/       0 :                     ;     Increment a memory location each time a key is pressed.
+      12/       0 :                     ;
+      13/       0 :                     ;     To take full advantage of the included ANSI escape sequences,
+      14/       0 :                     ;     start minicom with the `-c on` option:
+      15/       0 :                     ;
+      16/       0 :                     ;         $ minicom -c on altair
+      17/       0 :                     ;
+      18/       0 :                     ;     or include it in the MINICOM environment variable:
+      19/       0 :                     ;
+      20/       0 :                     ;         $ export MINICOM="-m -c on"
+      21/       0 :                     ;         $ minicom altair
+      22/       0 :                     ;
+      23/       0 :                     ;     NOTES: For help with ANSI escape sequences see:
+      24/       0 :                     ;
+      25/       0 :                     ;                https://en.wikipedia.org/wiki/ANSI_escape_code
+      26/       0 :                     ;
+      27/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      28/       0 :                     
+      29/       0 :                     ; Code segment
+      30/       0 :                     
+      31/       0 :                     	INCLUDE	stdlib	; Include standard library
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm(stdlib.inc) - Page 2 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+(1)    1/       0 :                     	NEWPAGE	0
+(1)    2/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(1)    3/       0 :                     ;
+(1)    4/       0 :                     ; NAME:    stdlib.inc
+(1)    5/       0 :                     ; EDITOR:  Kevin Cole ("The Ubuntourist") <kevin.cole@novawebdevelopment.org>
+(1)    6/       0 :                     ; LASTMOD: 2020.11.03 (kjc)
+(1)    7/       0 :                     ;
+(1)    8/       0 :                     ; DESCRIPTION: 
+(1)    9/       0 :                     ;
+(1)   10/       0 :                     ;     A rudimentary "include" for standard input / output, math,
+(1)   11/       0 :                     ;     and conversion functions
+(1)   12/       0 :                     ;
+(1)   13/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(1)   14/       0 :                     
+(1)   15/       0 :                     ;;;;;;;;;;;;;
+(1)   16/       0 :                     ; Constants ;
+(1)   17/       0 :                     ;;;;;;;;;;;;;
+(1)   18/       0 :                     
+(1)   19/       0 :                     ; ASCII characters
+(1)   20/       0 :                     
+(1)   21/       0 : =0DH                CR:	EQU	0Dh	; ASCII CR  (Carriage Return, a.k.a. Ctrl-M)
+(1)   22/       0 : =0AH                LF:	EQU	0Ah	; ASCII LF  (Line Feed        a.k.a. Ctrl-J)
+(1)   23/       0 : =1BH                ESC:	EQU	1Bh	; ASCII ESC (Escape,          a.k.a. Ctrl-[)
+(1)   24/       0 : =0H                 NUL:	EQU	00h	; ASCII NUL (Null)
+(1)   25/       0 :                     
+(1)   26/       0 :                     ; I/O
+(1)   27/       0 :                     
+(1)   28/       0 : =10H                SIO1S:	EQU	10h	; Serial I/O communications port 1 STATUS
+(1)   29/       0 : =11H                SIO1D:	EQU	11h	; Serial I/O communications port 1 DATA
+(1)   30/       0 :                     
+(1)   31/       0 : =3H                 MRST:	EQU	03h	; UART Master Reset
+(1)   32/       0 : =1H                 RCVD:	EQU	01h	; Character received
+(1)   33/       0 : =2H                 SENT:	EQU	002h	; Data sent. Output complete
+(1)   34/       0 :                     
+(1)   35/       0 :                     ; Code segment
+(1)   36/       0 :                     
+(1)   37/    1000 :                     	ORG	1000h	; Load at memory location 1000 (hex)
+(1)   38/    1000 :                     
+(1)   39/    1000 :                     ; Reset serial input / output
+(1)   40/    1000 :                     ;
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm(stdlib.inc) - Page 3 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+(1)   41/    1000 : 3E 03               RSTIO:	MVI	A,MRST
+(1)   42/    1002 : D3 10               	OUT	SIO1S	; Reset the UART
+(1)   43/    1004 : 3E 15               	MVI	A,15h	; Settings: No RI, No XI, RTS Low, 8N1, /16
+(1)   44/    1006 : D3 10               	OUT	SIO1S	; Configure the UART with above settings
+(1)   45/    1008 : C9                  	RET		; Return
+(1)   46/    1009 :                     
+(1)   47/    1009 :                     ; Put a character on to the serial I/O bus (stdout)
+(1)   48/    1009 :                     ;
+(1)   49/    1009 :                     ; Calling sequence:
+(1)   50/    1009 :                     ;
+(1)   51/    1009 :                     ;	LDAX	register
+(1)   52/    1009 :                     ;	CALL	PUTC
+(1)   53/    1009 :                     ;
+(1)   54/    1009 :                     ; where:
+(1)   55/    1009 :                     ;	register contains the ASCII value to be sent
+(1)   56/    1009 :                     ;
+(1)   57/    1009 :                     
+(1)   58/    1009 : F5                  PUTC:	PUSH	PSW	; Preserve Program Status Word
+(1)   59/    100A : DB 10               WAITO:	IN	SIO1S	; Check serial I/O status bit 1 (XMIT status)
+(1)   60/    100C : E6 02               	ANI	SENT	; If data not sent (i.e. XMIT not finished)...
+(1)   61/    100E : CA 0A 10            	JZ	WAITO	; ...spin wheels: continue checking status. Else...
+(1)   62/    1011 : F1                  	POP	PSW	; ...restore Program Status Word
+(1)   63/    1012 : D3 11               	OUT	SIO1D	; ...output byte
+(1)   64/    1014 : C9                  	RET		; ...return
+(1)   65/    1015 :                     
+(1)   66/    1015 :                     ; Write a null-terminated string out to the serial port (stdout)
+(1)   67/    1015 :                     ;
+(1)   68/    1015 :                     ; Calling sequence:
+(1)   69/    1015 :                     ;
+(1)   70/    1015 :                     ;	LXI	B,string
+(1)   71/    1015 :                     ;	CALL	WRITE
+(1)   72/    1015 :                     ;
+(1)   73/    1015 :                     ; where:
+(1)   74/    1015 :                     ;	string is the address of a null-terminated ASCII string
+(1)   75/    1015 :                     ;
+(1)   76/    1015 :                     
+(1)   77/    1015 : 0A                  WRITE:	LDAX	B	; Fetch byte
+(1)   78/    1016 : FE 00               	CPI	NUL	; If byte is ASCII NUL...
+(1)   79/    1018 : C8                  	RZ		; ...return. Else...
+(1)   80/    1019 : CD 09 10            	CALL	PUTC	; ...output byte
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm(stdlib.inc) - Page 4 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+(1)   81/    101C : 03                  	INX	B	; ...point to next byte
+(1)   82/    101D : C3 15 10            	JMP	WRITE	; ...lather, rinse, repeat: Fetch next byte.
+(1)   83/    1020 :                     
+(1)   84/    1020 :                     ; Get a character off of the serial I/O bus (stdin)
+(1)   85/    1020 :                     ;
+(1)   86/    1020 : F5                  GETC:	PUSH	PSW	; Preserve Program Status Word
+(1)   87/    1021 : DB 10               WAITI:	IN	SIO1S	; Check serial I/O status bit
+(1)   88/    1023 : E6 01               	ANI	RCVD	; If no data received...
+(1)   89/    1025 : CA 21 10            	JZ	WAITI	; ...spin wheels: continue checking status. Else...
+(1)   90/    1028 : F1                  	POP	PSW	; ...restore Program Status Word
+(1)   91/    1029 : DB 11               	IN	SIO1D	; ...read the character
+(1)   92/    102B : D3 11               	OUT	SIO1D	; ...echo it
+(1)   93/    102D : C9                  	RET		; ...return
+(1)   94/    102E :                     
+(1)   95/    102E :                     ; Read one line (CR- or LF-terminated string) from the serial port (stdin)
+(1)   96/    102E :                     ;
+(1)   97/    102E :                     ; Calling sequence:
+(1)   98/    102E :                     ;
+(1)   99/    102E :                     ;	LXI	B,buffer
+(1)  100/    102E :                     ;	CALL	READ
+(1)  101/    102E :                     ;
+(1)  102/    102E :                     ; where:
+(1)  103/    102E :                     ;	buffer is the address of a byte array for storing the string
+(1)  104/    102E :                     ;
+(1)  105/    102E :                     
+(1)  106/    102E : CD 20 10            READ:	CALL	GETC	; Fetch byte
+(1)  107/    1031 : FE 0D               	CPI	CR	; If byte is an ASCII CR (Carriage Return)...
+(1)  108/    1033 : CA 48 10            	JZ	CRLF	; ...add LF and return. Else...
+(1)  109/    1036 : FE 0A               	CPI	LF	; ...if byte is an ASCII LF (Line Feed)...
+(1)  110/    1038 : CA 40 10            	JZ	LFCR	; ...add CR and return. Else...
+(1)  111/    103B : 02                  	STAX	B	; ...store byte in buffer
+(1)  112/    103C : 03                  	INX	B	; ...point to next empty byte
+(1)  113/    103D : C3 2E 10            	JMP	READ	; ...lather, rinse, repeat: Fetch next byte.
+(1)  114/    1040 : 3E 0D               LFCR:	MVI	A,CR
+(1)  115/    1042 : CD 09 10            	CALL	PUTC	; Print a CR
+(1)  116/    1045 : C3 4D 10            	JMP	TERM	; Terminate the input string
+(1)  117/    1048 : 3E 0A               CRLF:	MVI	A,LF
+(1)  118/    104A : CD 09 10            	CALL	PUTC	; Print a LF
+(1)  119/    104D : 3E 00               TERM:	MVI	A,NUL	; Null terminator
+(1)  120/    104F : 02                  	STAX	B	; Terminate the input string
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm(stdlib.inc) - Page 5 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+(1)  121/    1050 : C9                  	RET		; Return
+(1)  122/    1051 :                     
+(1)  123/    1051 :                     ; Multiply multiplicand by multiplier
+(1)  124/    1051 :                     ;
+(1)  125/    1051 :                     ; Calling sequence:
+(1)  126/    1051 :                     ;
+(1)  127/    1051 :                     ;	LXI	C,multiplier
+(1)  128/    1051 :                     ;	LXI	D,multiplicand
+(1)  129/    1051 :                     ;	CALL	MULTI
+(1)  130/    1051 :                     ;
+(1)  131/    1051 :                     ; where:
+(1)  132/    1051 :                     ;	multiplier   is one of the two numbers to be multiplied
+(1)  133/    1051 :                     ;	multiplicand is the other number to be multiplied
+(1)  134/    1051 :                     ;
+(1)  135/    1051 :                     ; returns:
+(1)  136/    1051 :                     ;	product in register pair BC
+(1)  137/    1051 :                     
+(1)  138/    1051 : F5                  MULTI:	PUSH	PSW
+(1)  139/    1052 : 06 00               	MVI	B,0	; Initialize most significant byte of result
+(1)  140/    1054 : 1E 09               	MVI	E,9	; Bit counter
+(1)  141/    1056 : 79                  MULT0:	MOV	A,C	; Rotate least significant bit of...
+(1)  142/    1057 : 1F                  	RAR		; ...multiplier to carry and shift...
+(1)  143/    1058 : 4F                  	MOV	C,A	; ...low-order byte of result
+(1)  144/    1059 : 1D                  	DCR	E	; Countdown to zero (decrement bit counter)
+(1)  145/    105A : CA 67 10            	JZ	MULT2	; If zeroed, we're done
+(1)  146/    105D : 78                  	MOV	A,B
+(1)  147/    105E : D2 62 10            	JNC	MULT1	; If carry bit = 1...
+(1)  148/    1061 : 82                  	ADD	D	; ...add multiplicand to high-order byte
+(1)  149/    1062 : 1F                  MULT1:	RAR		; Else... shift high-order byte of result
+(1)  150/    1063 : 47                  	MOV	B,A
+(1)  151/    1064 : C3 56 10            	JMP	MULT0	; Lather, rinse, repeat
+(1)  152/    1067 : F1                  MULT2:	POP	PSW
+(1)  153/    1068 : C9                  	RET		; Return
+(1)  154/    1069 :                     
+(1)  155/    1069 :                     ; Divide dividend by divisor
+(1)  156/    1069 :                     ;
+(1)  157/    1069 :                     ; Calling sequence:
+(1)  158/    1069 :                     ;
+(1)  159/    1069 :                     ;	MVI	B,00h
+(1)  160/    1069 :                     ;	MVI	C,dividend
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm(stdlib.inc) - Page 6 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+(1)  161/    1069 :                     ;	MVI	D,00h
+(1)  162/    1069 :                     ;	MVI	E,divisor
+(1)  163/    1069 :                     
+(1)  164/    1069 :                     ;	CALL	DIVI
+(1)  165/    1069 :                     ;
+(1)  166/    1069 :                     ; where:
+(1)  167/    1069 :                     ;	dividend is the number to be divided
+(1)  168/    1069 :                     ;	divisor  is the number to divide by
+(1)  169/    1069 :                     ;
+(1)  170/    1069 :                     ; returns:
+(1)  171/    1069 :                     ;	quotient  in register pair BC
+(1)  172/    1069 :                     ;	remainder in register pair DE
+(1)  173/    1069 :                     
+(1)  174/    1069 : F5                  DIVI:	PUSH	PSW
+(1)  175/    106A : 7A                  	MOV	A,D	; Negate the divisor
+(1)  176/    106B : 2F                  	CMA		;    "    "     "
+(1)  177/    106C : 57                  	MOV	D,A	;    "    "     "
+(1)  178/    106D : 7B                  	MOV	A,E	;    "    "     "
+(1)  179/    106E : 2F                  	CMA		;    "    "     "
+(1)  180/    106F : 5F                  	MOV	E,A	;    "    "     "
+(1)  181/    1070 : 13                  	INX	D	; For two's complement
+(1)  182/    1071 : 21 00 00            	LXI	H,00h	; Initial value for remainder
+(1)  183/    1074 : 3E 11               	MVI	A,11h	; Initialize loop counter
+(1)  184/    1076 : E5                  DV0:	PUSH	H	; Save remainder
+(1)  185/    1077 : 19                  	DAD	D	; Subtract divisor (add negative)
+(1)  186/    1078 : D2 7C 10            	JNC	DV1	; Underflow. Restore register pair HL
+(1)  187/    107B : E3                  	XTHL
+(1)  188/    107C : E1                  DV1:	POP	H
+(1)  189/    107D : F5                  	PUSH	PSW	; Save loop counter
+(1)  190/    107E :                     
+(1)  191/    107E :                     	; 4 register left shift
+(1)  192/    107E :                     	; Carry->C->B->L->H
+(1)  193/    107E :                     
+(1)  194/    107E : 79                  	MOV	A,C
+(1)  195/    107F : 17                  	RAL
+(1)  196/    1080 : 4F                  	MOV	C,A
+(1)  197/    1081 :                     
+(1)  198/    1081 : 78                  	MOV	A,B
+(1)  199/    1082 : 17                  	RAL
+(1)  200/    1083 : 47                  	MOV	B,A
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm(stdlib.inc) - Page 7 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+(1)  201/    1084 :                     
+(1)  202/    1084 : 7D                  	MOV	A,L
+(1)  203/    1085 : 17                  	RAL
+(1)  204/    1086 : 6F                  	MOV	L,A
+(1)  205/    1087 :                     
+(1)  206/    1087 : 7C                  	MOV	A,H
+(1)  207/    1088 : 17                  	RAL
+(1)  208/    1089 : 67                  	MOV	H,A
+(1)  209/    108A :                     
+(1)  210/    108A : F1                  	POP	PSW	; Restore loop counter (A)
+(1)  211/    108B : 3D                  	DCR	A	; Decrement loop counter
+(1)  212/    108C : C2 76 10            	JNZ	DV0	; Lather, rinse, repeat
+(1)  213/    108F :                     
+(1)  214/    108F :                     	; Post-divide clean-up:
+(1)  215/    108F :                     	; Shift remainder right and return in DE
+(1)  216/    108F :                     
+(1)  217/    108F : B7                  	ORA	A
+(1)  218/    1090 :                     
+(1)  219/    1090 : 7C                  	MOV	A,H
+(1)  220/    1091 : 1F                  	RAR
+(1)  221/    1092 : 57                  	MOV	D,A	; Store shifted H in D
+(1)  222/    1093 :                     
+(1)  223/    1093 : 7D                  	MOV	A,L
+(1)  224/    1094 : 1F                  	RAR
+(1)  225/    1095 : 5F                  	MOV	E,A	; Store shifted L in E
+(1)  226/    1096 :                     
+(1)  227/    1096 : F1                  	POP	PSW
+(1)  228/    1097 : C9                  	RET
+(1)  229/    1098 :                     
+(1)  230/    1098 :                     ; Convert a NULL-terminated string to an integer
+(1)  231/    1098 :                     ;
+(1)  232/    1098 :                     ; Calling sequence:
+(1)  233/    1098 :                     ;
+(1)  234/    1098 :                     ;	LXI	B,string
+(1)  235/    1098 :                     ;	CALL	INT
+(1)  236/    1098 :                     ;
+(1)  237/    1098 :                     ; where:
+(1)  238/    1098 :                     ;	string is the address of a string of ASCII digits
+(1)  239/    1098 :                     ;
+(1)  240/    1098 :                     
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm(stdlib.inc) - Page 8 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+(1)  241/    1098 : 21 00 00            INT:	LXI	H,0000h	; Initialize subtotal
+(1)  242/    109B : 16 00               	MVI	D,00h
+(1)  243/    109D :                     
+(1)  244/    109D : 0A                  CHAR:	LDAX	B	; Fetch char and load into accumulator
+(1)  245/    109E : D6 39               	SUI	39h	; If ASCII value > "9" then...
+(1)  246/    10A0 : F0                  	RP		; ...not a digit. Done.
+(1)  247/    10A1 : 0A                  	LDAX	B	; Refetch char and load into accumulator
+(1)  248/    10A2 : D6 30               	SUI	30h	; If ASCII value < "0"...
+(1)  249/    10A4 : F8                  	RM		; ...not a digit. Done.
+(1)  250/    10A5 :                     
+(1)  251/    10A5 : 5F                  	MOV	E,A	; Save "ones' position" integer digit in E
+(1)  252/    10A6 : 3E 09               	MVI	A,09h	; counter for decimal magnitude shift
+(1)  253/    10A8 : C5                  	PUSH	B
+(1)  254/    10A9 : 44                  	MOV	B,H
+(1)  255/    10AA : 4D                  	MOV	C,L
+(1)  256/    10AB : 09                  SHFTL:	DAD	B	; Add subtotal to subtotal
+(1)  257/    10AC : 3D                  	DCR	A	; If loop counter > 0
+(1)  258/    10AD : C2 AB 10            	JNZ	SHFTL	; ...continue repetitive additon
+(1)  259/    10B0 : C1                  	POP	B
+(1)  260/    10B1 : 19                  	DAD	D	; Add in "ones' position" digit
+(1)  261/    10B2 : 03                  	INX	B	; Point to next char
+(1)  262/    10B3 : C3 9D 10            	JMP	CHAR	; Lather, rinse, repeat
+(1)  263/    10B6 :                     
+(1)  264/    10B6 :                     ; Convert an integer to a NULL-terminated string
+(1)  265/    10B6 :                     ;
+(1)  266/    10B6 :                     ; Calling sequence:
+(1)  267/    10B6 :                     ;
+(1)  268/    10B6 :                     ;       LHLD    integer    ; 16-bit integer        into LH
+(1)  269/    10B6 :                     ;	LXI	B,buffer   ; 16-bit memory address into BC
+(1)  270/    10B6 :                     ;	CALL	STR
+(1)  271/    10B6 :                     ;
+(1)  272/    10B6 :                     ; where:
+(1)  273/    10B6 :                     ;       integer is the address of the integer to be converted to ASCII
+(1)  274/    10B6 :                     ;	buffer  is the address of a byte array for storing ASCII representation
+(1)  275/    10B6 :                     ;
+(1)  276/    10B6 :                     
+(1)  277/    10B6 : C5                  STR:	PUSH	B
+(1)  278/    10B7 : E5                  	PUSH	H	; Save initial value in HL for later use
+(1)  279/    10B8 :                     
+(1)  280/    10B8 :                     ;	STAX	B	; ...store byte in buffer
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm(stdlib.inc) - Page 9 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+(1)  281/    10B8 :                     ;	INX	B	; ...point to next empty byte
+(1)  282/    10B8 : E1                  	POP	H
+(1)  283/    10B9 : C1                  	POP	B
+(1)  284/    10BA : C9                  	RET		; Return
+(1)  285/    10BB :                     
+      32/    10BB :                     
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm - Page 10 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+      33/    10BB :                     	NEWPAGE	0
+      34/    10BB :                     
+      35/       0 :                     	ORG	000h	; Load at memory location 000 (hex)
+      36/       0 :                     
+      37/       0 : CD 00 10            	CALL	RSTIO	; Initialize serialize input / output device
+      38/       3 :                     
+      39/       3 : 01 04 28            	LXI	B,WORDS	; Point to instructions (WORDS)
+      40/       6 : CD 15 10            	CALL	WRITE	; Write WORDS to stdout (terminal)
+      41/       9 :                     
+      42/       9 : 01 CA 28            	LXI	B,ASK1	; Point to first prompt (ASK1)
+      43/       C : CD 15 10            	CALL	WRITE	; Write ASK1 to stdout (terminal)
+      44/       F :                     
+      45/       F : 01 04 20            	LXI	B,BUFFR	; Point to input buffer (BUFFR)
+      46/      12 : CD 2E 10            	CALL	READ	; Read a line from stdin to BUFFR
+      47/      15 :                     
+      48/      15 : 01 CE 28            	LXI	B,ASK2	; Point to first prompt (ASK2)
+      49/      18 : CD 15 10            	CALL	WRITE	; Write ASK2 to stdout (terminal)
+      50/      1B :                     
+      51/      1B : 01 04 20            	LXI	B,BUFFR	; Point to input buffer (BUFFR)
+      52/      1E : CD 2E 10            	CALL	READ	; Read a line from stdin to BUFFR
+      53/      21 :                     
+      54/      21 : 76                  	HLT		; DEBUG
+      55/      22 :                     
+      56/      22 : 21 00 20            	LXI	H,WATCH	; Set location to increment
+      57/      25 :                     
+      58/      25 : DB 10               COUNT:	IN	SIO1S	; Check serial I/O status bit
+      59/      27 : E6 01               	ANI	RCVD	; If no data received...
+      60/      29 : CA 25 00            	JZ	COUNT	; ...spin wheels: continue checking status. Else...
+      61/      2C : DB 11               	IN	SIO1D	; ...read the character
+      62/      2E : D3 11               	OUT	SIO1D	; ...echo it
+      63/      30 : 34                  	INR	M	; ...increment the watched counter
+      64/      31 : C3 25 00            	JMP	COUNT	; ...wait for next character
+      65/      34 :                     	
+      66/      34 :                     ; Data segment
+      67/      34 :                     
+      68/    2000 :                     	ORG	2000h	; Load at memory locaton 8192 (decimal)
+      69/    2000 :                     
+      70/    2000 : 00                  WATCH:	DB	000h	; Initialize to zero
+      71/    2001 : 00                  VAL1:	DB	000h	; Data Byte at address 2000 (hex) = 0
+      72/    2002 : 00                  VAL2:	DB	000h	; Data Byte at address 2001 (hex) = 0
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm - Page 11 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+      73/    2003 : 00                  SUM:	DB	000h	; Data Byte at address 2002 (hex) = 0
+      74/    2004 :                     
+      75/    2004 :                     BUFFR:	DS	800h	; ~ one 80x25 screens-worth of bytes at 2003 (hex)
+      76/    2804 :                     
+      77/    2804 : 1B 5B 32 4A         WORDS:	DB	ESC,"[2J"
+      78/    2808 : 0D 0A               	DB	CR,LF
+      79/    280A : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+             2810 : 20 20 20 20 20 20 
+             2816 : 20 20             
+      80/    2818 : 20 20 20 20 20 20   	DB	"                ",ESC,"[31m","BLACK ADDER",ESC,"[0m",CR,LF
+             281E : 20 20 20 20 20 20 
+             2824 : 20 20 20 20 1B 5B 
+             282A : 33 31 6D 42 4C 41 
+             2830 : 43 4B 20 41 44 44 
+             2836 : 45 52 1B 5B 30 6D 
+             283C : 0D 0A             
+      81/    283E : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+             2844 : 20 20 20 20 20 20 
+             284A : 20 20             
+      82/    284C : 54 68 69 73 20 70   	DB	"This program adds two numbers in the range"
+             2852 : 72 6F 67 72 61 6D 
+             2858 : 20 61 64 64 73 20 
+             285E : 74 77 6F 20 6E 75 
+             2864 : 6D 62 65 72 73 20 
+             286A : 69 6E 20 74 68 65 
+             2870 : 20 72 61 6E 67 65 
+      83/    2876 : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+             287C : 20 20 20 20 20 20 
+             2882 : 20 20             
+      84/    2884 : 2D 31 32 37 20 74   	DB	"-127 to +127. Enter values X and Y at the"
+             288A : 6F 20 2B 31 32 37 
+             2890 : 2E 20 45 6E 74 65 
+             2896 : 72 20 76 61 6C 75 
+             289C : 65 73 20 58 20 61 
+             28A2 : 6E 64 20 59 20 61 
+             28A8 : 74 20 74 68 65    
+      85/    28AD : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+             28B3 : 20 20 20 20 20 20 
+             28B9 : 20 20             
+      86/    28BB : 70 72 6F 6D 70 74   	DB	"prompts.",CR,LF
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm - Page 12 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+             28C1 : 73 2E 0D 0A       
+      87/    28C5 : 0D 0A               	DB	CR,LF
+      88/    28C7 : 0D 0A               	DB	CR,LF
+      89/    28C9 : 00                  	DB	NUL	; NULL string terminator
+      90/    28CA :                     
+      91/    28CA : 58 3A 20 00         ASK1:	DB	"X: ",NUL
+      92/    28CE :                     
+      93/    28CE : 59 3A 20 00         ASK2:	DB	"Y: ",NUL
+      94/    28D2 :                     
+      95/    28D2 :                     	END		; End
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm - Page 13 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+*ARCHITECTURE :                                      "x86_64-unknown-linux" - |
+ ASK1 :                        28CA C |  ASK2 :                        28CE C |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+ BUFFR :                       2004 C | *CASESENSITIVE :                  0 - |
+ CHAR :                        109D C | *CONSTPI :        3.141592653589793 - |
+ COUNT :                         25 C |  CR :                            0D - |
+ CRLF :                        1048 C | *DATE :                "12/04/2020" - |
+*DIVI :                        1069 C |  DV0 :                         1076 C |
+ DV1 :                         107C C |  ESC :                           1B - |
+*FALSE :                          0 - | *FULLPMMU :                       1 - |
+ GETC :                        1020 C | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+*INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
+*INT :                         1098 C |  LF :                            0A - |
+ LFCR :                        1040 C | *LISTON :                         1 - |
+*MACEXP :                         7 - | *MOMCPU :                      8080 - |
+*MOMCPUNAME :                "8080" - |  MRST :                           3 - |
+ MULT0 :                       1056 C |  MULT1 :                       1062 C |
+ MULT2 :                       1067 C | *MULTI :                       1051 C |
+*NESTMAX :                      100 - |  NUL :                            0 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+ PUTC :                        1009 C |  RCVD :                           1 - |
+ READ :                        102E C | *RELAXED :                        0 - |
+ RSTIO :                       1000 C |  SENT :                           2 - |
+ SHFTL :                       10AB C |  SIO1D :                         11 - |
+ SIO1S :                         10 - | *STR :                         10B6 C |
+*SUM :                         2003 C |  TERM :                        104D C |
+*TIME :               "09:31:32 PM" - | *TRUE :                           1 - |
+*VAL1 :                        2001 C | *VAL2 :                        2002 C |
+*VERSION :                     142F - |  WAITI :                       1021 C |
+ WAITO :                       100A C |  WATCH :                       2000 C |
+ WORDS :                       2804 C |  WRITE :                       1015 C |
+*Z80SYNTAX :                      0 - |
+
+     68 symbols
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm - Page 14 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+     36 unused symbols
+
+ AS V1.42 Beta [Bld 183] - Source File black-adder.asm - Page 15 - 12/04/2020 09:31:32 PM
+Black Adder - Copyright (C) Kevin Cole 2020.11.04 (GPL)
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.00 seconds assembly time
+
+    391 lines source file
+      2 passes
+      0 errors
+      0 warnings

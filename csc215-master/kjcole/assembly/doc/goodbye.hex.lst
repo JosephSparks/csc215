@@ -1,0 +1,131 @@
+ AS V1.42 Beta [Bld 183] - Source File goodbye.asm - Page 1 - 12/04/2020 09:35:07 PM
+
+
+       1/       0 :                     ; goodbye.asm
+       2/       0 :                     ; Written by Kevin Cole <ubuntourist@hacdc.org> 2020.10.18 (kjc)
+       3/       0 :                     ;
+       4/       0 :                     ; When the Altair just can't take it any more... ;-)
+       5/       0 :                     ;
+       6/       0 :                     ; REQUIRED READING: Altair 2SIO Serial I/O manual
+       7/       0 :                     ; https://altairclone.com/downloads/manuals/Altair%202SIO%20Serial%20I-O.pdf
+       8/       0 :                     ;
+       9/       0 :                     ; OPTIONAL: RS-232 Data Control Signals and UART
+      10/       0 :                     ; https://en.wikipedia.org/wiki/RS-232#Data_and_control_signals
+      11/       0 :                     ; https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter
+      12/       0 :                     ;
+      13/       0 :                     ; In order to understand communications between the Altair and an
+      14/       0 :                     ; external device like a terminal, connected via the serial / USB
+      15/       0 :                     ; cable, the above documents should be pondered. For details like:
+      16/       0 :                     ;
+      17/       0 :                     ;    UART = Universal Asynchronous Recever / Transmitter
+      18/       0 :                     ;    XMIT = Transmit (OUT)
+      19/       0 :                     ;    RECV = Receive  (IN)
+      20/       0 :                     ;    RTS  = Request to Send
+      21/       0 :                     ;
+      22/       0 :                     ; Settings for synchronous (polled) communication:
+      23/       0 :                     ;
+      24/       0 :                     ; 15H = 0 0 0 1 0 1 0 1
+      25/       0 :                     ;       ^ ^ ^ ^ ^ ^ ^ ^
+      26/       0 :                     ;       | | | | | | | |
+      27/       0 :                     ;       | | | | | | +-+-> 1 = Clock Divide = 16
+      28/       0 :                     ;       | | | +-+-+-----> 5 = 8 Data bits, No parity, 1 Stop bit (8N1)
+      29/       0 :                     ;       | +-+-----------> 0 = RTS = Low, XMIT interrupt = disabled
+      30/       0 :                     ;       +---------------> 0 = RECV interrupt = disabled
+      31/       0 :                     ;
+      32/       0 :                     
+      33/       0 :                     ; Constants
+      34/       0 :                     
+      35/       0 : =0DH                CR:	EQU	0Dh	; ASCII CR  (Carriage Return, a.k.a. Ctrl-M)
+      36/       0 : =0AH                LF:	EQU	0Ah	; ASCII LF  (Line Feed a.k.a. Ctrl-J)
+      37/       0 : =0H                 NUL:	EQU	00h	; ASCII NUL (Null)
+      38/       0 :                     
+      39/       0 : =10H                SIO1S:	EQU	10h	; Serial I/O communications port 1 STATUS
+      40/       0 : =11H                SIO1D:	EQU	11h	; Serial I/O communications port 1 DATA
+      41/       0 :                     
+      42/       0 : =2H                 SENT:	EQU	002h	; Data sent. Output complete
+      43/       0 : =3H                 MRST:	EQU	03h	; UART Master Reset
+      44/       0 :                     
+      45/       0 :                     ; Code segment
+      46/       0 :                     
+      47/       0 :                     	ORG	000h	; Load at memory location 000 (hex)
+      48/       0 :                     
+      49/       0 : 3E 03               	MVI	A,MRST
+      50/       2 : D3 10               	OUT	SIO1S	; Reset the UART
+      51/       4 : 3E 15               	MVI	A,15h	; Settings: No RI, No XI, RTS Low, 8N1, /16
+      52/       6 : D3 10               	OUT	SIO1S	; Configure the UART with above settings
+      53/       8 :                     
+      54/       8 : 01 00 02            	LXI	B,WORDS	; Point to WORDS
+      55/       B :                     
+      56/       B : DB 10               FETCH:	IN	SIO1S	; Check serial I/O status bit 1 (XMIT status)
+      57/       D : E6 02               	ANI	SENT	; If data not sent (i.e. XMIT not finished)...
+      58/       F : CA 0B 00            	JZ	FETCH	; ...spin wheels: continue checking status. Else...
+      59/      12 : 0A                  	LDAX	B	; ...Fetch byte
+      60/      13 : FE 00               	CPI	NUL	; ...If byte is ASCII NUL...
+ AS V1.42 Beta [Bld 183] - Source File goodbye.asm - Page 2 - 12/04/2020 09:35:07 PM
+
+
+      61/      15 : CA 1E 00            	JZ	HCF	; ......finish. Else...
+      62/      18 : D3 11               	OUT	SIO1D	; ......output byte
+      63/      1A : 03                  	INX	B	; ......point to next byte
+      64/      1B : C3 0B 00            	JMP	FETCH	; ......lather, rinse, repeat: Fetch next byte.
+      65/      1E :                     
+      66/      1E : 76                  HCF:	HLT		; Halt and Catch Fire ;-)
+      67/      1F :                     
+      68/      1F :                     ; Data segment
+      69/      1F :                     
+      70/     200 :                     	ORG	200h	; Load at memory locaton 200 (hex)
+      71/     200 :                     
+      72/     200 : 47 6F 6F 64 2D 62   WORDS:	DB	'Good-bye, cruel world!'
+              206 : 79 65 2C 20 63 72 
+              20C : 75 65 6C 20 77 6F 
+              212 : 72 6C 64 21       
+      73/     216 : 0D 0A               	DB	CR,LF	; Old-school CRLF newline
+      74/     218 : 00                  	DB	NUL	; NULL string terminator
+      75/     219 :                     
+      76/     219 :                     	END
+ AS V1.42 Beta [Bld 183] - Source File goodbye.asm - Page 3 - 12/04/2020 09:35:07 PM
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+*ARCHITECTURE :                                      "x86_64-unknown-linux" - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - | *CONSTPI :        3.141592653589793 - |
+ CR :                            0D - | *DATE :                "12/04/2020" - |
+*FALSE :                          0 - |  FETCH :                         0B C |
+*FULLPMMU :                       1 - | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - |  HCF :                           1E C |
+*INEXTMODE :                      0 - | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - |  LF :                            0A - |
+*LISTON :                         1 - | *MACEXP :                         7 - |
+*MOMCPU :                      8080 - | *MOMCPUNAME :                "8080" - |
+ MRST :                           3 - | *NESTMAX :                      100 - |
+ NUL :                            0 - | *PACKING :                        0 - |
+*PADDING :                        1 - | *RELAXED :                        0 - |
+ SENT :                           2 - |  SIO1D :                         11 - |
+ SIO1S :                         10 - | *TIME :               "09:35:07 PM" - |
+*TRUE :                           1 - | *VERSION :                     142F - |
+ WORDS :                        200 C | *Z80SYNTAX :                      0 - |
+
+     39 symbols
+     29 unused symbols
+
+ AS V1.42 Beta [Bld 183] - Source File goodbye.asm - Page 4 - 12/04/2020 09:35:07 PM
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.01 seconds assembly time
+
+     77 lines source file
+      2 passes
+      0 errors
+      0 warnings

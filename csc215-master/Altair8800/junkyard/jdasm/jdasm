@@ -1,0 +1,316 @@
+#!/usr/bin/env python3
+import sys
+
+
+INSTRUCTIONS = [
+    # Interrupt Instructions
+    ("EI", b"\xfb", 1),
+    ("DI", b"\xf3", 1),
+    ("HLT", b"\x76", 1),
+    ("RST 0", b"\xc7", 1),
+    ("RST 1", b"\xcf", 1),
+    ("RST 2", b"\xd7", 1),
+    ("RST 3", b"\xdf", 1),
+    ("RST 4", b"\xe7", 1),
+    ("RST 5", b"\xef", 1),
+    ("RST 6", b"\xf7", 1),
+    ("RST 7", b"\xff", 1),
+    # Carry Bit Instructions
+    ("CMC", b"\x3f", 1),
+    ("STC", b"\x37", 1),
+    # No Operation Instruction
+    ("NOP", b"\x00", 1),
+    # Single Register Instructions
+    ("INR B", b"\x04", 1),
+    ("INR C", b"\x0c", 1),
+    ("INR D", b"\x14", 1),
+    ("INR E", b"\x1c", 1),
+    ("INR H", b"\x24", 1),
+    ("INR L", b"\x2c", 1),
+    ("INR M", b"\x34", 1),
+    ("INR A", b"\x3c", 1),
+    ("DCR B", b"\x05", 1),
+    ("DCR C", b"\x0d", 1),
+    ("DCR D", b"\x15", 1),
+    ("DCR E", b"\x1d", 1),
+    ("DCR H", b"\x25", 1),
+    ("DCR L", b"\x2d", 1),
+    ("DCR M", b"\x35", 1),
+    ("DCR A", b"\x3d", 1),
+    ("CMA", b"\x2f", 1),
+    ("DAA", b"\x27", 1),
+    # Register Pair Instructions
+    ("PUSH B", b"\xc5", 1),
+    ("PUSH D", b"\xd5", 1),
+    ("PUSH H", b"\xe5", 1),
+    ("PUSH PSW", b"\xf5", 1),
+    ("POP B", b"\xc1", 1),
+    ("POP D", b"\xd1", 1),
+    ("POP H", b"\xe1", 1),
+    ("POP PSW", b"\xf1", 1),
+    ("DAD B", b"\x09", 1),
+    ("DAD D", b"\x19", 1),
+    ("DAD H", b"\x29", 1),
+    ("DAD SP", b"\x39", 1),
+    ("INX B", b"\x03", 1),
+    ("INX D", b"\x13", 1),
+    ("INX H", b"\x23", 1),
+    ("INX SP", b"\x33", 1),
+    ("DCX B", b"\x0b", 1),
+    ("DCX D", b"\x1b", 1),
+    ("DCX H", b"\x2b", 1),
+    ("DCX SP", b"\x3b", 1),
+    ("XCHG", b"\xeb", 1),
+    ("XTHL", b"\xe3", 1),
+    ("SPHL", b"\xf9", 1),
+    # Rotate Accumulator Instructions
+    ("RLC", b"\x07", 1),
+    ("RRC", b"\x0f", 1),
+    ("RAL", b"\x17", 1),
+    ("RAR", b"\x1f", 1),
+    # Data Transfer Instructions
+    ("MOV B,B", b"\x40", 1),
+    ("MOV B,C", b"\x41", 1),
+    ("MOV B,D", b"\x42", 1),
+    ("MOV B,E", b"\x43", 1),
+    ("MOV B,H", b"\x44", 1),
+    ("MOV B,L", b"\x45", 1),
+    ("MOV B,M", b"\x46", 1),
+    ("MOV B,A", b"\x47", 1),
+    ("MOV C,B", b"\x48", 1),
+    ("MOV C,C", b"\x49", 1),
+    ("MOV C,D", b"\x4a", 1),
+    ("MOV C,E", b"\x4b", 1),
+    ("MOV C,H", b"\x4c", 1),
+    ("MOV C,L", b"\x4d", 1),
+    ("MOV C,M", b"\x4e", 1),
+    ("MOV C,A", b"\x4f", 1),
+    ("MOV D,B", b"\x50", 1),
+    ("MOV D,C", b"\x51", 1),
+    ("MOV D,D", b"\x52", 1),
+    ("MOV D,E", b"\x53", 1),
+    ("MOV D,H", b"\x54", 1),
+    ("MOV D,L", b"\x55", 1),
+    ("MOV D,M", b"\x56", 1),
+    ("MOV D,A", b"\x57", 1),
+    ("MOV E,B", b"\x58", 1),
+    ("MOV E,C", b"\x59", 1),
+    ("MOV E,D", b"\x5a", 1),
+    ("MOV E,E", b"\x5b", 1),
+    ("MOV E,H", b"\x5c", 1),
+    ("MOV E,L", b"\x5d", 1),
+    ("MOV E,M", b"\x5e", 1),
+    ("MOV E,A", b"\x5f", 1),
+    ("MOV H,B", b"\x60", 1),
+    ("MOV H,C", b"\x61", 1),
+    ("MOV H,D", b"\x62", 1),
+    ("MOV H,E", b"\x63", 1),
+    ("MOV H,H", b"\x64", 1),
+    ("MOV H,L", b"\x65", 1),
+    ("MOV H,M", b"\x66", 1),
+    ("MOV H,A", b"\x67", 1),
+    ("MOV L,B", b"\x68", 1),
+    ("MOV L,C", b"\x69", 1),
+    ("MOV L,D", b"\x6a", 1),
+    ("MOV L,E", b"\x6b", 1),
+    ("MOV L,H", b"\x6c", 1),
+    ("MOV L,L", b"\x6d", 1),
+    ("MOV L,M", b"\x6e", 1),
+    ("MOV L,A", b"\x6f", 1),
+    ("MOV M,B", b"\x70", 1),
+    ("MOV M,C", b"\x71", 1),
+    ("MOV M,D", b"\x72", 1),
+    ("MOV M,E", b"\x73", 1),
+    ("MOV M,H", b"\x74", 1),
+    ("MOV M,L", b"\x75", 1),
+    ("MOV M,M", b"\x76", 1),
+    ("MOV M,A", b"\x77", 1),
+    ("MOV A,B", b"\x78", 1),
+    ("MOV A,C", b"\x79", 1),
+    ("MOV A,D", b"\x7a", 1),
+    ("MOV A,E", b"\x7b", 1),
+    ("MOV A,H", b"\x7c", 1),
+    ("MOV A,L", b"\x7d", 1),
+    ("MOV A,M", b"\x7e", 1),
+    ("MOV A,A", b"\x7f", 1),
+    # Register/Memory to Accumulator Transfers
+    ("ADD B", b"\x80", 1),
+    ("ADD C", b"\x81", 1),
+    ("ADD D", b"\x82", 1),
+    ("ADD E", b"\x83", 1),
+    ("ADD H", b"\x84", 1),
+    ("ADD L", b"\x85", 1),
+    ("ADD M", b"\x86", 1),
+    ("ADD A", b"\x87", 1),
+    ("ADC B", b"\x88", 1),
+    ("ADC C", b"\x89", 1),
+    ("ADC D", b"\x8a", 1),
+    ("ADC E", b"\x8b", 1),
+    ("ADC H", b"\x8c", 1),
+    ("ADC L", b"\x8d", 1),
+    ("ADC M", b"\x8e", 1),
+    ("ADC A", b"\x8f", 1),
+    ("SUB B", b"\x90", 1),
+    ("SUB C", b"\x91", 1),
+    ("SUB D", b"\x92", 1),
+    ("SUB E", b"\x93", 1),
+    ("SUB H", b"\x94", 1),
+    ("SUB L", b"\x95", 1),
+    ("SUB M", b"\x96", 1),
+    ("SUB A", b"\x97", 1),
+    ("SBB B", b"\x98", 1),
+    ("SBB C", b"\x99", 1),
+    ("SBB D", b"\x9a", 1),
+    ("SBB E", b"\x9b", 1),
+    ("SBB H", b"\x9c", 1),
+    ("SBB L", b"\x9d", 1),
+    ("SBB M", b"\x9e", 1),
+    ("SBB A", b"\x9f", 1),
+    ("ANA B", b"\xa0", 1),
+    ("ANA C", b"\xa1", 1),
+    ("ANA D", b"\xa2", 1),
+    ("ANA E", b"\xa3", 1),
+    ("ANA H", b"\xa4", 1),
+    ("ANA L", b"\xa5", 1),
+    ("ANA M", b"\xa6", 1),
+    ("ANA A", b"\xa7", 1),
+    ("XRA B", b"\xa8", 1),
+    ("XRA C", b"\xa9", 1),
+    ("XRA D", b"\xaa", 1),
+    ("XRA E", b"\xab", 1),
+    ("XRA H", b"\xac", 1),
+    ("XRA L", b"\xad", 1),
+    ("XRA M", b"\xae", 1),
+    ("XRA A", b"\xaf", 1),
+    ("ORA B", b"\xb0", 1),
+    ("ORA C", b"\xb1", 1),
+    ("ORA D", b"\xb2", 1),
+    ("ORA E", b"\xb3", 1),
+    ("ORA H", b"\xb4", 1),
+    ("ORA L", b"\xb5", 1),
+    ("ORA M", b"\xb6", 1),
+    ("ORA A", b"\xb7", 1),
+    ("CMP B", b"\xb8", 1),
+    ("CMP C", b"\xb9", 1),
+    ("CMP D", b"\xba", 1),
+    ("CMP E", b"\xbb", 1),
+    ("CMP H", b"\xbc", 1),
+    ("CMP L", b"\xbd", 1),
+    ("CMP M", b"\xbe", 1),
+    ("CMP A", b"\xbf", 1),
+    # Return Instructions
+    ("RET", b"\xc9", 1),
+    ("RC", b"\xd8", 1),
+    ("RNC", b"\xd0", 1),
+    ("RZ", b"\xc8", 1),
+    ("RNZ", b"\xc0", 1),
+    ("RM", b"\xf8", 1),
+    ("RP", b"\xf0", 1),
+    ("RPE", b"\xe8", 1),
+    ("RP)", b"\xe0", 1),
+    # Load Program Counter
+    ("PCHL", b"\xe9", 1),
+    ## TWO BYTE INSTRUCTIONS
+    # I/O Instructions
+    ("IN", b"\xdb", 2),
+    ("OUT", b"\xd3", 2),
+    # Immediate Instructions (2 byte)
+    ("MVI B", b"\x06", 2),
+    ("MVI C", b"\x0e", 2),
+    ("MVI D", b"\x16", 2),
+    ("MVI E", b"\x1e", 2),
+    ("MVI H", b"\x26", 2),
+    ("MVI L", b"\x2e", 2),
+    ("MVI M", b"\x36", 2),
+    ("MVI A", b"\x3e", 2),
+    ("ADI", b"\xc6", 2),
+    ("ACI", b"\xce", 2),
+    ("SUI", b"\xd6", 2),
+    ("SBI", b"\xde", 2),
+    ("ANI", b"\xe6", 2),
+    ("XRI", b"\xee", 2),
+    ("ORI", b"\xf6", 2),
+    ("CPI", b"\xfe", 2),
+    ## THRE BYTE INSTRUCTIONS
+    # Direct Addressing Instructions
+    ("STA", b"\x32", 3),
+    ("LDA", b"\x3a", 3),
+    ("SHLD", b"\x22", 3),
+    ("LHLD", b"\x2a", 3),
+    # Immediate Instructions (3 byte)
+    ("LXI B", b"\x01", 3),
+    ("LXI D", b"\x11", 3),
+    ("LXI H", b"\x21", 3),
+    ("LXI SP", b"\x31", 3),
+    # Jump Instructions
+    ("JMP", b"\xc3", 3),
+    ("JC", b"\xda", 3),
+    ("JNC", b"\xd2", 3),
+    ("JZ", b"\xca", 3),
+    ("JNZ", b"\xc2", 3),
+    ("JM", b"\xfa", 3),
+    ("JP", b"\xf2", 3),
+    ("JPE", b"\xea", 3),
+    ("JPO", b"\xe2", 3),
+    # Call Instructions
+    ("CALL", b"\xcd", 3),
+    ("CC", b"\xdc", 3),
+    ("CNC", b"\xd4", 3),
+    ("CZ", b"\xcc", 3),
+    ("CNZ", b"\xc4", 3),
+    ("CM", b"\xfc", 3),
+    ("CP", b"\xf4", 3),
+    ("CPE", b"\xec", 3),
+    ("CPO", b"\xe4", 3)
+]
+
+
+def find_byte_tup(byte):
+    for byte_tup in INSTRUCTIONS:
+        if byte == byte_tup[1]:
+            return byte_tup
+    return f"Invalid 8080 instruction: {hex(ord(byte))}"
+
+
+def disassemble(byte_list):
+    """
+    Convert an 8080 binary file into 8080 Assembly Language
+    """
+    asm_str = ""
+
+    num_bytes = len(byte_list)
+    byte_num = 0
+
+    while byte_num < num_bytes:
+        byte_tup = find_byte_tup(byte_list[byte_num])
+        if isinstance(byte_tup, str):
+            asm_str += byte_tup + '\n'
+            byte_num += 1
+        elif byte_tup[2] == 1:
+            asm_str += f"{byte_tup[0]}\n"
+            byte_num += 1
+        elif byte_tup[2] == 2:
+            asm_str += f"{byte_tup[0]}"
+            asm_str += f" {hex(ord(byte_list[byte_num+1]))}\n"
+            byte_num += 2
+        else: # byte_tup[2] == 3
+            asm_str += f"{byte_tup[0]}"
+            asm_str += f" {hex(ord(byte_list[byte_num+1]))} "
+            asm_str += f"{hex(ord(byte_list[byte_num+2]))}\n"
+            byte_num += 3
+
+    return(asm_str)
+
+
+if __name__ == "__main__":
+    all_bytes = []
+    try:
+        with open(sys.argv[1], "rb") as f:
+            byte = f.read(1)
+            while byte:
+                all_bytes.append(byte)
+                byte = f.read(1)
+    except IOError:
+        print("Error while opening file")
+
+    print(disassemble(all_bytes))

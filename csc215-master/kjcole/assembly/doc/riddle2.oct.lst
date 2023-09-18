@@ -1,0 +1,59 @@
+ AS V1.42 Beta [Bld 176] - Source File riddle2.asm - Page 1 - 12/17/2020 08:29:38 AM
+
+
+       1/       0 : 072 103 000         	LDA	103o
+       2/       3 : 062 015 000         	STA	015o
+       3/       6 : 072 100 000         	LDA	100o
+       4/      11 : 107                 	MOV	B,A
+       5/      12 : 072 101 000         	LDA	101o
+       6/      15 : 200                 	ADD	B
+       7/      16 : 062 102 000         	STA	102o
+       8/      21 : 303 000 000         	JMP	000o
+       9/      24 :                     
+      10/     100 :                     	ORG	100o
+      11/     100 : 005                 	DB	005o
+      12/     101 : 010                 	DB	010o
+      13/     102 : 000                 	DB	000o
+      14/     103 : 220                 	DB	220o
+      15/     104 :                     
+ AS V1.42 Beta [Bld 176] - Source File riddle2.asm - Page 2 - 12/17/2020 08:29:38 AM
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+*ARCHITECTURE :                                      "x86_64-unknown-linux" - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - | *CONSTPI :        3.141592653589793 - |
+*DATE :                "12/17/2020" - | *FALSE :                          0 - |
+*FULLPMMU :                       1 - | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+*INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
+*LISTON :                         1 - | *MACEXP :                         7 - |
+*MOMCPU :                    100200 - | *MOMCPUNAME :                "8080" - |
+*NESTMAX :                      400 - | *PACKING :                        0 - |
+*PADDING :                        1 - | *RELAXED :                        0 - |
+*TIME :               "08:29:38 AM" - | *TRUE :                           1 - |
+*VERSION :                    12057 - | *Z80SYNTAX :                      0 - |
+
+     29 symbols
+     29 unused symbols
+
+ AS V1.42 Beta [Bld 176] - Source File riddle2.asm - Page 3 - 12/17/2020 08:29:38 AM
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.00 seconds assembly time
+
+     15 lines source file
+      1 pass
+      0 errors
+      0 warnings

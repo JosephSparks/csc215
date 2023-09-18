@@ -1,0 +1,21 @@
+ AS V1.42 Beta [Bld 183] - Source File bye.asm - Page 1 - 12/04/2020 09:35:07 PM
+
+
+       1/       0 :                     	PAGE	40		; 40 lines per page
+       2/       0 :                     	TITLE	"bye - Copyright (C) Kevin Cole 2020.11.03 (GPL)"
+       3/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+       4/       0 :                     ;
+       5/       0 :                     ; NAME:    bye.asm
+       6/       0 :                     ; EDITOR:  Kevin Cole ("The Ubuntourist") <kevin.cole@novawebdevelopment.org>
+       7/       0 :                     ; LASTMOD: 2020.11.03 (kjc)
+       8/       0 :                     ;
+       9/       0 :                     ; DESCRIPTION:
+      10/       0 :                     ;
+      11/       0 :                     ;     When the Altair just can't take it any more... ;-)
+      12/       0 :                     ;
+      13/       0 :                     ;     This refactored version abstracts the I/O into callable subroutines
+      14/       0 :                     ;
+      15/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      16/       0 :                     
+      17/       0 :                     ; Code segment
+      18/       0 :                     

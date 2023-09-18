@@ -1,0 +1,2719 @@
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 1 - 12/11/2020 11:27:45 PM
+
+
+       1/       0 :                     ; ----------------------------------------------------------------------------
+       2/       0 :                     ;Micro-Soft Altair BASIC 3.2 (4K) - Annotated Disassembly
+       3/       0 :                     ;
+       4/       0 :                     ;Copyright 1975, Bill Gates, Paul Allen, Monte Davidoff
+       5/       0 :                     ;Source: http://altairbasic.org/ compiled by Reuben Harris
+       6/       0 :                     ;Additional cleanup, relocation by Charles Mangin, March, 2019
+       7/       0 :                     ; ----------------------------------------------------------------------------
+       8/       0 :                     
+       9/       0 :                     
+      10/       0 :                     	ORG	00
+      11/       0 :                     
+      12/       0 : F3                  S001:	DI
+      13/       1 : C3 1E 0D            	JMP	S241
+      14/       4 :                     
+      15/       4 : 90 04               	DW	0490h
+      16/       6 : F9 07               	DW	07F9h
+      17/       8 :                     
+      18/       8 : 7E                  S002:	MOV	A,M
+      19/       9 : E3                  	XTHL
+      20/       A : BE                  	CMP	M
+      21/       B : 23                  	INX	H
+      22/       C : E3                  	XTHL
+      23/       D : C2 CD 01            	JNZ	S040
+      24/      10 : 23                  S003:	INX	H
+      25/      11 : 7E                  	MOV	A,M
+      26/      12 : FE 3A               	CPI	3Ah
+      27/      14 : D0                  	RNC
+      28/      15 : C3 5B 04            	JMP	S089
+      29/      18 : F5                  S004:	PUSH	PSW
+      30/      19 : 3A 27 00            	LDA	S007
+      31/      1C : C3 6B 03            	JMP	S075
+      32/      1F : 00                  	NOP
+      33/      20 : 7C                  S005:	MOV	A,H
+      34/      21 : 92                  	SUB	D
+      35/      22 : C0                  	RNZ
+      36/      23 : 7D                  	MOV	A,L
+      37/      24 : 93                  	SUB	E
+      38/      25 : C9                  	RET
+      39/      26 : 01                  S006:	DB	01
+      40/      27 : 00                  S007:	DB	00
+      41/      28 : 3A 72 01            S008:	LDA	S028+3
+      42/      2B : B7                  	ORA	A
+      43/      2C : C2 D7 09            	JNZ	S181
+      44/      2F : C9                  	RET
+      45/      30 : E3                  S009:	XTHL
+      46/      31 : 22 3B 00            	SHLD	S010+1
+      47/      34 : E1                  	POP	H
+      48/      35 : 4E                  	MOV	C,M
+      49/      36 : 23                  	INX	H
+      50/      37 : 46                  	MOV	B,M
+      51/      38 : 23                  	INX	H
+      52/      39 : C5                  	PUSH	B
+      53/      3A : C3 3A 00            S010:	JMP	S010
+      54/      3D : E1 09               S011:	DW	S184
+      55/      3F : 9F 0A               	DW	S201
+      56/      41 : F5 09               	DW	S186
+      57/      43 : 95 04               	DW	S095
+      58/      45 : 1E 0C               	DW	S231
+      59/      47 : 5C 0C               	DW	S233
+      60/      49 : 92 0C               	DW	S236
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 2 - 12/11/2020 11:27:45 PM
+
+
+      61/      4B : 79                  S012:	DB	79h
+      62/      4C : 0D 08               	DW	S154
+      63/      4E : 79                  	DB	79h
+      64/      4F : 07 08               	DW	S153
+      65/      51 : 7C                  	DB	7Ch
+      66/      52 : E0 08               	DW	S168
+      67/      54 : 7C                  	DB	7Ch
+      68/      55 : 2C 09               	DW	S174
+      69/      57 : 45                  S013:	DB	45h
+      70/      58 : 4E                  	DB	4Eh
+      71/      59 : C4                  	DB	0C4h
+      72/      5A : 46                  	DB	46h
+      73/      5B : 4F                  	DB	4Fh
+      74/      5C : D2                  	DB	0D2h
+      75/      5D : 4E                  	DB	4Eh
+      76/      5E : 45                  	DB	45h
+      77/      5F : 58                  	DB	58h
+      78/      60 : D4                  	DB	0D4h
+      79/      61 : 44                  	DB	44h
+      80/      62 : 41                  	DB	41h
+      81/      63 : 54                  	DB	54h
+      82/      64 : C1                  	DB	0C1h
+      83/      65 : 49                  	DB	49h
+      84/      66 : 4E                  	DB	4Eh
+      85/      67 : 50                  	DB	50h
+      86/      68 : 55                  	DB	55h
+      87/      69 : D4                  	DB	0D4h
+      88/      6A : 44                  	DB	44h
+      89/      6B : 49                  	DB	49h
+      90/      6C : CD                  	DB	0CDh
+      91/      6D : 52                  	DB	52h
+      92/      6E : 45                  	DB	45h
+      93/      6F : 41                  	DB	41h
+      94/      70 : C4                  	DB	0C4h
+      95/      71 : 4C                  	DB	4Ch
+      96/      72 : 45                  	DB	45h
+      97/      73 : D4                  	DB	0D4h
+      98/      74 : 47                  	DB	47h
+      99/      75 : 4F                  	DB	4Fh
+     100/      76 : 54                  	DB	54h
+     101/      77 : CF                  	DB	0CFh
+     102/      78 : 52                  	DB	52h
+     103/      79 : 55                  	DB	55h
+     104/      7A : CE                  	DB	0CEh
+     105/      7B : 49                  	DB	49h
+     106/      7C : C6                  	DB	0C6h
+     107/      7D : 52                  	DB	52h
+     108/      7E : 45                  	DB	45h
+     109/      7F : 53                  	DB	53h
+     110/      80 : 54                  	DB	54h
+     111/      81 : 4F                  	DB	4Fh
+     112/      82 : 52                  	DB	52h
+     113/      83 : C5                  	DB	0C5h
+     114/      84 : 47                  	DB	47h
+     115/      85 : 4F                  	DB	4Fh
+     116/      86 : 53                  	DB	53h
+     117/      87 : 55                  	DB	55h
+     118/      88 : C2                  	DB	0C2h
+     119/      89 : 52                  	DB	52h
+     120/      8A : 45                  	DB	45h
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 3 - 12/11/2020 11:27:45 PM
+
+
+     121/      8B : 54                  	DB	54h
+     122/      8C : 55                  	DB	55h
+     123/      8D : 52                  	DB	52h
+     124/      8E : CE                  	DB	0CEh
+     125/      8F : 52                  	DB	52h
+     126/      90 : 45                  	DB	45h
+     127/      91 : CD                  	DB	0CDh
+     128/      92 : 53                  	DB	53h
+     129/      93 : 54                  	DB	54h
+     130/      94 : 4F                  	DB	4Fh
+     131/      95 : D0                  	DB	0D0h
+     132/      96 : 50                  	DB	50h
+     133/      97 : 52                  	DB	52h
+     134/      98 : 49                  	DB	49h
+     135/      99 : 4E                  	DB	4Eh
+     136/      9A : D4                  	DB	0D4h
+     137/      9B : 4C                  	DB	4Ch
+     138/      9C : 49                  	DB	49h
+     139/      9D : 53                  	DB	53h
+     140/      9E : D4                  	DB	0D4h
+     141/      9F : 43                  	DB	43h
+     142/      A0 : 4C                  	DB	4Ch
+     143/      A1 : 45                  	DB	45h
+     144/      A2 : 41                  	DB	41h
+     145/      A3 : D2                  	DB	0D2h
+     146/      A4 : 4E                  	DB	4Eh
+     147/      A5 : 45                  	DB	45h
+     148/      A6 : D7                  	DB	0D7h
+     149/      A7 :                     
+     150/      A7 : 54                  	DB	54h
+     151/      A8 : 41                  	DB	41h
+     152/      A9 : 42                  	DB	42h
+     153/      AA : A8                  	DB	0A8h
+     154/      AB : 54                  	DB	54h
+     155/      AC : CF                  	DB	0CFh
+     156/      AD : 54                  	DB	54h
+     157/      AE : 48                  	DB	48h
+     158/      AF : 45                  	DB	45h
+     159/      B0 : CE                  	DB	0CEh
+     160/      B1 : 53                  	DB	53h
+     161/      B2 : 54                  	DB	54h
+     162/      B3 : 45                  	DB	45h
+     163/      B4 : D0                  	DB	0D0h
+     164/      B5 :                     
+     165/      B5 : AB                  	DB	0ABh
+     166/      B6 : AD                  	DB	0ADh
+     167/      B7 : AA                  	DB	0AAh
+     168/      B8 : AF                  	DB	0AFh
+     169/      B9 : BE                  	DB	0BEh
+     170/      BA : BD                  	DB	0BDh
+     171/      BB : BC                  	DB	0BCh
+     172/      BC :                     
+     173/      BC : 53                  	DB	53h
+     174/      BD : 47                  	DB	47h
+     175/      BE : CE                  	DB	0CEh
+     176/      BF : 49                  	DB	49h
+     177/      C0 : 4E                  	DB	4Eh
+     178/      C1 : D4                  	DB	0D4h
+     179/      C2 : 41                  	DB	41h
+     180/      C3 : 42                  	DB	42h
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 4 - 12/11/2020 11:27:45 PM
+
+
+     181/      C4 : D3                  	DB	0D3h
+     182/      C5 : 55                  	DB	55h
+     183/      C6 : 53                  	DB	53h
+     184/      C7 : D2                  	DB	0D2h
+     185/      C8 : 53                  	DB	53h
+     186/      C9 : 51                  	DB	51h
+     187/      CA : D2                  	DB	0D2h
+     188/      CB : 52                  	DB	52h
+     189/      CC : 4E                  	DB	4Eh
+     190/      CD : C4                  	DB	0C4h
+     191/      CE : 53                  	DB	53h
+     192/      CF : 49                  	DB	49h
+     193/      D0 : CE                  	DB	0CEh
+     194/      D1 :                     
+     195/      D1 : 00                  	DB	00h
+     196/      D2 :                     
+     197/      D2 : F4 01               S014:	DW	S043
+     198/      D4 : D2 03               	DW	S083
+     199/      D6 : 46 06               	DW	S126
+     200/      D8 : F2 04               	DW	S101
+     201/      DA : E1 05               	DW	S120
+     202/      DC : 13 07               	DW	S136
+     203/      DE : F3 05               	DW	S121
+     204/      E0 : FF 04               	DW	S104
+     205/      E2 : CC 04               	DW	S099
+     206/      E4 : 9E 02               	DW	S056
+     207/      E6 : 13 05               	DW	S106
+     208/      E8 : 66 04               	DW	S090
+     209/      EA : BB 04               	DW	S098
+     210/      EC : DC 04               	DW	S100
+     211/      EE : F4 04               	DW	S102
+     212/      F0 : F4 01               	DW	S043
+     213/      F2 : 54 05               	DW	S109
+     214/      F4 : 8B 03               	DW	S078
+     215/      F6 : A3 02               	DW	S058
+     216/      F8 : 92 02               	DW	S055
+     217/      FA :                     
+     218/      FA : 4E                  S015:	DB	4Eh
+     219/      FB : C6                  	DB	0C6h
+     220/      FC : 53                  	DB	53h
+     221/      FD : CE                  	DB	0CEh
+     222/      FE : 52                  	DB	52h
+     223/      FF : C7                  	DB	0C7h
+     224/     100 : 4F                  	DB	4Fh
+     225/     101 : C4                  	DB	0C4h
+     226/     102 : 46                  	DB	46h
+     227/     103 : C3                  	DB	0C3h
+     228/     104 : 4F                  	DB	4Fh
+     229/     105 : D6                  	DB	0D6h
+     230/     106 : 4F                  	DB	4Fh
+     231/     107 : CD                  	DB	0CDh
+     232/     108 : 55                  	DB	55h
+     233/     109 : D3                  	DB	0D3h
+     234/     10A : 42                  	DB	42h
+     235/     10B : D3                  	DB	0D3h
+     236/     10C : 44                  	DB	44h
+     237/     10D : C4                  	DB	0C4h
+     238/     10E : 2F                  	DB	2Fh
+     239/     10F : B0                  	DB	0B0h
+     240/     110 : 49                  	DB	49h
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 5 - 12/11/2020 11:27:45 PM
+
+
+     241/     111 : C4                  	DB	0C4h
+     242/     112 :                     
+     243/     112 : 2C                  	DB	','
+     244/     113 : 00 00 00 00 00 00   S016:	DW	0000,0000,0000,0000h
+              119 : 00 00             
+     245/     11B : 00 00 00 00 00 00   	DW	0000,0000,0000,0000h
+              121 : 00 00             
+     246/     123 : 00 00 00 00 00 00   	DW	0000,0000,0000,0000h
+              129 : 00 00             
+     247/     12B : 00 00 00 00 00 00   	DW	0000,0000,0000,0000h
+              131 : 00 00             
+     248/     133 : 00 00 00 00 00 00   	DW	0000,0000,0000,0000h
+              139 : 00 00             
+     249/     13B : 00 00 00 00 00 00   	DW	0000,0000,0000,0000h
+              141 : 00 00             
+     250/     143 : 00 00 00 00 00 00   	DW	0000,0000,0000,0000h
+              149 : 00 00             
+     251/     14B : 00 00 00 00 00 00   	DW	0000,0000,0000,0000h
+              151 : 00 00             
+     252/     153 : 00 00 00 00 00 00   	DW	0000,0000,0000,0000h
+              159 : 00 00             
+     253/     15B :                     
+     254/     15B : 00                  S017:	DB	00h
+     255/     15C : 00                  S018:	DB	00h
+     256/     15D : 00 00               S019:	DW	0000h
+     257/     15F : 00 00               S020:	DW	0000h
+     258/     161 : 00 00               S021:	DW	0000h
+     259/     163 : 1A 0F               S022:	DW	0F1Ah
+     260/     165 : 00 00               S023:	DW	0000h
+     261/     167 : 00 00               S024:	DW	0000h
+     262/     169 : 00 00               S025:	DW	0000h
+     263/     16B : 00 00               S026:	DW	0000h
+     264/     16D : 00 00               S027:	DW	0000h
+     265/     16F : 00                  S028:	DB	00000000h
+     266/     170 : 00                  S029:	DB	00h
+     267/     171 : 00 00 00 00 00 00   S030:	DW	0000,0000,0000
+     268/     177 : 00 00 00 00 00 00   	DW	0000,0000,0000
+     269/     17D : 00                  	DB	00
+     270/     17E : 20                  S031:	DB	20h
+     271/     17F : 45                  	DB	45h
+     272/     180 : 52                  	DB	52h
+     273/     181 : 52                  	DB	52h
+     274/     182 : 4F                  	DB	4Fh
+     275/     183 : D2                  	DB	0D2h
+     276/     184 : 00                  	DB	00h
+     277/     185 : 20                  S032:	DB	20h
+     278/     186 : 49                  	DB	49h
+     279/     187 : 4E                  	DB	4Eh
+     280/     188 : A0                  	DB	0A0h
+     281/     189 : 00                  	DB	00h
+     282/     18A : 0D                  S033:	DB	0Dh
+     283/     18B : 4F                  	DB	4Fh
+     284/     18C : CB                  	DB	0CBh
+     285/     18D : 0D                  	DB	0Dh
+     286/     18E : 00                  	DB	00h
+     287/     18F : 21 04 00            S034:	LXI	H,0004h
+     288/     192 : 39                  	DAD	SP
+     289/     193 : 7E                  	MOV	A,M
+     290/     194 : 23                  	INX	H
+     291/     195 : FE 81               	CPI	81h
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 6 - 12/11/2020 11:27:45 PM
+
+
+     292/     197 : C0                  	RNZ
+     293/     198 : F7                  	RST	6
+     294/     199 : E3                  	XTHL
+     295/     19A : E7                  	RST	4
+     296/     19B : 01 0D 00            	LXI	B,000Dh
+     297/     19E : E1                  	POP	H
+     298/     19F : C8                  	RZ
+     299/     1A0 : 09                  	DAD	B
+     300/     1A1 : C3 93 01            	JMP	S034+4
+     301/     1A4 : CD C0 01            S035:	CALL	S038
+     302/     1A7 : C5                  	PUSH	B
+     303/     1A8 : E3                  	XTHL
+     304/     1A9 : C1                  	POP	B
+     305/     1AA : E7                  S036:	RST	4
+     306/     1AB : 7E                  	MOV	A,M
+     307/     1AC : 02                  	STAX	B
+     308/     1AD : C8                  	RZ
+     309/     1AE : 0B                  	DCX	B
+     310/     1AF : 2B                  	DCX	H
+     311/     1B0 : C3 AA 01            	JMP	S036
+     312/     1B3 : E5                  S037:	PUSH	H
+     313/     1B4 : 2A 6B 01            	LHLD	S026
+     314/     1B7 : 06 00               	MVI	B,00h
+     315/     1B9 : 09                  	DAD	B
+     316/     1BA : 09                  	DAD	B
+     317/     1BB : CD C0 01            	CALL	S038
+     318/     1BE : E1                  	POP	H
+     319/     1BF : C9                  	RET
+     320/     1C0 : D5                  S038:	PUSH	D
+     321/     1C1 : EB                  	XCHG
+     322/     1C2 : 21 DE FF            	LXI	H,0FFDEh
+     323/     1C5 : 39                  	DAD	SP
+     324/     1C6 : E7                  	RST	4
+     325/     1C7 : EB                  	XCHG
+     326/     1C8 : D1                  	POP	D
+     327/     1C9 : D0                  	RNC
+     328/     1CA : 1E 0C               S039:	MVI	E,0Ch
+     329/     1CC : 01                  	DB	01
+     330/     1CD : 1E 02               S040:	MVI	E,02h
+     331/     1CF : 01                  	DB	01
+     332/     1D0 : 1E 14               S041:	MVI	E,14h
+     333/     1D2 : CD B2 02            S042:	CALL	S059
+     334/     1D5 : CD 87 05            	CALL	S111
+     335/     1D8 : 21 FA 00            	LXI	H,S015
+     336/     1DB : 57                  	MOV	D,A
+     337/     1DC : 3E 3F               	MVI	A,'?'
+     338/     1DE : DF                  	RST	03
+     339/     1DF : 19                  	DAD	D
+     340/     1E0 : 7E                  	MOV	A,M
+     341/     1E1 : DF                  	RST	03
+     342/     1E2 : D7                  	RST	02
+     343/     1E3 : DF                  	RST	03
+     344/     1E4 : 21 7E 01            	LXI	H,S031
+     345/     1E7 : CD A0 05            	CALL	S113
+     346/     1EA : 2A 61 01            	LHLD	S021
+     347/     1ED : 7C                  	MOV	A,H
+     348/     1EE : A5                  	ANA	L
+     349/     1EF : 3C                  	INR	A
+     350/     1F0 : C4 2C 0B            	CNZ	S213
+     351/     1F3 : 01                  	DB	01
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 7 - 12/11/2020 11:27:45 PM
+
+
+     352/     1F4 : C0                  S043:	RNZ
+     353/     1F5 : C1                  	POP	B
+     354/     1F6 : 21 8A 01            S044:	LXI	H,S033
+     355/     1F9 : CD 1E 0D            	CALL	S241
+     356/     1FC : 21 FF FF            S045:	LXI	H,0FFFFh
+     357/     1FF : 22 61 01            	SHLD	S021
+     358/     202 : CD 39 03            	CALL	S072
+     359/     205 : D7                  	RST	02
+     360/     206 : 3C                  	INR	A
+     361/     207 : 3D                  	DCR	A
+     362/     208 : CA FC 01            	JZ	S045
+     363/     20B : F5                  	PUSH	PSW
+     364/     20C : CD 9A 04            	CALL	S096
+     365/     20F : D5                  	PUSH	D
+     366/     210 : CD C9 02            	CALL	S061
+     367/     213 : 47                  	MOV	B,A
+     368/     214 : D1                  	POP	D
+     369/     215 : F1                  	POP	PSW
+     370/     216 : D2 3B 04            	JNC	S088
+     371/     219 : D5                  S046:	PUSH	D
+     372/     21A : C5                  	PUSH	B
+     373/     21B : D7                  	RST	02
+     374/     21C : B7                  	ORA	A
+     375/     21D : F5                  	PUSH	PSW
+     376/     21E : CD 7A 02            	CALL	S054
+     377/     221 : C5                  	PUSH	B
+     378/     222 : D2 36 02            	JNC	S049
+     379/     225 : EB                  S047:	XCHG
+     380/     226 : 2A 67 01            	LHLD	S024
+     381/     229 : 1A                  S048:	LDAX	D
+     382/     22A : 02                  	STAX	B
+     383/     22B : 03                  	INX	B
+     384/     22C : 13                  	INX	D
+     385/     22D : E7                  	RST	4
+     386/     22E : C2 29 02            	JNZ	S048
+     387/     231 : 60                  	MOV	H,B
+     388/     232 : 69                  	MOV	L,C
+     389/     233 : 22 67 01            	SHLD	S024
+     390/     236 : D1                  S049:	POP	D
+     391/     237 : F1                  	POP	PSW
+     392/     238 : CA 5D 02            	JZ	S051
+     393/     23B : 2A 67 01            	LHLD	S024
+     394/     23E : E3                  	XTHL
+     395/     23F : C1                  	POP	B
+     396/     240 : 09                  	DAD	B
+     397/     241 : E5                  	PUSH	H
+     398/     242 : CD A4 01            	CALL	S035
+     399/     245 : E1                  	POP	H
+     400/     246 : 22 67 01            	SHLD	S024
+     401/     249 : EB                  	XCHG
+     402/     24A : 74                  	MOV	M,H
+     403/     24B : 23                  	INX	H
+     404/     24C : 23                  	INX	H
+     405/     24D : D1                  	POP	D
+     406/     24E : 73                  	MOV	M,E
+     407/     24F : 23                  	INX	H
+     408/     250 : 72                  	MOV	M,D
+     409/     251 : 23                  	INX	H
+     410/     252 : 11 13 01            S050:	LXI	D,S016
+     411/     255 : 1A                  	LDAX	D
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 8 - 12/11/2020 11:27:45 PM
+
+
+     412/     256 : 77                  	MOV	M,A
+     413/     257 : 23                  	INX	H
+     414/     258 : 13                  	INX	D
+     415/     259 : B7                  	ORA	A
+     416/     25A : C2 55 02            	JNZ	S050+3
+     417/     25D : CD 9F 02            S051:	CALL	S057
+     418/     260 : 23                  	INX	H
+     419/     261 : EB                  	XCHG
+     420/     262 : 62                  S052:	MOV	H,D
+     421/     263 : 6B                  	MOV	L,E
+     422/     264 : 7E                  	MOV	A,M
+     423/     265 : 23                  	INX	H
+     424/     266 : B6                  	ORA	M
+     425/     267 : CA FC 01            	JZ	S045
+     426/     26A : 23                  	INX	H
+     427/     26B : 23                  	INX	H
+     428/     26C : 23                  	INX	H
+     429/     26D : AF                  	XRA	A
+     430/     26E : BE                  S053:	CMP	M
+     431/     26F : 23                  	INX	H
+     432/     270 : C2 6E 02            	JNZ	S053
+     433/     273 : EB                  	XCHG
+     434/     274 : 73                  	MOV	M,E
+     435/     275 : 23                  	INX	H
+     436/     276 : 72                  	MOV	M,D
+     437/     277 : C3 62 02            	JMP	S052
+     438/     27A : 2A 65 01            S054:	LHLD	S023
+     439/     27D : 44                  	MOV	B,H
+     440/     27E : 4D                  	MOV	C,L
+     441/     27F : 7E                  	MOV	A,M
+     442/     280 : 23                  	INX	H
+     443/     281 : B6                  	ORA	M
+     444/     282 : 2B                  	DCX	H
+     445/     283 : C8                  	RZ
+     446/     284 : C5                  	PUSH	B
+     447/     285 : F7                  	RST	6
+     448/     286 : F7                  	RST	6
+     449/     287 : E1                  	POP	H
+     450/     288 : E7                  	RST	4
+     451/     289 : E1                  	POP	H
+     452/     28A : C1                  	POP	B
+     453/     28B : 3F                  	CMC
+     454/     28C : C8                  	RZ
+     455/     28D : 3F                  	CMC
+     456/     28E : D0                  	RNC
+     457/     28F : C3 7D 02            	JMP	S054+3
+     458/     292 : C0                  S055:	RNZ
+     459/     293 : 2A 65 01            	LHLD	S023
+     460/     296 : AF                  	XRA	A
+     461/     297 : 77                  	MOV	M,A
+     462/     298 : 23                  	INX	H
+     463/     299 : 77                  	MOV	M,A
+     464/     29A : 23                  	INX	H
+     465/     29B : 22 67 01            	SHLD	S024
+     466/     29E : C0                  S056:	RNZ
+     467/     29F : 2A 65 01            S057:	LHLD	S023
+     468/     2A2 : 2B                  	DCX	H
+     469/     2A3 : 22 5D 01            S058:	SHLD	S019
+     470/     2A6 : CD 66 04            	CALL	S090
+     471/     2A9 : 2A 67 01            	LHLD	S024
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 9 - 12/11/2020 11:27:45 PM
+
+
+     472/     2AC : 22 69 01            	SHLD	S025
+     473/     2AF : 22 6B 01            	SHLD	S026
+     474/     2B2 : C1                  S059:	POP	B
+     475/     2B3 : 2A 63 01            	LHLD	S022
+     476/     2B6 : F9                  	SPHL
+     477/     2B7 : AF                  	XRA	A
+     478/     2B8 : 6F                  	MOV	L,A
+     479/     2B9 : E5                  	PUSH	H
+     480/     2BA : C5                  	PUSH	B
+     481/     2BB : 2A 5D 01            	LHLD	S019
+     482/     2BE : C9                  	RET
+     483/     2BF : 3E 3F               S060:	MVI	A,'?'
+     484/     2C1 : DF                  	RST	03
+     485/     2C2 : 3E 20               	MVI	A,' '
+     486/     2C4 : DF                  	RST	03
+     487/     2C5 : CD 39 03            	CALL	S072
+     488/     2C8 : 23                  	INX	H
+     489/     2C9 : 0E 05               S061:	MVI	C,05
+     490/     2CB : 11 13 01            	LXI	D,S016
+     491/     2CE : 7E                  	MOV	A,M
+     492/     2CF : FE 20               	CPI	' '
+     493/     2D1 : CA FF 02            	JZ	S064
+     494/     2D4 : 47                  	MOV	B,A
+     495/     2D5 : FE 22               	CPI	'"'
+     496/     2D7 : CA 12 03            	JZ	S066
+     497/     2DA : B7                  	ORA	A
+     498/     2DB : CA 26 03            	JZ	S069
+     499/     2DE : D5                  	PUSH	D
+     500/     2DF : 06 00               	MVI	B,00
+     501/     2E1 : 11 56 00            	LXI	D,S013-1
+     502/     2E4 : E5                  	PUSH	H
+     503/     2E5 : 3E                  	DB	3Eh
+     504/     2E6 : D7                  S062:	RST	02
+     505/     2E7 : 13                  	INX	D
+     506/     2E8 : 1A                  	LDAX	D
+     507/     2E9 : E6 7F               	ANI	7Fh
+     508/     2EB : CA FC 02            	JZ	S063
+     509/     2EE : BE                  	CMP	M
+     510/     2EF : C2 19 03            	JNZ	S067
+     511/     2F2 : 1A                  	LDAX	D
+     512/     2F3 : B7                  	ORA	A
+     513/     2F4 : F2 E6 02            	JP	S062
+     514/     2F7 : F1                  	POP	PSW
+     515/     2F8 : 78                  	MOV	A,B
+     516/     2F9 : F6 80               	ORI	80h
+     517/     2FB : F2                  	DB	0F2h
+     518/     2FC : E1                  S063:	POP	H
+     519/     2FD : 7E                  	MOV	A,M
+     520/     2FE : D1                  	POP	D
+     521/     2FF : 23                  S064:	INX	H
+     522/     300 : 12                  	STAX	D
+     523/     301 : 13                  	INX	D
+     524/     302 : 0C                  	INR	C
+     525/     303 : D6 8E               	SUI	8Eh
+     526/     305 : C2 CE 02            	JNZ	S061+5
+     527/     308 : 47                  	MOV	B,A
+     528/     309 : 7E                  S065:	MOV	A,M
+     529/     30A : B7                  	ORA	A
+     530/     30B : CA 26 03            	JZ	S069
+     531/     30E : B8                  	CMP	B
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 10 - 12/11/2020 11:27:45 PM
+
+
+     532/     30F : CA FF 02            	JZ	S064
+     533/     312 : 23                  S066:	INX	H
+     534/     313 : 12                  	STAX	D
+     535/     314 : 0C                  	INR	C
+     536/     315 : 13                  	INX	D
+     537/     316 : C3 09 03            	JMP	S065
+     538/     319 : E1                  S067:	POP	H
+     539/     31A : E5                  	PUSH	H
+     540/     31B : 04                  	INR	B
+     541/     31C : EB                  	XCHG
+     542/     31D : B6                  S068:	ORA	M
+     543/     31E : 23                  	INX	H
+     544/     31F : F2 1D 03            	JP	S068
+     545/     322 : EB                  	XCHG
+     546/     323 : C3 E8 02            	JMP	S062+2
+     547/     326 : 21 12 01            S069:	LXI	H,S016-1
+     548/     329 : 12                  	STAX	D
+     549/     32A : 13                  	INX	D
+     550/     32B : 12                  	STAX	D
+     551/     32C : 13                  	INX	D
+     552/     32D : 12                  	STAX	D
+     553/     32E : C9                  	RET
+     554/     32F : 05                  S070:	DCR	B
+     555/     330 : 2B                  	DCX	H
+     556/     331 : DF                  	RST	03
+     557/     332 : C2 3E 03            	JNZ	S073
+     558/     335 : DF                  S071:	RST	03
+     559/     336 : CD 87 05            	CALL	S111
+     560/     339 : 21 13 01            S072:	LXI	H,S016
+     561/     33C : 06 01               	MVI	B,01
+     562/     33E : CD 7F 03            S073:	CALL	S077
+     563/     341 : FE 0D               	CPI	0Dh
+     564/     343 : CA 82 05            	JZ	S110
+     565/     346 : FE 20               	CPI	' '
+     566/     348 : DA 3E 03            	JC	S073
+     567/     34B : FE 7D               	CPI	7Dh
+     568/     34D : D2 3E 03            	JNC	S073
+     569/     350 : FE 40               	CPI	'@'
+     570/     352 : CA 35 03            	JZ	S071
+     571/     355 : FE 5F               	CPI	'_'
+     572/     357 : CA 2F 03            	JZ	S070
+     573/     35A : 4F                  	MOV	C,A
+     574/     35B : 78                  	MOV	A,B
+     575/     35C : FE 48               	CPI	48h
+     576/     35E : 3E 07               	MVI	A,07
+     577/     360 : D2 67 03            	JNC	S074
+     578/     363 : 79                  	MOV	A,C
+     579/     364 : 71                  	MOV	M,C
+     580/     365 : 23                  	INX	H
+     581/     366 : 04                  	INR	B
+     582/     367 : DF                  S074:	RST	03
+     583/     368 : C3 3E 03            	JMP	S073
+     584/     36B : FE 48               S075:	CPI	48h
+     585/     36D : CC 87 05            	CZ	S111
+     586/     370 : 3C                  	INR	A
+     587/     371 : 32 27 00            	STA	S007
+     588/     374 : DB 0B               S076:	IN	11
+     589/     376 : E6 80               	ANI	80h
+     590/     378 : C2 74 03            	JNZ	S076
+     591/     37B : F1                  	POP	PSW
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 11 - 12/11/2020 11:27:45 PM
+
+
+     592/     37C : D3 01               	OUT	01
+     593/     37E : C9                  	RET
+     594/     37F : DB 0B               S077:	IN	11
+     595/     381 : E6 01               	ANI	01
+     596/     383 : C2 7F 03            	JNZ	S077
+     597/     386 : DB 01               	IN	01
+     598/     388 : E6 7F               	ANI	7Fh
+     599/     38A : C9                  	RET
+     600/     38B : CD 9A 04            S078:	CALL	S096
+     601/     38E : C0                  	RNZ
+     602/     38F : C1                  	POP	B
+     603/     390 : CD 7A 02            	CALL	S054
+     604/     393 : C5                  	PUSH	B
+     605/     394 : E1                  S079:	POP	H
+     606/     395 : F7                  	RST	6
+     607/     396 : C1                  	POP	B
+     608/     397 : 78                  	MOV	A,B
+     609/     398 : B1                  	ORA	C
+     610/     399 : CA F6 01            	JZ	S044
+     611/     39C : CD 70 04            	CALL	S092
+     612/     39F : C5                  	PUSH	B
+     613/     3A0 : CD 87 05            	CALL	S111
+     614/     3A3 : F7                  	RST	6
+     615/     3A4 : E3                  	XTHL
+     616/     3A5 : CD 34 0B            	CALL	S214
+     617/     3A8 : 3E 20               	MVI	A,' '
+     618/     3AA : E1                  	POP	H
+     619/     3AB : DF                  S080:	RST	03
+     620/     3AC : 7E                  	MOV	A,M
+     621/     3AD : B7                  	ORA	A
+     622/     3AE : 23                  	INX	H
+     623/     3AF : CA 94 03            	JZ	S079
+     624/     3B2 : F2 AB 03            	JP	S080
+     625/     3B5 : D6 7F               	SUI	7Fh
+     626/     3B7 : 4F                  	MOV	C,A
+     627/     3B8 : E5                  	PUSH	H
+     628/     3B9 : 11 57 00            	LXI	D,S013
+     629/     3BC : D5                  	PUSH	D
+     630/     3BD : 1A                  S081:	LDAX	D
+     631/     3BE : 13                  	INX	D
+     632/     3BF : B7                  	ORA	A
+     633/     3C0 : F2 BD 03            	JP	S081
+     634/     3C3 : 0D                  	DCR	C
+     635/     3C4 : E1                  	POP	H
+     636/     3C5 : C2 BC 03            	JNZ	S081-1
+     637/     3C8 : 7E                  S082:	MOV	A,M
+     638/     3C9 : B7                  	ORA	A
+     639/     3CA : FA AA 03            	JM	S080-1
+     640/     3CD : DF                  	RST	03
+     641/     3CE : 23                  	INX	H
+     642/     3CF : C3 C8 03            	JMP	S082
+     643/     3D2 : CD FF 04            S083:	CALL	S104
+     644/     3D5 : E3                  	XTHL
+     645/     3D6 : CD 8F 01            	CALL	S034
+     646/     3D9 : D1                  	POP	D
+     647/     3DA : C2 DF 03            	JNZ	S084
+     648/     3DD : 09                  	DAD	B
+     649/     3DE : F9                  	SPHL
+     650/     3DF : EB                  S084:	XCHG
+     651/     3E0 : 0E 08               	MVI	C,08
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 12 - 12/11/2020 11:27:45 PM
+
+
+     652/     3E2 : CD B3 01            	CALL	S037
+     653/     3E5 : E5                  	PUSH	H
+     654/     3E6 : CD F2 04            	CALL	S101
+     655/     3E9 : E3                  	XTHL
+     656/     3EA : E5                  	PUSH	H
+     657/     3EB : 2A 61 01            	LHLD	S021
+     658/     3EE : E3                  	XTHL
+     659/     3EF : CF                  	RST	01
+     660/     3F0 : 95                  	DB	95h
+     661/     3F1 : CD 87 06            	CALL	S128
+     662/     3F4 : E5                  	PUSH	H
+     663/     3F5 : CD 1A 0A            	CALL	S191
+     664/     3F8 : E1                  	POP	H
+     665/     3F9 : C5                  	PUSH	B
+     666/     3FA : D5                  	PUSH	D
+     667/     3FB : 01 00 81            	LXI	B,8100h
+     668/     3FE : 51                  	MOV	D,C
+     669/     3FF : 5A                  	MOV	E,D
+     670/     400 : 7E                  	MOV	A,M
+     671/     401 : FE 97               	CPI	97h
+     672/     403 : 3E 01               	MVI	A,01h
+     673/     405 : C2 11 04            	JNZ	S085
+     674/     408 : CD 88 06            	CALL	S128+1
+     675/     40B : E5                  	PUSH	H
+     676/     40C : CD 1A 0A            	CALL	S191
+     677/     40F : EF                  	RST	05
+     678/     410 : E1                  	POP	H
+     679/     411 : C5                  S085:	PUSH	B
+     680/     412 : D5                  	PUSH	D
+     681/     413 : F5                  	PUSH	PSW
+     682/     414 : 33                  	INX	SP
+     683/     415 : E5                  	PUSH	H
+     684/     416 : 2A 5D 01            	LHLD	S019
+     685/     419 : E3                  	XTHL
+     686/     41A : 06 81               S086:	MVI	B,81h
+     687/     41C : C5                  	PUSH	B
+     688/     41D : 33                  	INX	SP
+     689/     41E : CD 70 04            S087:	CALL	S092
+     690/     421 : 7E                  	MOV	A,M
+     691/     422 : FE 3A               	CPI	':'
+     692/     424 : CA 3B 04            	JZ	S088
+     693/     427 : B7                  	ORA	A
+     694/     428 : C2 CD 01            	JNZ	S040
+     695/     42B : 23                  	INX	H
+     696/     42C : 7E                  	MOV	A,M
+     697/     42D : 23                  	INX	H
+     698/     42E : B6                  	ORA	M
+     699/     42F : 23                  	INX	H
+     700/     430 : CA F6 01            	JZ	S044
+     701/     433 : 5E                  	MOV	E,M
+     702/     434 : 23                  	INX	H
+     703/     435 : 56                  	MOV	D,M
+     704/     436 : EB                  	XCHG
+     705/     437 : 22 61 01            	SHLD	S021
+     706/     43A : EB                  	XCHG
+     707/     43B : D7                  S088:	RST	02
+     708/     43C : 11 1E 04            	LXI	D,S087
+     709/     43F : D5                  	PUSH	D
+     710/     440 : C8                  	RZ
+     711/     441 : D6 80               	SUI	80h
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 13 - 12/11/2020 11:27:45 PM
+
+
+     712/     443 : DA FF 04            	JC	S104
+     713/     446 : FE 14               	CPI	14h
+     714/     448 : D2 CD 01            	JNC	S040
+     715/     44B : 07                  	RLC
+     716/     44C : 4F                  	MOV	C,A
+     717/     44D : 06 00               	MVI	B,00h
+     718/     44F : EB                  	XCHG
+     719/     450 : 21 D2 00            	LXI	H,S014
+     720/     453 : 09                  	DAD	B
+     721/     454 : 4E                  	MOV	C,M
+     722/     455 : 23                  	INX	H
+     723/     456 : 46                  	MOV	B,M
+     724/     457 : C5                  	PUSH	B
+     725/     458 : EB                  	XCHG
+     726/     459 : D7                  	RST	02
+     727/     45A : C9                  	RET
+     728/     45B : FE 20               S089:	CPI	' '
+     729/     45D : CA 10 00            	JZ	S003
+     730/     460 : FE 30               	CPI	'0'
+     731/     462 : 3F                  	CMC
+     732/     463 : 3C                  	INR	A
+     733/     464 : 3D                  	DCR	A
+     734/     465 : C9                  	RET
+     735/     466 : EB                  S090:	XCHG
+     736/     467 : 2A 65 01            	LHLD	S023
+     737/     46A : 2B                  	DCX	H
+     738/     46B : 22 6D 01            S091:	SHLD	S027
+     739/     46E : EB                  	XCHG
+     740/     46F : C9                  	RET
+     741/     470 : DB 0B               S092:	IN	11
+     742/     472 : E6 01               	ANI	01
+     743/     474 : C0                  	RNZ
+     744/     475 : CD 7F 03            	CALL	S077
+     745/     478 : FE 03               	CPI	03h
+     746/     47A : C3 F4 01            	JMP	S043
+     747/     47D : 7E                  S093:	MOV	A,M
+     748/     47E : FE 41               	CPI	'A'
+     749/     480 : D8                  	RC
+     750/     481 : FE 5B               	CPI	'Z'+1
+     751/     483 : 3F                  	CMC
+     752/     484 : C9                  	RET
+     753/     485 : D7                  S094:	RST	02
+     754/     486 : CD 87 06            	CALL	S128
+     755/     489 : EF                  	RST	05
+     756/     48A : FA 95 04            	JM	S095
+     757/     48D : 3A 72 01            	LDA	S028+3
+     758/     490 : FE 90               	CPI	90h
+     759/     492 : DA 74 0A            	JC	S199
+     760/     495 : 1E 08               S095:	MVI	E,08h
+     761/     497 : C3 D2 01            	JMP	S042
+     762/     49A : 2B                  S096:	DCX	H
+     763/     49B : 11 00 00            	LXI	D,0000
+     764/     49E : D7                  S097:	RST	02
+     765/     49F : D0                  	RNC
+     766/     4A0 : E5                  	PUSH	H
+     767/     4A1 : F5                  	PUSH	PSW
+     768/     4A2 : 21 98 19            	LXI	H,1998h
+     769/     4A5 : E7                  	RST	4
+     770/     4A6 : DA CD 01            	JC	S040
+     771/     4A9 : 62                  	MOV	H,D
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 14 - 12/11/2020 11:27:45 PM
+
+
+     772/     4AA : 6B                  	MOV	L,E
+     773/     4AB : 19                  	DAD	D
+     774/     4AC : 29                  	DAD	H
+     775/     4AD : 19                  	DAD	D
+     776/     4AE : 29                  	DAD	H
+     777/     4AF : F1                  	POP	PSW
+     778/     4B0 : D6 30               	SUI	'0'
+     779/     4B2 : 5F                  	MOV	E,A
+     780/     4B3 : 16 00               	MVI	D,00h
+     781/     4B5 : 19                  	DAD	D
+     782/     4B6 : EB                  	XCHG
+     783/     4B7 : E1                  	POP	H
+     784/     4B8 : C3 9E 04            	JMP	S097
+     785/     4BB : 0E 03               S098:	MVI	C,03h
+     786/     4BD : CD B3 01            	CALL	S037
+     787/     4C0 : C1                  	POP	B
+     788/     4C1 : E5                  	PUSH	H
+     789/     4C2 : E5                  	PUSH	H
+     790/     4C3 : 2A 61 01            	LHLD	S021
+     791/     4C6 : E3                  	XTHL
+     792/     4C7 : 16 8C               	MVI	D,8Ch
+     793/     4C9 : D5                  	PUSH	D
+     794/     4CA : 33                  	INX	SP
+     795/     4CB : C5                  	PUSH	B
+     796/     4CC : CD 9A 04            S099:	CALL	S096
+     797/     4CF : C0                  	RNZ
+     798/     4D0 : CD 7A 02            	CALL	S054
+     799/     4D3 : 60                  	MOV	H,B
+     800/     4D4 : 69                  	MOV	L,C
+     801/     4D5 : 2B                  	DCX	H
+     802/     4D6 : D8                  	RC
+     803/     4D7 : 1E 0E               	MVI	E,0Eh
+     804/     4D9 : C3 D2 01            	JMP	S042
+     805/     4DC : C0                  S100:	RNZ
+     806/     4DD : 16 FF               	MVI	D,0FFh
+     807/     4DF : CD 8F 01            	CALL	S034
+     808/     4E2 : F9                  	SPHL
+     809/     4E3 : FE 8C               	CPI	8Ch
+     810/     4E5 : 1E 04               	MVI	E,04h
+     811/     4E7 : C2 D2 01            	JNZ	S042
+     812/     4EA : E1                  	POP	H
+     813/     4EB : 22 61 01            	SHLD	S021
+     814/     4EE : 21 1E 04            	LXI	H,S087
+     815/     4F1 : E3                  	XTHL
+     816/     4F2 : 01                  S101:	DB	01h
+     817/     4F3 : 3A                  	DB	3Ah
+     818/     4F4 : 10                  S102:	DB	10h
+     819/     4F5 : 00                  	NOP
+     820/     4F6 : 7E                  S103:	MOV	A,M
+     821/     4F7 : B7                  	ORA	A
+     822/     4F8 : C8                  	RZ
+     823/     4F9 : B9                  	CMP	C
+     824/     4FA : C8                  	RZ
+     825/     4FB : 23                  	INX	H
+     826/     4FC : C3 F6 04            	JMP	S103
+     827/     4FF : CD 18 07            S104:	CALL	S137
+     828/     502 : CF                  	RST	01
+     829/     503 : 9D                  	DB	9Dh
+     830/     504 : D5                  S105:	PUSH	D
+     831/     505 : CD 87 06            	CALL	S128
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 15 - 12/11/2020 11:27:45 PM
+
+
+     832/     508 : E3                  	XTHL
+     833/     509 : 22 5D 01            	SHLD	S019
+     834/     50C : E5                  	PUSH	H
+     835/     50D : CD 26 0A            	CALL	S194
+     836/     510 : D1                  	POP	D
+     837/     511 : E1                  	POP	H
+     838/     512 : C9                  	RET
+     839/     513 : CD 87 06            S106:	CALL	S128
+     840/     516 : 7E                  	MOV	A,M
+     841/     517 : CD FF 09            	CALL	S188
+     842/     51A : 16 00               	MVI	D,00
+     843/     51C : D6 9C               S107:	SUI	9Ch
+     844/     51E : DA 2F 05            	JC	S108
+     845/     521 : FE 03               	CPI	03h
+     846/     523 : D2 2F 05            	JNC	S108
+     847/     526 : FE 01               	CPI	01h
+     848/     528 : 17                  	RAL
+     849/     529 : B2                  	ORA	D
+     850/     52A : 57                  	MOV	D,A
+     851/     52B : D7                  	RST	02
+     852/     52C : C3 1C 05            	JMP	S107
+     853/     52F : 7A                  S108:	MOV	A,D
+     854/     530 : B7                  	ORA	A
+     855/     531 : CA CD 01            	JZ	S040
+     856/     534 : F5                  	PUSH	PSW
+     857/     535 : CD 87 06            	CALL	S128
+     858/     538 : CF                  	RST	01
+     859/     539 : 96                  	DB	96h
+     860/     53A : 2B                  	DCX	H
+     861/     53B : F1                  	POP	PSW
+     862/     53C : C1                  	POP	B
+     863/     53D : D1                  	POP	D
+     864/     53E : E5                  	PUSH	H
+     865/     53F : F5                  	PUSH	PSW
+     866/     540 : CD 49 0A            	CALL	S197
+     867/     543 : 3C                  	INR	A
+     868/     544 : 17                  	RAL
+     869/     545 : C1                  	POP	B
+     870/     546 : A0                  	ANA	B
+     871/     547 : E1                  	POP	H
+     872/     548 : CA F4 04            	JZ	S102
+     873/     54B : D7                  	RST	02
+     874/     54C : DA CC 04            	JC	S099
+     875/     54F : C3 40 04            	JMP	S088+5
+     876/     552 : 2B                  	DCX	H
+     877/     553 : D7                  	RST	02
+     878/     554 : CA 87 05            S109:	JZ	S111
+     879/     557 : C8                  	RZ
+     880/     558 : FE 22               	CPI	'"'
+     881/     55A : CC 9F 05            	CZ	S113-1
+     882/     55D : CA 52 05            	JZ	S109-2
+     883/     560 : FE 94               	CPI	94h
+     884/     562 : CA C4 05            	JZ	S116
+     885/     565 : E5                  	PUSH	H
+     886/     566 : FE 2C               	CPI	','
+     887/     568 : CA B0 05            	JZ	S114
+     888/     56B : FE 3B               	CPI	';'
+     889/     56D : CA DC 05            	JZ	S119
+     890/     570 : C1                  	POP	B
+     891/     571 : CD 87 06            	CALL	S128
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 16 - 12/11/2020 11:27:45 PM
+
+
+     892/     574 : E5                  	PUSH	H
+     893/     575 : CD 3F 0B            	CALL	S215
+     894/     578 : CD A0 05            	CALL	S113
+     895/     57B : 3E 20               	MVI	A,' '
+     896/     57D : DF                  	RST	03
+     897/     57E : E1                  	POP	H
+     898/     57F : C3 52 05            	JMP	S109-2
+     899/     582 : 36 00               S110:	MVI	M,00h
+     900/     584 : 21 12 01            	LXI	H,S016-1
+     901/     587 : 3E 0D               S111:	MVI	A,0Dh
+     902/     589 : 32 27 00            	STA	S007
+     903/     58C : DF                  	RST	03
+     904/     58D : 3E 0A               	MVI	A,0Ah
+     905/     58F : DF                  	RST	03
+     906/     590 : 3A 26 00            	LDA	S006
+     907/     593 : 3D                  S112:	DCR	A
+     908/     594 : 32 27 00            	STA	S007
+     909/     597 : C8                  	RZ
+     910/     598 : F5                  	PUSH	PSW
+     911/     599 : AF                  	XRA	A
+     912/     59A : DF                  	RST	03
+     913/     59B : F1                  	POP	PSW
+     914/     59C : C3 93 05            	JMP	S112
+     915/     59F : 23                  	INX	H
+     916/     5A0 : 7E                  S113:	MOV	A,M
+     917/     5A1 : B7                  	ORA	A
+     918/     5A2 : C8                  	RZ
+     919/     5A3 : 23                  	INX	H
+     920/     5A4 : FE 22               	CPI	'"'
+     921/     5A6 : C8                  	RZ
+     922/     5A7 : DF                  	RST	03
+     923/     5A8 : FE 0D               	CPI	0Dh
+     924/     5AA : CC 87 05            	CZ	S111
+     925/     5AD : C3 A0 05            	JMP	S113
+     926/     5B0 : 3A 27 00            S114:	LDA	S007
+     927/     5B3 : FE 38               	CPI	38h
+     928/     5B5 : D4 87 05            	CNC	S111
+     929/     5B8 : D2 DC 05            	JNC	S119
+     930/     5BB : D6 0E               S115:	SUI	0Eh
+     931/     5BD : D2 BB 05            	JNC	S115
+     932/     5C0 : 2F                  	CMA
+     933/     5C1 : C3 D3 05            	JMP	S117
+     934/     5C4 : CD 85 04            S116:	CALL	S094
+     935/     5C7 : CF                  	RST	01
+     936/     5C8 : 29                  	DB	29h
+     937/     5C9 : 2B                  	DCX	H
+     938/     5CA : E5                  	PUSH	H
+     939/     5CB : 3A 27 00            	LDA	S007
+     940/     5CE : 2F                  	CMA
+     941/     5CF : 83                  	ADD	E
+     942/     5D0 : D2 DC 05            	JNC	S119
+     943/     5D3 : 3C                  S117:	INR	A
+     944/     5D4 : 47                  	MOV	B,A
+     945/     5D5 : 3E 20               	MVI	A,' '
+     946/     5D7 : DF                  S118:	RST	03
+     947/     5D8 : 05                  	DCR	B
+     948/     5D9 : C2 D7 05            	JNZ	S118
+     949/     5DC : E1                  S119:	POP	H
+     950/     5DD : D7                  	RST	02
+     951/     5DE : C3 57 05            	JMP	S109+3
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 17 - 12/11/2020 11:27:45 PM
+
+
+     952/     5E1 : E5                  S120:	PUSH	H
+     953/     5E2 : 2A 61 01            	LHLD	S021
+     954/     5E5 : 1E 16               	MVI	E,16h
+     955/     5E7 : 23                  	INX	H
+     956/     5E8 : 7D                  	MOV	A,L
+     957/     5E9 : B4                  	ORA	H
+     958/     5EA : CA D2 01            	JZ	S042
+     959/     5ED : CD BF 02            	CALL	S060
+     960/     5F0 : C3 F8 05            	JMP	S122+1
+     961/     5F3 : E5                  S121:	PUSH	H
+     962/     5F4 : 2A 6D 01            	LHLD	S027
+     963/     5F7 : F6 AF               S122:	ORI	0AFh
+     964/     5F9 :                     
+     965/     5F9 : 32 5C 01            	STA	S018
+     966/     5FC : E3                  	XTHL
+     967/     5FD : 01                  	DB	01
+     968/     5FE : CF                  S123:	RST	01
+     969/     5FF : 2C                  	DB	2Ch
+     970/     600 : CD 18 07            	CALL	S137
+     971/     603 : E3                  	XTHL
+     972/     604 : D5                  	PUSH	D
+     973/     605 : 7E                  	MOV	A,M
+     974/     606 : FE 2C               	CPI	','
+     975/     608 : CA 1D 06            	JZ	S124
+     976/     60B : B7                  	ORA	A
+     977/     60C : C2 CD 01            	JNZ	S040
+     978/     60F : 3A 5C 01            	LDA	S018
+     979/     612 : B7                  	ORA	A
+     980/     613 : 23                  	INX	H
+     981/     614 : C2 33 06            	JNZ	S125+1
+     982/     617 : 3E 3F               	MVI	A,'?'
+     983/     619 : DF                  	RST	03
+     984/     61A : CD BF 02            	CALL	S060
+     985/     61D : D1                  S124:	POP	D
+     986/     61E : 23                  	INX	H
+     987/     61F : CD 04 05            	CALL	S105
+     988/     622 : E3                  	XTHL
+     989/     623 : 2B                  	DCX	H
+     990/     624 : D7                  	RST	02
+     991/     625 : C2 FE 05            	JNZ	S123
+     992/     628 : D1                  	POP	D
+     993/     629 : 3A 5C 01            	LDA	S018
+     994/     62C : B7                  	ORA	A
+     995/     62D : C8                  	RZ
+     996/     62E : EB                  	XCHG
+     997/     62F : C2 6B 04            	JNZ	S091
+     998/     632 : E1                  S125:	POP	H
+     999/     633 : F7                  	RST	6
+    1000/     634 : 79                  	MOV	A,C
+    1001/     635 : B0                  	ORA	B
+    1002/     636 : 1E 06               	MVI	E,06h
+    1003/     638 : CA D2 01            	JZ	S042
+    1004/     63B : 23                  	INX	H
+    1005/     63C : D7                  	RST	02
+    1006/     63D : FE 83               	CPI	83h
+    1007/     63F : C2 32 06            	JNZ	S125
+    1008/     642 : C1                  	POP	B
+    1009/     643 : C3 1D 06            	JMP	S124
+    1010/     646 : CD 18 07            S126:	CALL	S137
+    1011/     649 : 22 5D 01            	SHLD	S019
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 18 - 12/11/2020 11:27:45 PM
+
+
+    1012/     64C : CD 8F 01            	CALL	S034
+    1013/     64F : F9                  	SPHL
+    1014/     650 : D5                  	PUSH	D
+    1015/     651 : 7E                  	MOV	A,M
+    1016/     652 : 23                  	INX	H
+    1017/     653 : F5                  	PUSH	PSW
+    1018/     654 : D5                  	PUSH	D
+    1019/     655 : 1E 00               	MVI	E,00h
+    1020/     657 : C2 D2 01            	JNZ	S042
+    1021/     65A : CD 0C 0A            	CALL	S189
+    1022/     65D : E3                  	XTHL
+    1023/     65E : E5                  	PUSH	H
+    1024/     65F : CD 01 08            	CALL	S152
+    1025/     662 : E1                  	POP	H
+    1026/     663 : CD 26 0A            	CALL	S194
+    1027/     666 : E1                  	POP	H
+    1028/     667 : CD 1D 0A            	CALL	S192
+    1029/     66A : E5                  	PUSH	H
+    1030/     66B : CD 49 0A            	CALL	S197
+    1031/     66E : E1                  	POP	H
+    1032/     66F : C1                  	POP	B
+    1033/     670 : 90                  	SUB	B
+    1034/     671 : CD 1D 0A            	CALL	S192
+    1035/     674 : CA 80 06            	JZ	S127
+    1036/     677 : EB                  	XCHG
+    1037/     678 : 22 61 01            	SHLD	S021
+    1038/     67B : 69                  	MOV	L,C
+    1039/     67C : 60                  	MOV	H,B
+    1040/     67D : C3 1A 04            	JMP	S086
+    1041/     680 : F9                  S127:	SPHL
+    1042/     681 : 2A 5D 01            	LHLD	S019
+    1043/     684 : C3 1E 04            	JMP	S087
+    1044/     687 : 2B                  S128:	DCX	H
+    1045/     688 : 16 00               	MVI	D,00h
+    1046/     68A : D5                  	PUSH	D
+    1047/     68B : 0E 01               	MVI	C,01h
+    1048/     68D : CD B3 01            	CALL	S037
+    1049/     690 : CD C1 06            	CALL	S130
+    1050/     693 : 22 5F 01            	SHLD	S020
+    1051/     696 : 2A 5F 01            S129:	LHLD	S020
+    1052/     699 : C1                  	POP	B
+    1053/     69A : 7E                  	MOV	A,M
+    1054/     69B : 16 00               	MVI	D,00h
+    1055/     69D : D6 98               	SUI	98h
+    1056/     69F : D8                  	RC
+    1057/     6A0 : FE 04               	CPI	04h
+    1058/     6A2 : D0                  	RNC
+    1059/     6A3 : 5F                  	MOV	E,A
+    1060/     6A4 : 07                  	RLC
+    1061/     6A5 : 83                  	ADD	E
+    1062/     6A6 : 5F                  	MOV	E,A
+    1063/     6A7 : 21 4B 00            	LXI	H,S012
+    1064/     6AA : 19                  	DAD	D
+    1065/     6AB : 78                  	MOV	A,B
+    1066/     6AC : 56                  	MOV	D,M
+    1067/     6AD : BA                  	CMP	D
+    1068/     6AE : D0                  	RNC
+    1069/     6AF : 23                  	INX	H
+    1070/     6B0 : C5                  	PUSH	B
+    1071/     6B1 : 01 96 06            	LXI	B,S129
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 19 - 12/11/2020 11:27:45 PM
+
+
+    1072/     6B4 : C5                  	PUSH	B
+    1073/     6B5 : 4A                  	MOV	C,D
+    1074/     6B6 : CD FF 09            	CALL	S188
+    1075/     6B9 : 51                  	MOV	D,C
+    1076/     6BA : F7                  	RST	6
+    1077/     6BB : 2A 5F 01            	LHLD	S020
+    1078/     6BE : C3 8A 06            	JMP	S128+3
+    1079/     6C1 : D7                  S130:	RST	02
+    1080/     6C2 : DA B0 0A            	JC	S202
+    1081/     6C5 : CD 7D 04            	CALL	S093
+    1082/     6C8 : D2 F0 06            	JNC	S133
+    1083/     6CB : FE 98               	CPI	98h
+    1084/     6CD : CA C1 06            	JZ	S130
+    1085/     6D0 : FE 2E               	CPI	'.'
+    1086/     6D2 : CA B0 0A            	JZ	S202
+    1087/     6D5 : FE 99               	CPI	99h
+    1088/     6D7 : CA E7 06            	JZ	S132
+    1089/     6DA : D6 9F               	SUI	9Fh
+    1090/     6DC : D2 FA 06            	JNC	S134
+    1091/     6DF : CF                  S131:	RST	01
+    1092/     6E0 : 28                  	DB	28h
+    1093/     6E1 : CD 87 06            	CALL	S128
+    1094/     6E4 : CF                  	RST	01
+    1095/     6E5 : 29                  	DB	29h
+    1096/     6E6 : C9                  	RET
+    1097/     6E7 : CD C1 06            S132:	CALL	S130
+    1098/     6EA : E5                  	PUSH	H
+    1099/     6EB : CD F7 09            	CALL	S187
+    1100/     6EE : E1                  	POP	H
+    1101/     6EF : C9                  	RET
+    1102/     6F0 : CD 18 07            S133:	CALL	S137
+    1103/     6F3 : E5                  	PUSH	H
+    1104/     6F4 : EB                  	XCHG
+    1105/     6F5 : CD 0C 0A            	CALL	S189
+    1106/     6F8 : E1                  	POP	H
+    1107/     6F9 : C9                  	RET
+    1108/     6FA : 06 00               S134:	MVI	B,00h
+    1109/     6FC : 07                  	RLC
+    1110/     6FD : 4F                  	MOV	C,A
+    1111/     6FE : C5                  	PUSH	B
+    1112/     6FF : D7                  	RST	02
+    1113/     700 : CD DF 06            	CALL	S131
+    1114/     703 : E3                  	XTHL
+    1115/     704 : 11 F1 06            	LXI	D,06F1h
+    1116/     707 : D5                  	PUSH	D
+    1117/     708 : 01 3D 00            	LXI	B,S011
+    1118/     70B : 09                  	DAD	B
+    1119/     70C : F7                  	RST	6
+    1120/     70D : C9                  	RET
+    1121/     70E : 2B                  S135:	DCX	H
+    1122/     70F : D7                  	RST	02
+    1123/     710 : C8                  	RZ
+    1124/     711 : CF                  	RST	01
+    1125/     712 : 2C                  	DB	2Ch
+    1126/     713 : 01 0E 07            S136:	LXI	B,S135
+    1127/     716 : C5                  	PUSH	B
+    1128/     717 : F6                  	DB	0F6h
+    1129/     718 : AF                  S137:	XRA	A
+    1130/     719 : 32 5B 01            	STA	S017
+    1131/     71C : 46                  	MOV	B,M
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 20 - 12/11/2020 11:27:45 PM
+
+
+    1132/     71D : CD 7D 04            	CALL	S093
+    1133/     720 : DA CD 01            	JC	S040
+    1134/     723 : AF                  	XRA	A
+    1135/     724 : 4F                  	MOV	C,A
+    1136/     725 : D7                  	RST	02
+    1137/     726 : D2 2E 07            	JNC	072Eh
+    1138/     729 : 4F                  	MOV	C,A
+    1139/     72A : D7                  	RST	02
+    1140/     72B : D6 28               	SUI	'('
+    1141/     72D : CA 87 07            	JZ	S144
+    1142/     730 : E5                  	PUSH	H
+    1143/     731 : 2A 69 01            	LHLD	S025
+    1144/     734 : EB                  	XCHG
+    1145/     735 : 2A 67 01            	LHLD	S024
+    1146/     738 : E7                  S138:	RST	4
+    1147/     739 : CA 4F 07            	JZ	S140
+    1148/     73C : 79                  	MOV	A,C
+    1149/     73D : 96                  	SUB	M
+    1150/     73E : 23                  	INX	H
+    1151/     73F : C2 44 07            	JNZ	S139
+    1152/     742 : 78                  	MOV	A,B
+    1153/     743 : 96                  	SUB	M
+    1154/     744 : 23                  S139:	INX	H
+    1155/     745 : CA 7F 07            	JZ	S142
+    1156/     748 : 23                  	INX	H
+    1157/     749 : 23                  	INX	H
+    1158/     74A : 23                  	INX	H
+    1159/     74B : 23                  	INX	H
+    1160/     74C : C3 38 07            	JMP	S138
+    1161/     74F : E1                  S140:	POP	H
+    1162/     750 : E3                  	XTHL
+    1163/     751 : D5                  	PUSH	D
+    1164/     752 : 11 F6 06            	LXI	D,06F6h
+    1165/     755 : E7                  	RST	4
+    1166/     756 : D1                  	POP	D
+    1167/     757 : CA 82 07            	JZ	S143
+    1168/     75A : E3                  	XTHL
+    1169/     75B : E5                  	PUSH	H
+    1170/     75C : C5                  	PUSH	B
+    1171/     75D : 01 06 00            	LXI	B,0006h
+    1172/     760 : 2A 6B 01            	LHLD	S026
+    1173/     763 : E5                  	PUSH	H
+    1174/     764 : 09                  	DAD	B
+    1175/     765 : C1                  	POP	B
+    1176/     766 : E5                  	PUSH	H
+    1177/     767 : CD A4 01            	CALL	S035
+    1178/     76A : E1                  	POP	H
+    1179/     76B : 22 6B 01            	SHLD	S026
+    1180/     76E : 60                  	MOV	H,B
+    1181/     76F : 69                  	MOV	L,C
+    1182/     770 : 22 69 01            	SHLD	S025
+    1183/     773 : 2B                  S141:	DCX	H
+    1184/     774 : 36 00               	MVI	M,00h
+    1185/     776 : E7                  	RST	4
+    1186/     777 : C2 73 07            	JNZ	S141
+    1187/     77A : D1                  	POP	D
+    1188/     77B : 73                  	MOV	M,E
+    1189/     77C : 23                  	INX	H
+    1190/     77D : 72                  	MOV	M,D
+    1191/     77E : 23                  	INX	H
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 21 - 12/11/2020 11:27:45 PM
+
+
+    1192/     77F : EB                  S142:	XCHG
+    1193/     780 : E1                  	POP	H
+    1194/     781 : C9                  	RET
+    1195/     782 : 32 72 01            S143:	STA	S028+3
+    1196/     785 : E1                  	POP	H
+    1197/     786 : C9                  	RET
+    1198/     787 : C5                  S144:	PUSH	B
+    1199/     788 : 3A 5B 01            	LDA	S017
+    1200/     78B : F5                  	PUSH	PSW
+    1201/     78C : CD 85 04            	CALL	S094
+    1202/     78F : CF                  	RST	01
+    1203/     790 : 29                  	DB	29h
+    1204/     791 : F1                  	POP	PSW
+    1205/     792 : 32 5B 01            	STA	S017
+    1206/     795 : E3                  	XTHL
+    1207/     796 : EB                  	XCHG
+    1208/     797 : 29                  	DAD	H
+    1209/     798 : 29                  	DAD	H
+    1210/     799 : E5                  	PUSH	H
+    1211/     79A : 2A 69 01            	LHLD	S025
+    1212/     79D : 01                  	DB	01h
+    1213/     79E : C1                  S145:	POP	B
+    1214/     79F : 09                  	DAD	B
+    1215/     7A0 : EB                  	XCHG
+    1216/     7A1 : E5                  	PUSH	H
+    1217/     7A2 : 2A 6B 01            	LHLD	S026
+    1218/     7A5 : E7                  	RST	4
+    1219/     7A6 : EB                  	XCHG
+    1220/     7A7 : D1                  	POP	D
+    1221/     7A8 : CA CA 07            	JZ	S147
+    1222/     7AB : F7                  	RST	6
+    1223/     7AC : E3                  	XTHL
+    1224/     7AD : E7                  	RST	4
+    1225/     7AE : E1                  	POP	H
+    1226/     7AF : F7                  	RST	6
+    1227/     7B0 : C2 9E 07            	JNZ	S145
+    1228/     7B3 : 3A 5B 01            	LDA	S017
+    1229/     7B6 : B7                  	ORA	A
+    1230/     7B7 : 1E 12               	MVI	E,12h
+    1231/     7B9 : C2 D2 01            	JNZ	S042
+    1232/     7BC : D1                  S146:	POP	D
+    1233/     7BD : 1B                  	DCX	D
+    1234/     7BE : E3                  	XTHL
+    1235/     7BF : E7                  	RST	4
+    1236/     7C0 : 1E 10               	MVI	E,10h
+    1237/     7C2 : D2 D2 01            	JNC	S042
+    1238/     7C5 : D1                  	POP	D
+    1239/     7C6 : 19                  	DAD	D
+    1240/     7C7 : D1                  	POP	D
+    1241/     7C8 : EB                  	XCHG
+    1242/     7C9 : C9                  	RET
+    1243/     7CA : 73                  S147:	MOV	M,E
+    1244/     7CB : 23                  	INX	H
+    1245/     7CC : 72                  	MOV	M,D
+    1246/     7CD : 23                  	INX	H
+    1247/     7CE : 11 2C 00            	LXI	D,002Ch
+    1248/     7D1 : 3A 5B 01            	LDA	S017
+    1249/     7D4 : B7                  	ORA	A
+    1250/     7D5 : CA DE 07            	JZ	S148
+    1251/     7D8 : D1                  	POP	D
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 22 - 12/11/2020 11:27:45 PM
+
+
+    1252/     7D9 : D5                  	PUSH	D
+    1253/     7DA : 13                  	INX	D
+    1254/     7DB : 13                  	INX	D
+    1255/     7DC : 13                  	INX	D
+    1256/     7DD : 13                  	INX	D
+    1257/     7DE : D5                  S148:	PUSH	D
+    1258/     7DF : 73                  	MOV	M,E
+    1259/     7E0 : 23                  	INX	H
+    1260/     7E1 : 72                  	MOV	M,D
+    1261/     7E2 : 23                  	INX	H
+    1262/     7E3 : E5                  	PUSH	H
+    1263/     7E4 : 19                  	DAD	D
+    1264/     7E5 : CD C0 01            	CALL	S038
+    1265/     7E8 : 22 6B 01            	SHLD	S026
+    1266/     7EB : D1                  	POP	D
+    1267/     7EC : 2B                  S149:	DCX	H
+    1268/     7ED : 36 00               	MVI	M,00h
+    1269/     7EF : E7                  	RST	4
+    1270/     7F0 : C2 EC 07            	JNZ	S149
+    1271/     7F3 : C3 BC 07            	JMP	S146
+    1272/     7F6 : 50                  S150:	MOV	D,B
+    1273/     7F7 : 1E 00               	MVI	E,00h
+    1274/     7F9 : 06 90               	MVI	B,90h
+    1275/     7FB : C3 E7 09            	JMP	S185+5
+    1276/     7FE : 21 08 0C            S151:	LXI	H,S229
+    1277/     801 : CD 1D 0A            S152:	CALL	S192
+    1278/     804 : C3 0F 08            	JMP	S154+2
+    1279/     807 : C1                  S153:	POP	B
+    1280/     808 : D1                  	POP	D
+    1281/     809 : CD F7 09            	CALL	S187
+    1282/     80C : 21                  	DB	21h
+    1283/     80D : C1                  S154:	POP	B
+    1284/     80E : D1                  	POP	D
+    1285/     80F : 78                  	MOV	A,B
+    1286/     810 : B7                  	ORA	A
+    1287/     811 : C8                  	RZ
+    1288/     812 : 3A 72 01            	LDA	S028+3
+    1289/     815 : B7                  	ORA	A
+    1290/     816 : CA 0F 0A            	JZ	S190
+    1291/     819 : 90                  	SUB	B
+    1292/     81A : D2 29 08            	JNC	S155
+    1293/     81D : 2F                  	CMA
+    1294/     81E : 3C                  	INR	A
+    1295/     81F : EB                  	XCHG
+    1296/     820 : CD FF 09            	CALL	S188
+    1297/     823 : EB                  	XCHG
+    1298/     824 : CD 0F 0A            	CALL	S190
+    1299/     827 : C1                  	POP	B
+    1300/     828 : D1                  	POP	D
+    1301/     829 : F5                  S155:	PUSH	PSW
+    1302/     82A : CD 34 0A            	CALL	S196
+    1303/     82D : 67                  	MOV	H,A
+    1304/     82E : F1                  	POP	PSW
+    1305/     82F : CD C6 08            	CALL	S165
+    1306/     832 : B4                  	ORA	H
+    1307/     833 : 21 6F 01            	LXI	H,S028
+    1308/     836 : F2 4A 08            	JP	S156
+    1309/     839 : CD A6 08            	CALL	S163
+    1310/     83C : D2 7B 08            	JNC	S159
+    1311/     83F : 23                  	INX	H
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 23 - 12/11/2020 11:27:45 PM
+
+
+    1312/     840 : 34                  	INR	M
+    1313/     841 : CA A1 08            	JZ	S162
+    1314/     844 : CD D3 08            	CALL	S167
+    1315/     847 : C3 7B 08            	JMP	S159
+    1316/     84A : AF                  S156:	XRA	A
+    1317/     84B : 90                  	SUB	B
+    1318/     84C : 47                  	MOV	B,A
+    1319/     84D : 7E                  	MOV	A,M
+    1320/     84E : 9B                  	SBB	E
+    1321/     84F : 5F                  	MOV	E,A
+    1322/     850 : 23                  	INX	H
+    1323/     851 : 7E                  	MOV	A,M
+    1324/     852 : 9A                  	SBB	D
+    1325/     853 : 57                  	MOV	D,A
+    1326/     854 : 23                  	INX	H
+    1327/     855 : 7E                  	MOV	A,M
+    1328/     856 : 99                  	SBB	C
+    1329/     857 : 4F                  	MOV	C,A
+    1330/     858 : DC B2 08            S157:	CC	S164
+    1331/     85B : 26 00               	MVI	H,00h
+    1332/     85D : 79                  	MOV	A,C
+    1333/     85E : B7                  	ORA	A
+    1334/     85F : FA 7B 08            	JM	S159
+    1335/     862 : FE E0               S158:	CPI	0E0h
+    1336/     864 : CA BB 09            	JZ	S179
+    1337/     867 : 25                  	DCR	H
+    1338/     868 : 78                  	MOV	A,B
+    1339/     869 : 87                  	ADD	A
+    1340/     86A : 47                  	MOV	B,A
+    1341/     86B : CD 8D 08            	CALL	S160
+    1342/     86E : 7C                  	MOV	A,H
+    1343/     86F : F2 62 08            	JP	S158
+    1344/     872 : 21 72 01            	LXI	H,S028+3
+    1345/     875 : 86                  	ADD	M
+    1346/     876 : 77                  	MOV	M,A
+    1347/     877 : D2 BB 09            	JNC	S179
+    1348/     87A : C8                  	RZ
+    1349/     87B : 78                  S159:	MOV	A,B
+    1350/     87C : 21 72 01            	LXI	H,S028+3
+    1351/     87F : B7                  	ORA	A
+    1352/     880 : FC 97 08            	CM	S161
+    1353/     883 : 46                  	MOV	B,M
+    1354/     884 : 23                  	INX	H
+    1355/     885 : 7E                  	MOV	A,M
+    1356/     886 : E6 80               	ANI	80h
+    1357/     888 : A9                  	XRA	C
+    1358/     889 : 4F                  	MOV	C,A
+    1359/     88A : C3 0F 0A            	JMP	S190
+    1360/     88D : 7B                  S160:	MOV	A,E
+    1361/     88E : 17                  	RAL
+    1362/     88F : 5F                  	MOV	E,A
+    1363/     890 : 7A                  	MOV	A,D
+    1364/     891 : 17                  	RAL
+    1365/     892 : 57                  	MOV	D,A
+    1366/     893 : 79                  	MOV	A,C
+    1367/     894 : 8F                  	ADC	A
+    1368/     895 : 4F                  	MOV	C,A
+    1369/     896 : C9                  	RET
+    1370/     897 : 1C                  S161:	INR	E
+    1371/     898 : C0                  	RNZ
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 24 - 12/11/2020 11:27:45 PM
+
+
+    1372/     899 : 14                  	INR	D
+    1373/     89A : C0                  	RNZ
+    1374/     89B : 0C                  	INR	C
+    1375/     89C : C0                  	RNZ
+    1376/     89D : 0E 80               	MVI	C,80h
+    1377/     89F : 34                  	INR	M
+    1378/     8A0 : C0                  	RNZ
+    1379/     8A1 : 1E 0A               S162:	MVI	E,0Ah
+    1380/     8A3 : C3 D2 01            	JMP	S042
+    1381/     8A6 : 7E                  S163:	MOV	A,M
+    1382/     8A7 : 83                  	ADD	E
+    1383/     8A8 : 5F                  	MOV	E,A
+    1384/     8A9 : 23                  	INX	H
+    1385/     8AA : 7E                  	MOV	A,M
+    1386/     8AB : 8A                  	ADC	D
+    1387/     8AC : 57                  	MOV	D,A
+    1388/     8AD : 23                  	INX	H
+    1389/     8AE : 7E                  	MOV	A,M
+    1390/     8AF : 89                  	ADC	C
+    1391/     8B0 : 4F                  	MOV	C,A
+    1392/     8B1 : C9                  	RET
+    1393/     8B2 : 21 70 01            S164:	LXI	H,S029
+    1394/     8B5 : 7E                  	MOV	A,M
+    1395/     8B6 : 2F                  	CMA
+    1396/     8B7 : 77                  	MOV	M,A
+    1397/     8B8 : AF                  	XRA	A
+    1398/     8B9 : 6F                  	MOV	L,A
+    1399/     8BA : 90                  	SUB	B
+    1400/     8BB : 47                  	MOV	B,A
+    1401/     8BC : 7D                  	MOV	A,L
+    1402/     8BD : 9B                  	SBB	E
+    1403/     8BE : 5F                  	MOV	E,A
+    1404/     8BF : 7D                  	MOV	A,L
+    1405/     8C0 : 9A                  	SBB	D
+    1406/     8C1 : 57                  	MOV	D,A
+    1407/     8C2 : 7D                  	MOV	A,L
+    1408/     8C3 : 99                  	SBB	C
+    1409/     8C4 : 4F                  	MOV	C,A
+    1410/     8C5 : C9                  	RET
+    1411/     8C6 : 06 00               S165:	MVI	B,00h
+    1412/     8C8 : 3C                  	INR	A
+    1413/     8C9 : 6F                  	MOV	L,A
+    1414/     8CA : AF                  S166:	XRA	A
+    1415/     8CB : 2D                  	DCR	L
+    1416/     8CC : C8                  	RZ
+    1417/     8CD : CD D3 08            	CALL	S167
+    1418/     8D0 : C3 CA 08            	JMP	S166
+    1419/     8D3 : 79                  S167:	MOV	A,C
+    1420/     8D4 : 1F                  	RAR
+    1421/     8D5 : 4F                  	MOV	C,A
+    1422/     8D6 : 7A                  	MOV	A,D
+    1423/     8D7 : 1F                  	RAR
+    1424/     8D8 : 57                  	MOV	D,A
+    1425/     8D9 : 7B                  	MOV	A,E
+    1426/     8DA : 1F                  	RAR
+    1427/     8DB : 5F                  	MOV	E,A
+    1428/     8DC : 78                  	MOV	A,B
+    1429/     8DD : 1F                  	RAR
+    1430/     8DE : 47                  	MOV	B,A
+    1431/     8DF : C9                  	RET
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 25 - 12/11/2020 11:27:45 PM
+
+
+    1432/     8E0 : C1                  S168:	POP	B
+    1433/     8E1 : D1                  	POP	D
+    1434/     8E2 : EF                  	RST	05
+    1435/     8E3 : C8                  	RZ
+    1436/     8E4 : 2E 00               	MVI	L,00h
+    1437/     8E6 : CD 98 09            	CALL	S178
+    1438/     8E9 : 79                  	MOV	A,C
+    1439/     8EA : 32 14 09            	STA	S170+13
+    1440/     8ED : EB                  	XCHG
+    1441/     8EE : 22 0F 09            	SHLD	S170+8
+    1442/     8F1 : 01 00 00            	LXI	B,0000h
+    1443/     8F4 : 50                  	MOV	D,B
+    1444/     8F5 : 58                  	MOV	E,B
+    1445/     8F6 : 21 5B 08            	LXI	H,S157+3
+    1446/     8F9 : E5                  	PUSH	H
+    1447/     8FA : 21 02 09            	LXI	H,S169
+    1448/     8FD : E5                  	PUSH	H
+    1449/     8FE : E5                  	PUSH	H
+    1450/     8FF : 21 6F 01            	LXI	H,S028
+    1451/     902 : 7E                  S169:	MOV	A,M
+    1452/     903 : 23                  	INX	H
+    1453/     904 : E5                  	PUSH	H
+    1454/     905 : 2E 08               	MVI	L,08h
+    1455/     907 : 1F                  S170:	RAR
+    1456/     908 : 67                  	MOV	H,A
+    1457/     909 : 79                  	MOV	A,C
+    1458/     90A : D2 16 09            	JNC	S171
+    1459/     90D : E5                  	PUSH	H
+    1460/     90E : 21 00 00            	LXI	H,0000h
+    1461/     911 : 19                  	DAD	D
+    1462/     912 : D1                  	POP	D
+    1463/     913 : CE 00               	ACI	00
+    1464/     915 : EB                  	XCHG
+    1465/     916 : CD D4 08            S171:	CALL	S167+1
+    1466/     919 : 2D                  	DCR	L
+    1467/     91A : 7C                  	MOV	A,H
+    1468/     91B : C2 07 09            	JNZ	S170
+    1469/     91E : E1                  S172:	POP	H
+    1470/     91F : C9                  	RET
+    1471/     920 : CD FF 09            S173:	CALL	S188
+    1472/     923 : 01 20 84            	LXI	B,8420h
+    1473/     926 : 11 00 00            	LXI	D,0000h
+    1474/     929 : CD 0F 0A            	CALL	S190
+    1475/     92C : C1                  S174:	POP	B
+    1476/     92D : D1                  	POP	D
+    1477/     92E : EF                  	RST	05
+    1478/     92F : CA D0 01            	JZ	S041
+    1479/     932 : 2E FF               	MVI	L,0FFh
+    1480/     934 : CD 98 09            	CALL	S178
+    1481/     937 : 34                  	INR	M
+    1482/     938 : 34                  	INR	M
+    1483/     939 : 2B                  	DCX	H
+    1484/     93A : 7E                  	MOV	A,M
+    1485/     93B : 32 5D 09            	STA	S176+1
+    1486/     93E : 2B                  	DCX	H
+    1487/     93F : 7E                  	MOV	A,M
+    1488/     940 : 32 59 09            	STA	S176-3
+    1489/     943 : 2B                  	DCX	H
+    1490/     944 : 7E                  	MOV	A,M
+    1491/     945 : 32 55 09            	STA	S176-7
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 26 - 12/11/2020 11:27:45 PM
+
+
+    1492/     948 : 41                  	MOV	B,C
+    1493/     949 : EB                  	XCHG
+    1494/     94A : AF                  	XRA	A
+    1495/     94B : 4F                  	MOV	C,A
+    1496/     94C : 57                  	MOV	D,A
+    1497/     94D : 5F                  	MOV	E,A
+    1498/     94E : 32 60 09            	STA	S176+4
+    1499/     951 : E5                  S175:	PUSH	H
+    1500/     952 : C5                  	PUSH	B
+    1501/     953 : 7D                  	MOV	A,L
+    1502/     954 : D6 00               	SUI	00h
+    1503/     956 : 6F                  	MOV	L,A
+    1504/     957 : 7C                  	MOV	A,H
+    1505/     958 : DE 00               	SBI	00
+    1506/     95A : 67                  	MOV	H,A
+    1507/     95B : 78                  	MOV	A,B
+    1508/     95C : DE 00               S176:	SBI	00
+    1509/     95E : 47                  	MOV	B,A
+    1510/     95F : 3E 00               	MVI	A,00h
+    1511/     961 : DE 00               	SBI	00
+    1512/     963 : 3F                  	CMC
+    1513/     964 : D2 6E 09            	JNC	S177
+    1514/     967 : 32 60 09            	STA	S176+4h
+    1515/     96A : F1                  	POP	PSW
+    1516/     96B : F1                  	POP	PSW
+    1517/     96C : 37                  	STC
+    1518/     96D : D2                  	DB	0D2h
+    1519/     96E : C1                  S177:	POP	B
+    1520/     96F : E1                  	POP	H
+    1521/     970 : 79                  	MOV	A,C
+    1522/     971 : 3C                  	INR	A
+    1523/     972 : 3D                  	DCR	A
+    1524/     973 : 1F                  	RAR
+    1525/     974 : FA 7C 08            	JM	S159+1
+    1526/     977 : 17                  	RAL
+    1527/     978 : CD 8D 08            	CALL	S160
+    1528/     97B : 29                  	DAD	H
+    1529/     97C : 78                  	MOV	A,B
+    1530/     97D : 17                  	RAL
+    1531/     97E : 47                  	MOV	B,A
+    1532/     97F : 3A 60 09            	LDA	S176+4h
+    1533/     982 : 17                  	RAL
+    1534/     983 : 32 60 09            	STA	S176+4h
+    1535/     986 : 79                  	MOV	A,C
+    1536/     987 : B2                  	ORA	D
+    1537/     988 : B3                  	ORA	E
+    1538/     989 : C2 51 09            	JNZ	S175
+    1539/     98C : E5                  	PUSH	H
+    1540/     98D : 21 72 01            	LXI	H,S028+3
+    1541/     990 : 35                  	DCR	M
+    1542/     991 : E1                  	POP	H
+    1543/     992 : C2 51 09            	JNZ	S175
+    1544/     995 : C3 A1 08            	JMP	S162
+    1545/     998 : 78                  S178:	MOV	A,B
+    1546/     999 : B7                  	ORA	A
+    1547/     99A : CA B7 09            	JZ	S178+31
+    1548/     99D : 7D                  	MOV	A,L
+    1549/     99E : 21 72 01            	LXI	H,S028+3
+    1550/     9A1 : AE                  	XRA	M
+    1551/     9A2 : 80                  	ADD	B
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 27 - 12/11/2020 11:27:45 PM
+
+
+    1552/     9A3 : 47                  	MOV	B,A
+    1553/     9A4 : 1F                  	RAR
+    1554/     9A5 : A8                  	XRA	B
+    1555/     9A6 : 78                  	MOV	A,B
+    1556/     9A7 : F2 B6 09            	JP	S178+30
+    1557/     9AA : C6 80               	ADI	80h
+    1558/     9AC : 77                  	MOV	M,A
+    1559/     9AD : CA 1E 09            	JZ	S172
+    1560/     9B0 : CD 34 0A            	CALL	S196
+    1561/     9B3 : 77                  	MOV	M,A
+    1562/     9B4 : 2B                  	DCX	H
+    1563/     9B5 : C9                  	RET
+    1564/     9B6 : B7                  	ORA	A
+    1565/     9B7 : E1                  	POP	H
+    1566/     9B8 : FA A1 08            	JM	S162
+    1567/     9BB : AF                  S179:	XRA	A
+    1568/     9BC : 32 72 01            	STA	S028+3
+    1569/     9BF : C9                  	RET
+    1570/     9C0 : CD 1A 0A            S180:	CALL	S191
+    1571/     9C3 : 78                  	MOV	A,B
+    1572/     9C4 : B7                  	ORA	A
+    1573/     9C5 : C8                  	RZ
+    1574/     9C6 : C6 02               	ADI	02
+    1575/     9C8 : DA A1 08            	JC	S162
+    1576/     9CB : 47                  	MOV	B,A
+    1577/     9CC : CD 0F 08            	CALL	S154+2
+    1578/     9CF : 21 72 01            	LXI	H,S028+3
+    1579/     9D2 : 34                  	INR	M
+    1580/     9D3 : C0                  	RNZ
+    1581/     9D4 : C3 A1 08            	JMP	S162
+    1582/     9D7 : 3A 71 01            S181:	LDA	S028+2
+    1583/     9DA : FE                  	DB	0FEh
+    1584/     9DB : 2F                  S182:	CMA
+    1585/     9DC : 17                  S183:	RAL
+    1586/     9DD : 9F                  	SBB	A
+    1587/     9DE : C0                  	RNZ
+    1588/     9DF : 3C                  	INR	A
+    1589/     9E0 : C9                  	RET
+    1590/     9E1 : EF                  S184:	RST	05
+    1591/     9E2 : 06 88               S185:	MVI	B,88h
+    1592/     9E4 : 11 00 00            	LXI	D,0000h
+    1593/     9E7 : 21 72 01            	LXI	H,S028+3
+    1594/     9EA : 4F                  	MOV	C,A
+    1595/     9EB : 70                  	MOV	M,B
+    1596/     9EC : 06 00               	MVI	B,00h
+    1597/     9EE : 23                  	INX	H
+    1598/     9EF : 36 80               	MVI	M,80h
+    1599/     9F1 : 17                  	RAL
+    1600/     9F2 : C3 58 08            	JMP	S157
+    1601/     9F5 : EF                  S186:	RST	05
+    1602/     9F6 : F0                  	RP
+    1603/     9F7 : 21 71 01            S187:	LXI	H,S028+2
+    1604/     9FA : 7E                  	MOV	A,M
+    1605/     9FB : EE 80               	XRI	80h
+    1606/     9FD : 77                  	MOV	M,A
+    1607/     9FE : C9                  	RET
+    1608/     9FF : EB                  S188:	XCHG
+    1609/     A00 : 2A 6F 01            	LHLD	S028
+    1610/     A03 : E3                  	XTHL
+    1611/     A04 : E5                  	PUSH	H
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 28 - 12/11/2020 11:27:45 PM
+
+
+    1612/     A05 : 2A 71 01            	LHLD	S028+2
+    1613/     A08 : E3                  	XTHL
+    1614/     A09 : E5                  	PUSH	H
+    1615/     A0A : EB                  	XCHG
+    1616/     A0B : C9                  	RET
+    1617/     A0C : CD 1D 0A            S189:	CALL	S192
+    1618/     A0F : EB                  S190:	XCHG
+    1619/     A10 : 22 6F 01            	SHLD	S028
+    1620/     A13 : 60                  	MOV	H,B
+    1621/     A14 : 69                  	MOV	L,C
+    1622/     A15 : 22 71 01            	SHLD	S028+2
+    1623/     A18 : EB                  	XCHG
+    1624/     A19 : C9                  	RET
+    1625/     A1A : 21 6F 01            S191:	LXI	H,S028
+    1626/     A1D : 5E                  S192:	MOV	E,M
+    1627/     A1E : 23                  	INX	H
+    1628/     A1F : 56                  	MOV	D,M
+    1629/     A20 : 23                  	INX	H
+    1630/     A21 : 4E                  	MOV	C,M
+    1631/     A22 : 23                  	INX	H
+    1632/     A23 : 46                  	MOV	B,M
+    1633/     A24 : 23                  S193:	INX	H
+    1634/     A25 : C9                  	RET
+    1635/     A26 : 11 6F 01            S194:	LXI	D,S028
+    1636/     A29 : 06 04               	MVI	B,04h
+    1637/     A2B : 1A                  S195:	LDAX	D
+    1638/     A2C : 77                  	MOV	M,A
+    1639/     A2D : 13                  	INX	D
+    1640/     A2E : 23                  	INX	H
+    1641/     A2F : 05                  	DCR	B
+    1642/     A30 : C2 2B 0A            	JNZ	S195
+    1643/     A33 : C9                  	RET
+    1644/     A34 : 21 71 01            S196:	LXI	H,S028+2
+    1645/     A37 : 7E                  	MOV	A,M
+    1646/     A38 : 07                  	RLC
+    1647/     A39 : 37                  	STC
+    1648/     A3A : 1F                  	RAR
+    1649/     A3B : 77                  	MOV	M,A
+    1650/     A3C : 3F                  	CMC
+    1651/     A3D : 1F                  	RAR
+    1652/     A3E : 23                  	INX	H
+    1653/     A3F : 23                  	INX	H
+    1654/     A40 : 77                  	MOV	M,A
+    1655/     A41 : 79                  	MOV	A,C
+    1656/     A42 : 07                  	RLC
+    1657/     A43 : 37                  	STC
+    1658/     A44 : 1F                  	RAR
+    1659/     A45 : 4F                  	MOV	C,A
+    1660/     A46 : 1F                  	RAR
+    1661/     A47 : AE                  	XRA	M
+    1662/     A48 : C9                  	RET
+    1663/     A49 : 78                  S197:	MOV	A,B
+    1664/     A4A : B7                  	ORA	A
+    1665/     A4B : CA 28 00            	JZ	S008
+    1666/     A4E : 21 DB 09            	LXI	H,S182
+    1667/     A51 : E5                  	PUSH	H
+    1668/     A52 : EF                  	RST	05
+    1669/     A53 : 79                  	MOV	A,C
+    1670/     A54 : C8                  	RZ
+    1671/     A55 : 21 71 01            	LXI	H,S028+2
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 29 - 12/11/2020 11:27:45 PM
+
+
+    1672/     A58 : AE                  	XRA	M
+    1673/     A59 : 79                  	MOV	A,C
+    1674/     A5A : F8                  	RM
+    1675/     A5B : CD 61 0A            	CALL	S198
+    1676/     A5E : 1F                  	RAR
+    1677/     A5F : A9                  	XRA	C
+    1678/     A60 : C9                  	RET
+    1679/     A61 : 23                  S198:	INX	H
+    1680/     A62 : 78                  	MOV	A,B
+    1681/     A63 : BE                  	CMP	M
+    1682/     A64 : C0                  	RNZ
+    1683/     A65 : 2B                  	DCX	H
+    1684/     A66 : 79                  	MOV	A,C
+    1685/     A67 : BE                  	CMP	M
+    1686/     A68 : C0                  	RNZ
+    1687/     A69 : 2B                  	DCX	H
+    1688/     A6A : 7A                  	MOV	A,D
+    1689/     A6B : BE                  	CMP	M
+    1690/     A6C : C0                  	RNZ
+    1691/     A6D : 2B                  	DCX	H
+    1692/     A6E : 7B                  	MOV	A,E
+    1693/     A6F : 96                  	SUB	M
+    1694/     A70 : C0                  	RNZ
+    1695/     A71 : E1                  	POP	H
+    1696/     A72 : E1                  	POP	H
+    1697/     A73 : C9                  	RET
+    1698/     A74 : 47                  S199:	MOV	B,A
+    1699/     A75 : 4F                  	MOV	C,A
+    1700/     A76 : 57                  	MOV	D,A
+    1701/     A77 : 5F                  	MOV	E,A
+    1702/     A78 : B7                  	ORA	A
+    1703/     A79 : C8                  	RZ
+    1704/     A7A : E5                  	PUSH	H
+    1705/     A7B : CD 1A 0A            	CALL	S191
+    1706/     A7E : CD 34 0A            	CALL	S196
+    1707/     A81 : AE                  	XRA	M
+    1708/     A82 : 67                  	MOV	H,A
+    1709/     A83 : FC 98 0A            	CM	S200
+    1710/     A86 : 3E 98               	MVI	A,98h
+    1711/     A88 : 90                  	SUB	B
+    1712/     A89 : CD C6 08            	CALL	S165
+    1713/     A8C : 7C                  	MOV	A,H
+    1714/     A8D : 17                  	RAL
+    1715/     A8E : DC 97 08            	CC	S161
+    1716/     A91 : 06 00               	MVI	B,00h
+    1717/     A93 : DC B2 08            	CC	S164
+    1718/     A96 : E1                  	POP	H
+    1719/     A97 : C9                  	RET
+    1720/     A98 : 1B                  S200:	DCX	D
+    1721/     A99 : 7A                  	MOV	A,D
+    1722/     A9A : A3                  	ANA	E
+    1723/     A9B : 3C                  	INR	A
+    1724/     A9C : C0                  	RNZ
+    1725/     A9D : 0D                  	DCR	C
+    1726/     A9E : C9                  	RET
+    1727/     A9F : 21 72 01            S201:	LXI	H,S028+3
+    1728/     AA2 : 7E                  	MOV	A,M
+    1729/     AA3 : FE 98               	CPI	98h
+    1730/     AA5 : D0                  	RNC
+    1731/     AA6 : CD 74 0A            	CALL	S199
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 30 - 12/11/2020 11:27:45 PM
+
+
+    1732/     AA9 : 36 98               	MVI	M,98h
+    1733/     AAB : 79                  	MOV	A,C
+    1734/     AAC : 17                  	RAL
+    1735/     AAD : C3 58 08            	JMP	S157
+    1736/     AB0 : 2B                  S202:	DCX	H
+    1737/     AB1 : CD BB 09            	CALL	S179
+    1738/     AB4 : 47                  	MOV	B,A
+    1739/     AB5 : 57                  	MOV	D,A
+    1740/     AB6 : 5F                  	MOV	E,A
+    1741/     AB7 : 2F                  	CMA
+    1742/     AB8 : 4F                  	MOV	C,A
+    1743/     AB9 : D7                  S203:	RST	02
+    1744/     ABA : DA 01 0B            	JC	S211
+    1745/     ABD : FE 2E               	CPI	'.'
+    1746/     ABF : CA E1 0A            	JZ	S206
+    1747/     AC2 : FE 45               	CPI	'E'
+    1748/     AC4 : C2 E5 0A            	JNZ	S207
+    1749/     AC7 : D7                  S204:	RST	02
+    1750/     AC8 : 15                  	DCR	D
+    1751/     AC9 : FE 99               	CPI	99h
+    1752/     ACB : CA D5 0A            	JZ	S205
+    1753/     ACE : 14                  	INR	D
+    1754/     ACF : FE 98               	CPI	98h
+    1755/     AD1 : CA D5 0A            	JZ	S205
+    1756/     AD4 : 2B                  	DCX	H
+    1757/     AD5 : D7                  S205:	RST	02
+    1758/     AD6 : DA 20 0B            	JC	S212
+    1759/     AD9 : 14                  	INR	D
+    1760/     ADA : C2 E5 0A            	JNZ	S207
+    1761/     ADD : AF                  	XRA	A
+    1762/     ADE : 93                  	SUB	E
+    1763/     ADF : 5F                  	MOV	E,A
+    1764/     AE0 : 0C                  	INR	C
+    1765/     AE1 : 0C                  S206:	INR	C
+    1766/     AE2 : CA B9 0A            	JZ	S203
+    1767/     AE5 : E5                  S207:	PUSH	H
+    1768/     AE6 : 7B                  	MOV	A,E
+    1769/     AE7 : 90                  	SUB	B
+    1770/     AE8 : F4 F9 0A            S208:	CP	S210
+    1771/     AEB : F2 F4 0A            	JP	S209
+    1772/     AEE : F5                  	PUSH	PSW
+    1773/     AEF : CD 20 09            	CALL	S173
+    1774/     AF2 : F1                  	POP	PSW
+    1775/     AF3 : 3C                  	INR	A
+    1776/     AF4 : C2 E8 0A            S209:	JNZ	S208
+    1777/     AF7 : E1                  	POP	H
+    1778/     AF8 : C9                  	RET
+    1779/     AF9 : C8                  S210:	RZ
+    1780/     AFA : F5                  	PUSH	PSW
+    1781/     AFB : CD C0 09            	CALL	S180
+    1782/     AFE : F1                  	POP	PSW
+    1783/     AFF : 3D                  	DCR	A
+    1784/     B00 : C9                  	RET
+    1785/     B01 : D5                  S211:	PUSH	D
+    1786/     B02 : 57                  	MOV	D,A
+    1787/     B03 : 78                  	MOV	A,B
+    1788/     B04 : 89                  	ADC	C
+    1789/     B05 : 47                  	MOV	B,A
+    1790/     B06 : C5                  	PUSH	B
+    1791/     B07 : E5                  	PUSH	H
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 31 - 12/11/2020 11:27:45 PM
+
+
+    1792/     B08 : D5                  	PUSH	D
+    1793/     B09 : CD C0 09            	CALL	S180
+    1794/     B0C : F1                  	POP	PSW
+    1795/     B0D : D6 30               	SUI	'0'
+    1796/     B0F : CD FF 09            	CALL	S188
+    1797/     B12 : CD E2 09            	CALL	S185
+    1798/     B15 : C1                  	POP	B
+    1799/     B16 : D1                  	POP	D
+    1800/     B17 : CD 0F 08            	CALL	S154+2
+    1801/     B1A : E1                  	POP	H
+    1802/     B1B : C1                  	POP	B
+    1803/     B1C : D1                  	POP	D
+    1804/     B1D : C3 B9 0A            	JMP	S203
+    1805/     B20 : 7B                  S212:	MOV	A,E
+    1806/     B21 : 07                  	RLC
+    1807/     B22 : 07                  	RLC
+    1808/     B23 : 83                  	ADD	E
+    1809/     B24 : 07                  	RLC
+    1810/     B25 : 86                  	ADD	M
+    1811/     B26 : D6 30               	SUI	'0'
+    1812/     B28 : 5F                  	MOV	E,A
+    1813/     B29 : C3 D5 0A            	JMP	S205
+    1814/     B2C : E5                  S213:	PUSH	H
+    1815/     B2D : 21 85 01            	LXI	H,S032
+    1816/     B30 : CD A0 05            	CALL	S113
+    1817/     B33 : E1                  	POP	H
+    1818/     B34 : EB                  S214:	XCHG
+    1819/     B35 : AF                  	XRA	A
+    1820/     B36 : 06 98               	MVI	B,98h
+    1821/     B38 : CD E7 09            	CALL	S185+5
+    1822/     B3B : 21 9F 05            	LXI	H,S113-1
+    1823/     B3E : E5                  	PUSH	H
+    1824/     B3F : 21 71 01            S215:	LXI	H,S030
+    1825/     B42 : E5                  	PUSH	H
+    1826/     B43 : EF                  	RST	05
+    1827/     B44 : 36 20               	MVI	M,' '
+    1828/     B46 : F2 4B 0B            	JP	S216
+    1829/     B49 : 36 2D               	MVI	M,'-'
+    1830/     B4B : 23                  S216:	INX	H
+    1831/     B4C : 36 30               	MVI	M,'0'
+    1832/     B4E : CA F4 0B            	JZ	S227-3
+    1833/     B51 : E5                  	PUSH	H
+    1834/     B52 : FC F7 09            	CM	S187
+    1835/     B55 : AF                  	XRA	A
+    1836/     B56 : F5                  	PUSH	PSW
+    1837/     B57 : CD FA 0B            	CALL	S228
+    1838/     B5A : 01 43 91            S217:	LXI	B,9143h
+    1839/     B5D : 11 F8 4F            	LXI	D,4FF8h
+    1840/     B60 : CD 49 0A            	CALL	S197
+    1841/     B63 : E2 77 0B            	JPO	S219
+    1842/     B66 : F1                  	POP	PSW
+    1843/     B67 : CD FA 0A            	CALL	S210+1
+    1844/     B6A : F5                  	PUSH	PSW
+    1845/     B6B : C3 5A 0B            	JMP	S217
+    1846/     B6E : CD 20 09            S218:	CALL	S173
+    1847/     B71 : F1                  	POP	PSW
+    1848/     B72 : 3C                  	INR	A
+    1849/     B73 : F5                  	PUSH	PSW
+    1850/     B74 : CD FA 0B            	CALL	S228
+    1851/     B77 : CD FE 07            S219:	CALL	S151
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 32 - 12/11/2020 11:27:45 PM
+
+
+    1852/     B7A : 3C                  	INR	A
+    1853/     B7B : CD 74 0A            	CALL	S199
+    1854/     B7E : CD 0F 0A            	CALL	S190
+    1855/     B81 : 01 06 02            	LXI	B,0206h
+    1856/     B84 : F1                  	POP	PSW
+    1857/     B85 : 81                  	ADD	C
+    1858/     B86 : FA 92 0B            	JM	S220
+    1859/     B89 : FE 07               	CPI	07h
+    1860/     B8B : D2 92 0B            	JNC	S220
+    1861/     B8E : 3C                  	INR	A
+    1862/     B8F : 47                  	MOV	B,A
+    1863/     B90 : 3E 01               	MVI	A,01h
+    1864/     B92 : 3D                  S220:	DCR	A
+    1865/     B93 : E1                  	POP	H
+    1866/     B94 : F5                  	PUSH	PSW
+    1867/     B95 : 11 0C 0C            	LXI	D,S230
+    1868/     B98 : 05                  S221:	DCR	B
+    1869/     B99 : 36 2E               	MVI	M,'.'
+    1870/     B9B : CC 24 0A            	CZ	S193
+    1871/     B9E : C5                  	PUSH	B
+    1872/     B9F : E5                  	PUSH	H
+    1873/     BA0 : D5                  	PUSH	D
+    1874/     BA1 : CD 1A 0A            	CALL	S191
+    1875/     BA4 : E1                  	POP	H
+    1876/     BA5 : 06 2F               	MVI	B,'0'-1
+    1877/     BA7 : 04                  S222:	INR	B
+    1878/     BA8 : 7B                  	MOV	A,E
+    1879/     BA9 : 96                  	SUB	M
+    1880/     BAA : 5F                  	MOV	E,A
+    1881/     BAB : 23                  	INX	H
+    1882/     BAC : 7A                  	MOV	A,D
+    1883/     BAD : 9E                  	SBB	M
+    1884/     BAE : 57                  	MOV	D,A
+    1885/     BAF : 23                  	INX	H
+    1886/     BB0 : 79                  	MOV	A,C
+    1887/     BB1 : 9E                  	SBB	M
+    1888/     BB2 : 4F                  	MOV	C,A
+    1889/     BB3 : 2B                  	DCX	H
+    1890/     BB4 : 2B                  	DCX	H
+    1891/     BB5 : D2 A7 0B            	JNC	S222
+    1892/     BB8 : CD A6 08            	CALL	S163
+    1893/     BBB : 23                  	INX	H
+    1894/     BBC : CD 0F 0A            	CALL	S190
+    1895/     BBF : EB                  	XCHG
+    1896/     BC0 : E1                  	POP	H
+    1897/     BC1 : 70                  	MOV	M,B
+    1898/     BC2 : 23                  	INX	H
+    1899/     BC3 : C1                  	POP	B
+    1900/     BC4 : 0D                  	DCR	C
+    1901/     BC5 : C2 98 0B            	JNZ	S221
+    1902/     BC8 : 05                  	DCR	B
+    1903/     BC9 : CA D8 0B            	JZ	S224
+    1904/     BCC : 2B                  S223:	DCX	H
+    1905/     BCD : 7E                  	MOV	A,M
+    1906/     BCE : FE 30               	CPI	'0'
+    1907/     BD0 : CA CC 0B            	JZ	S223
+    1908/     BD3 : FE 2E               	CPI	'.'
+    1909/     BD5 : C4 24 0A            	CNZ	S193
+    1910/     BD8 : F1                  S224:	POP	PSW
+    1911/     BD9 : CA F7 0B            	JZ	S227
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 33 - 12/11/2020 11:27:45 PM
+
+
+    1912/     BDC : 36 45               	MVI	M,'E'
+    1913/     BDE : 23                  	INX	H
+    1914/     BDF : 36 2B               	MVI	M,'+'
+    1915/     BE1 : F2 E8 0B            	JP	S225
+    1916/     BE4 : 36 2D               	MVI	M,'-'
+    1917/     BE6 : 2F                  	CMA
+    1918/     BE7 : 3C                  	INR	A
+    1919/     BE8 : 06 2F               S225:	MVI	B,'0'-1
+    1920/     BEA : 04                  S226:	INR	B
+    1921/     BEB : D6 0A               	SUI	0Ah
+    1922/     BED : D2 EA 0B            	JNC	S226
+    1923/     BF0 : C6 3A               	ADI	3Ah
+    1924/     BF2 : 23                  	INX	H
+    1925/     BF3 : 70                  	MOV	M,B
+    1926/     BF4 : 23                  	INX	H
+    1927/     BF5 : 77                  	MOV	M,A
+    1928/     BF6 : 23                  	INX	H
+    1929/     BF7 : 71                  S227:	MOV	M,C
+    1930/     BF8 : E1                  	POP	H
+    1931/     BF9 : C9                  	RET
+    1932/     BFA : 01 74 94            S228:	LXI	B,9474h
+    1933/     BFD : 11 F7 23            	LXI	D,23F7h
+    1934/     C00 : CD 49 0A            	CALL	S197
+    1935/     C03 : E1                  	POP	H
+    1936/     C04 : E2 6E 0B            	JPO	S218
+    1937/     C07 : E9                  	PCHL
+    1938/     C08 : 00                  S229:	DB	00h
+    1939/     C09 : 00                  	DB	00h
+    1940/     C0A : 00                  	DB	00h
+    1941/     C0B : 80                  	DB	80h
+    1942/     C0C : A0                  S230:	DB	0A0h
+    1943/     C0D : 86                  	DB	86h
+    1944/     C0E : 01                  	DB	01h
+    1945/     C0F : 10                  	DB	10h
+    1946/     C10 : 27                  	DB	27h
+    1947/     C11 : 00                  	DB	00h
+    1948/     C12 : E8                  	DB	0E8h
+    1949/     C13 : 03                  	DB	03h
+    1950/     C14 : 00                  	DB	00h
+    1951/     C15 : 64                  	DB	64h
+    1952/     C16 : 00                  	DB	00h
+    1953/     C17 : 00                  	DB	00h
+    1954/     C18 : 0A                  	DB	0Ah
+    1955/     C19 : 00                  	DB	00h
+    1956/     C1A : 00                  	DB	00h
+    1957/     C1B : 01                  	DB	01h
+    1958/     C1C : 00                  	DB	00h
+    1959/     C1D : 00                  	DB	00h
+    1960/     C1E : EF                  S231:	RST	05
+    1961/     C1F : FA 95 04            	JM	S095
+    1962/     C22 : C8                  	RZ
+    1963/     C23 : 21 72 01            	LXI	H,S028+3
+    1964/     C26 : 7E                  	MOV	A,M
+    1965/     C27 : 1F                  	RAR
+    1966/     C28 : F5                  	PUSH	PSW
+    1967/     C29 : E5                  	PUSH	H
+    1968/     C2A : 3E 40               	MVI	A,40h
+    1969/     C2C : 17                  	RAL
+    1970/     C2D : 77                  	MOV	M,A
+    1971/     C2E : 21 71 01            	LXI	H,S030
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 34 - 12/11/2020 11:27:45 PM
+
+
+    1972/     C31 : CD 26 0A            	CALL	S194
+    1973/     C34 : 3E 04               	MVI	A,04h
+    1974/     C36 : F5                  S232:	PUSH	PSW
+    1975/     C37 : CD FF 09            	CALL	S188
+    1976/     C3A : 21 71 01            	LXI	H,S030
+    1977/     C3D : CD 1D 0A            	CALL	S192
+    1978/     C40 : CD 2E 09            	CALL	S174+2
+    1979/     C43 : C1                  	POP	B
+    1980/     C44 : D1                  	POP	D
+    1981/     C45 : CD 0F 08            	CALL	S154+2
+    1982/     C48 : 01 00 80            	LXI	B,8000h
+    1983/     C4B : 51                  	MOV	D,C
+    1984/     C4C : 59                  	MOV	E,C
+    1985/     C4D : CD E2 08            	CALL	S168+2
+    1986/     C50 : F1                  	POP	PSW
+    1987/     C51 : 3D                  	DCR	A
+    1988/     C52 : C2 36 0C            	JNZ	S232
+    1989/     C55 : E1                  	POP	H
+    1990/     C56 : F1                  	POP	PSW
+    1991/     C57 : C6 C0               	ADI	0C0h
+    1992/     C59 : 86                  	ADD	M
+    1993/     C5A : 77                  	MOV	M,A
+    1994/     C5B : C9                  	RET
+    1995/     C5C : EF                  S233:	RST	05
+    1996/     C5D : FA 79 0C            	JM	S234
+    1997/     C60 : 21 8E 0C            	LXI	H,S235
+    1998/     C63 : CD 0C 0A            	CALL	S189
+    1999/     C66 : C8                  	RZ
+    2000/     C67 : 01 35 98            	LXI	B,9835h
+    2001/     C6A : 11 7A 44            	LXI	D,447Ah
+    2002/     C6D : CD E2 08            	CALL	S168+2
+    2003/     C70 : 01 28 68            	LXI	B,6828h
+    2004/     C73 : 11 46 B1            	LXI	D,0B146h
+    2005/     C76 : CD 0F 08            	CALL	S154+2
+    2006/     C79 : CD 1A 0A            S234:	CALL	S191
+    2007/     C7C : 7B                  	MOV	A,E
+    2008/     C7D : 59                  	MOV	E,C
+    2009/     C7E : 4F                  	MOV	C,A
+    2010/     C7F : 36 80               	MVI	M,80h
+    2011/     C81 : 2B                  	DCX	H
+    2012/     C82 : 46                  	MOV	B,M
+    2013/     C83 : 36 80               	MVI	M,80h
+    2014/     C85 : CD 5B 08            	CALL	S157+3
+    2015/     C88 : 21 8E 0C            	LXI	H,S235
+    2016/     C8B : C3 26 0A            	JMP	S194
+    2017/     C8E : 52                  S235:	DB	52h
+    2018/     C8F : C7                  	DB	0C7h
+    2019/     C90 : 4F                  	DB	4Fh
+    2020/     C91 : 80                  	DB	80h
+    2021/     C92 : CD FF 09            S236:	CALL	S188
+    2022/     C95 : 01 49 83            	LXI	B,8349h
+    2023/     C98 : 11 DB 0F            	LXI	D,0FDBh
+    2024/     C9B : CD 0F 0A            	CALL	S190
+    2025/     C9E : C1                  	POP	B
+    2026/     C9F : D1                  	POP	D
+    2027/     CA0 : CD 2E 09            	CALL	S174+2
+    2028/     CA3 : CD FF 09            	CALL	S188
+    2029/     CA6 : CD 9F 0A            	CALL	S201
+    2030/     CA9 : C1                  	POP	B
+    2031/     CAA : D1                  	POP	D
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 35 - 12/11/2020 11:27:45 PM
+
+
+    2032/     CAB : CD 09 08            	CALL	S153+2
+    2033/     CAE : 01 00 7F            	LXI	B,7F00h
+    2034/     CB1 : 51                  	MOV	D,C
+    2035/     CB2 : 59                  	MOV	E,C
+    2036/     CB3 : CD 09 08            	CALL	S153+2
+    2037/     CB6 : EF                  	RST	05
+    2038/     CB7 : 37                  	STC
+    2039/     CB8 : F2 C0 0C            	JP	S237
+    2040/     CBB : CD FE 07            	CALL	S151
+    2041/     CBE : EF                  	RST	05
+    2042/     CBF : B7                  	ORA	A
+    2043/     CC0 : F5                  S237:	PUSH	PSW
+    2044/     CC1 : F4 F7 09            	CP	S187
+    2045/     CC4 : 01 00 7F            	LXI	B,7F00h
+    2046/     CC7 : 51                  	MOV	D,C
+    2047/     CC8 : 59                  	MOV	E,C
+    2048/     CC9 : CD 0F 08            	CALL	S154+2
+    2049/     CCC : F1                  	POP	PSW
+    2050/     CCD : D4 F7 09            	CNC	S187
+    2051/     CD0 : CD FF 09            	CALL	S188
+    2052/     CD3 : CD 1A 0A            	CALL	S191
+    2053/     CD6 : CD E2 08            	CALL	S168+2
+    2054/     CD9 : CD FF 09            	CALL	S188
+    2055/     CDC : 21 00 0D            	LXI	H,S239
+    2056/     CDF : CD 0C 0A            	CALL	S189
+    2057/     CE2 : C1                  	POP	B
+    2058/     CE3 : D1                  	POP	D
+    2059/     CE4 : 3E 04               	MVI	A,04h
+    2060/     CE6 : F5                  S238:	PUSH	PSW
+    2061/     CE7 : D5                  	PUSH	D
+    2062/     CE8 : C5                  	PUSH	B
+    2063/     CE9 : E5                  	PUSH	H
+    2064/     CEA : CD E2 08            	CALL	S168+2
+    2065/     CED : E1                  	POP	H
+    2066/     CEE : CD 1D 0A            	CALL	S192
+    2067/     CF1 : E5                  	PUSH	H
+    2068/     CF2 : CD 0F 08            	CALL	S154+2
+    2069/     CF5 : E1                  	POP	H
+    2070/     CF6 : C1                  	POP	B
+    2071/     CF7 : D1                  	POP	D
+    2072/     CF8 : F1                  	POP	PSW
+    2073/     CF9 : 3D                  	DCR	A
+    2074/     CFA : C2 E6 0C            	JNZ	S238
+    2075/     CFD : C3 E0 08            	JMP	S168
+    2076/     D00 : BA                  S239:	DB	0BAh
+    2077/     D01 : D7                  	DB	0D7h
+    2078/     D02 : 1E                  	DB	1Eh
+    2079/     D03 : 86                  	DB	86h
+    2080/     D04 : 64                  	DB	64h
+    2081/     D05 : 26                  	DB	26h
+    2082/     D06 : 99                  	DB	99h
+    2083/     D07 : 87                  	DB	87h
+    2084/     D08 : 58                  	DB	58h
+    2085/     D09 : 34                  	DB	34h
+    2086/     D0A : 23                  	DB	23h
+    2087/     D0B : 87                  	DB	87h
+    2088/     D0C : E0                  	DB	0E0h
+    2089/     D0D : 5D                  	DB	5Dh
+    2090/     D0E : A5                  	DB	0A5h
+    2091/     D0F : 86                  	DB	86h
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 36 - 12/11/2020 11:27:45 PM
+
+
+    2092/     D10 : DA                  	DB	0DAh
+    2093/     D11 : 0F                  	DB	0Fh
+    2094/     D12 : 49                  	DB	49h
+    2095/     D13 : 83                  	DB	83h
+    2096/     D14 : 00                  S240:	DB	00h
+    2097/     D15 : 00                  	DB	00h
+    2098/     D16 : 00                  	DB	00h
+    2099/     D17 : 00                  	DB	00h
+    2100/     D18 : 00                  	DB	00h
+    2101/     D19 : 00                  	DB	00h
+    2102/     D1A : 00                  	DB	00h
+    2103/     D1B : 00                  	DB	00h
+    2104/     D1C : 00                  	DB	00h
+    2105/     D1D : 00                  	DB	00h
+    2106/     D1E : 21 1A 0F            S241:	LXI	H,0F1Ah
+    2107/     D21 : F9                  	SPHL
+    2108/     D22 : 22 63 01            	SHLD	S022
+    2109/     D25 : DB 01               	IN	01
+    2110/     D27 : 0E FF               	MVI	C,0FFh
+    2111/     D29 : 11 8B 0D            	LXI	D,S248
+    2112/     D2C : D5                  	PUSH	D
+    2113/     D2D : 3A FF 0F            	LDA	0FFFh
+    2114/     D30 : 47                  	MOV	B,A
+    2115/     D31 : DB FF               	IN	0FFh
+    2116/     D33 : 1F                  	RAR
+    2117/     D34 : DA 3E 0D            	JC	S242-1
+    2118/     D37 : E6 0C               	ANI	0Ch
+    2119/     D39 : CA 3F 0D            	JZ	S242
+    2120/     D3C : 06 10               	MVI	B,10h
+    2121/     D3E : 78                  	MOV	A,B
+    2122/     D3F : 32 89 0D            S242:	STA	S247-1
+    2123/     D42 : DB FF               	IN	0FFh
+    2124/     D44 : 17                  	RAL
+    2125/     D45 : 17                  	RAL
+    2126/     D46 : 06 20               	MVI	B,20h
+    2127/     D48 : 11 02 CA            S243:	LXI	D,0CA02h
+    2128/     D4B : D8                  	RC
+    2129/     D4C : 17                  	RAL
+    2130/     D4D : 43                  	MOV	B,E
+    2131/     D4E : 1D                  	DCR	E
+    2132/     D4F : D8                  	RC
+    2133/     D50 : 17                  	RAL
+    2134/     D51 : DA 6C 0D            	JC	S244
+    2135/     D54 : 43                  	MOV	B,E
+    2136/     D55 : 11 80 C2            	LXI	D,0C280h
+    2137/     D58 : 17                  	RAL
+    2138/     D59 : D0                  	RNC
+    2139/     D5A : 17                  	RAL
+    2140/     D5B : 3E 03               	MVI	A,03h
+    2141/     D5D : CD 88 0D            	CALL	S246
+    2142/     D60 : 3D                  	DCR	A
+    2143/     D61 : 8F                  	ADC	A
+    2144/     D62 : 87                  	ADD	A
+    2145/     D63 : 87                  	ADD	A
+    2146/     D64 : 3C                  	INR	A
+    2147/     D65 : CD 88 0D            	CALL	S246
+    2148/     D68 : 37                  	STC
+    2149/     D69 : C3 48 0D            	JMP	S243
+    2150/     D6C : AF                  S244:	XRA	A
+    2151/     D6D : CD 88 0D            	CALL	S246
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 37 - 12/11/2020 11:27:45 PM
+
+
+    2152/     D70 : CD 84 0D            	CALL	S245
+    2153/     D73 : CD 84 0D            	CALL	S245
+    2154/     D76 : 4B                  	MOV	C,E
+    2155/     D77 : 2F                  	CMA
+    2156/     D78 : CD 84 0D            	CALL	S245
+    2157/     D7B : 3E 04               	MVI	A,04h
+    2158/     D7D : 35                  	DCR	M
+    2159/     D7E : CD 88 0D            	CALL	S246
+    2160/     D81 : 35                  	DCR	M
+    2161/     D82 : 35                  	DCR	M
+    2162/     D83 : 35                  	DCR	M
+    2163/     D84 : 21 89 0D            S245:	LXI	H,S247-1
+    2164/     D87 : 34                  	INR	M
+    2165/     D88 : D3 0B               S246:	OUT	11
+    2166/     D8A : C9                  S247:	RET
+    2167/     D8B : 62                  S248:	MOV	H,D
+    2168/     D8C : 68                  	MOV	L,B
+    2169/     D8D : 22 82 03            	SHLD	S077+3
+    2170/     D90 : 7C                  	MOV	A,H
+    2171/     D91 : E6 C8               	ANI	0C8h
+    2172/     D93 : 67                  	MOV	H,A
+    2173/     D94 : 22 73 04            	SHLD	S092+3
+    2174/     D97 : EB                  	XCHG
+    2175/     D98 : 22 77 03            	SHLD	S076+3
+    2176/     D9B : 3A 89 0D            	LDA	S247-1
+    2177/     D9E : 32 80 03            	STA	S077+1
+    2178/     DA1 : 32 71 04            	STA	S092+1
+    2179/     DA4 : 3C                  	INR	A
+    2180/     DA5 : 32 87 03            	STA	S077+8
+    2181/     DA8 : 81                  	ADD	C
+    2182/     DA9 : 32 75 03            	STA	S076+1
+    2183/     DAC : 3C                  	INR	A
+    2184/     DAD : 32 7D 03            	STA	S077-2
+    2185/     DB0 : 21 FF FF            	LXI	H,0FFFFh
+    2186/     DB3 : 22 61 01            	SHLD	S021
+    2187/     DB6 : CD 87 05            	CALL	S111
+    2188/     DB9 : 21 ED 0E            	LXI	H,S264
+    2189/     DBC : CD A0 05            	CALL	S113
+    2190/     DBF : CD BF 02            	CALL	S060
+    2191/     DC2 : D7                  	RST	02
+    2192/     DC3 : B7                  	ORA	A
+    2193/     DC4 : C2 DB 0D            	JNZ	S250
+    2194/     DC7 : 21 F9 0E            	LXI	H,S265
+    2195/     DCA : 23                  S249:	INX	H
+    2196/     DCB : 3E 37               	MVI	A,37h
+    2197/     DCD : 77                  	MOV	M,A
+    2198/     DCE : BE                  	CMP	M
+    2199/     DCF : C2 E7 0D            	JNZ	S251
+    2200/     DD2 : 3D                  	DCR	A
+    2201/     DD3 : 77                  	MOV	M,A
+    2202/     DD4 : BE                  	CMP	M
+    2203/     DD5 : CA CA 0D            	JZ	S249
+    2204/     DD8 : C3 E7 0D            	JMP	S251
+    2205/     DDB : 21 13 01            S250:	LXI	H,S016
+    2206/     DDE : CD 9A 04            	CALL	S096
+    2207/     DE1 : B7                  	ORA	A
+    2208/     DE2 : C2 CD 01            	JNZ	S040
+    2209/     DE5 : EB                  	XCHG
+    2210/     DE6 : 2B                  	DCX	H
+    2211/     DE7 : 2B                  S251:	DCX	H
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 38 - 12/11/2020 11:27:45 PM
+
+
+    2212/     DE8 : E5                  	PUSH	H
+    2213/     DE9 : 21 B1 0E            S252:	LXI	H,S262
+    2214/     DEC : CD A0 05            	CALL	S113
+    2215/     DEF : CD BF 02            	CALL	S060
+    2216/     DF2 : D7                  	RST	02
+    2217/     DF3 : B7                  	ORA	A
+    2218/     DF4 : CA 18 0E            	JZ	S254
+    2219/     DF7 : 21 13 01            	LXI	H,S016
+    2220/     DFA : CD 9A 04            	CALL	S096
+    2221/     DFD : 7A                  	MOV	A,D
+    2222/     DFE : B7                  	ORA	A
+    2223/     DFF : C2 E9 0D            	JNZ	S252
+    2224/     E02 : 7B                  	MOV	A,E
+    2225/     E03 : FE 10               	CPI	10h
+    2226/     E05 : DA E9 0D            	JC	S252
+    2227/     E08 : 32 6C 03            	STA	S075+1
+    2228/     E0B : D6 0E               S253:	SUI	0Eh
+    2229/     E0D : D2 0B 0E            	JNC	S253
+    2230/     E10 : C6 1C               	ADI	1Ch
+    2231/     E12 : 2F                  	CMA
+    2232/     E13 : 3C                  	INR	A
+    2233/     E14 : 83                  	ADD	E
+    2234/     E15 : 32 B4 05            	STA	S114+4
+    2235/     E18 : 21 82 0E            S254:	LXI	H,S258
+    2236/     E1B : F7                  S255:	RST	6
+    2237/     E1C : 11 96 0E            	LXI	D,S259
+    2238/     E1F : E7                  	RST	4
+    2239/     E20 : CA 2F 0E            	JZ	S256
+    2240/     E23 : F7                  	RST	6
+    2241/     E24 : E3                  	XTHL
+    2242/     E25 : CD A0 05            	CALL	S113
+    2243/     E28 : CD BF 02            	CALL	S060
+    2244/     E2B : D7                  	RST	02
+    2245/     E2C : E1                  	POP	H
+    2246/     E2D : FE 59               	CPI	'Y'
+    2247/     E2F : D1                  S256:	POP	D
+    2248/     E30 : CA 44 0E            	JZ	S257
+    2249/     E33 : FE 4E               	CPI	'N'
+    2250/     E35 : C2 18 0E            	JNZ	S254
+    2251/     E38 : F7                  	RST	6
+    2252/     E39 : E3                  	XTHL
+    2253/     E3A : 11 95 04            	LXI	D,S095
+    2254/     E3D : 73                  	MOV	M,E
+    2255/     E3E : 23                  	INX	H
+    2256/     E3F : 72                  	MOV	M,D
+    2257/     E40 : E1                  	POP	H
+    2258/     E41 : C3 1B 0E            	JMP	S255
+    2259/     E44 : EB                  S257:	XCHG
+    2260/     E45 : 36 00               	MVI	M,00h
+    2261/     E47 : 23                  	INX	H
+    2262/     E48 : 22 65 01            	SHLD	S023
+    2263/     E4B : E3                  	XTHL
+    2264/     E4C : 11 1A 0F            	LXI	D,0F1Ah
+    2265/     E4F : E7                  	RST	4
+    2266/     E50 : DA CA 01            	JC	S039
+    2267/     E53 : D1                  	POP	D
+    2268/     E54 : F9                  	SPHL
+    2269/     E55 : 22 63 01            	SHLD	S022
+    2270/     E58 : EB                  	XCHG
+    2271/     E59 : CD C0 01            	CALL	S038
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 39 - 12/11/2020 11:27:45 PM
+
+
+    2272/     E5C : 7B                  	MOV	A,E
+    2273/     E5D : 95                  	SUB	L
+    2274/     E5E : 6F                  	MOV	L,A
+    2275/     E5F : 7A                  	MOV	A,D
+    2276/     E60 : 9C                  	SBB	H
+    2277/     E61 : 67                  	MOV	H,A
+    2278/     E62 : 01 F0 FF            	LXI	B,0FFF0h
+    2279/     E65 : 09                  	DAD	B
+    2280/     E66 : CD 87 05            	CALL	S111
+    2281/     E69 : CD 34 0B            	CALL	S214
+    2282/     E6C : 21 C0 0E            	LXI	H,S263
+    2283/     E6F : CD A0 05            	CALL	S113
+    2284/     E72 : 21 A0 05            	LXI	H,S113
+    2285/     E75 : 22 FA 01            	SHLD	S044+4
+    2286/     E78 : CD 93 02            	CALL	S055+1
+    2287/     E7B : 21 F6 01            	LXI	H,S044
+    2288/     E7E : 22 02 00            	SHLD	S001+2
+    2289/     E81 : E9                  	PCHL
+    2290/     E82 :                     
+    2291/     E82 : 14 0D               S258:	DW	S240
+    2292/     E84 : 96 0E               	DW	S259
+    2293/     E86 : 49 00               	DW	S011+12
+    2294/     E88 : 92 0C               	DW	S236
+    2295/     E8A : 9F 0E               	DW	S260
+    2296/     E8C : 47 00               	DW	S011+10
+    2297/     E8E : 5C 0C               	DW	S233
+    2298/     E90 : A8 0E               	DW	S261
+    2299/     E92 : 45 00               	DW	S011+8
+    2300/     E94 :                     
+    2301/     E94 : 1E 0C               	DW	S231
+    2302/     E96 :                     
+    2303/     E96 : 57                  S259:	DB	57h
+    2304/     E97 : 41                  	DB	41h
+    2305/     E98 : 4E                  	DB	4Eh
+    2306/     E99 : 54                  	DB	54h
+    2307/     E9A : 20                  	DB	20h
+    2308/     E9B : 53                  	DB	53h
+    2309/     E9C : 49                  	DB	49h
+    2310/     E9D : CE                  	DB	0CEh
+    2311/     E9E : 00                  	DB	00h
+    2312/     E9F : 57                  S260:	DB	57h
+    2313/     EA0 : 41                  	DB	41h
+    2314/     EA1 : 4E                  	DB	4Eh
+    2315/     EA2 : 54                  	DB	54h
+    2316/     EA3 : 20                  	DB	20h
+    2317/     EA4 : 52                  	DB	52h
+    2318/     EA5 : 4E                  	DB	4Eh
+    2319/     EA6 : C4                  	DB	0C4h
+    2320/     EA7 : 00                  	DB	00h
+    2321/     EA8 : 57                  S261:	DB	57h
+    2322/     EA9 : 41                  	DB	41h
+    2323/     EAA : 4E                  	DB	4Eh
+    2324/     EAB : 54                  	DB	54h
+    2325/     EAC : 20                  	DB	20h
+    2326/     EAD : 53                  	DB	53h
+    2327/     EAE : 51                  	DB	51h
+    2328/     EAF : D2                  	DB	0D2h
+    2329/     EB0 : 00                  	DB	00h
+    2330/     EB1 :                     
+    2331/     EB1 :                     
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 40 - 12/11/2020 11:27:45 PM
+
+
+    2332/     EB1 : 54                  S262:	DB	54h
+    2333/     EB2 : 45                  	DB	45h
+    2334/     EB3 : 52                  	DB	52h
+    2335/     EB4 : 4D                  	DB	4Dh
+    2336/     EB5 : 49                  	DB	49h
+    2337/     EB6 : 4E                  	DB	4Eh
+    2338/     EB7 : 41                  	DB	41h
+    2339/     EB8 : 4C                  	DB	4Ch
+    2340/     EB9 : 20                  	DB	20h
+    2341/     EBA : 57                  	DB	57h
+    2342/     EBB : 49                  	DB	49h
+    2343/     EBC : 44                  	DB	44h
+    2344/     EBD : 54                  	DB	54h
+    2345/     EBE : C8                  	DB	0C8h
+    2346/     EBF : 00                  	DB	00h
+    2347/     EC0 :                     
+    2348/     EC0 : 20                  S263:	DB	20h
+    2349/     EC1 : 42                  	DB	42h
+    2350/     EC2 : 59                  	DB	59h
+    2351/     EC3 : 54                  	DB	54h
+    2352/     EC4 : 45                  	DB	45h
+    2353/     EC5 : 53                  	DB	53h
+    2354/     EC6 : 20                  	DB	20h
+    2355/     EC7 : 46                  	DB	46h
+    2356/     EC8 : 52                  	DB	52h
+    2357/     EC9 : 45                  	DB	45h
+    2358/     ECA : C5                  	DB	0C5h
+    2359/     ECB : 0D                  	DB	0Dh
+    2360/     ECC : 0D                  	DB	0Dh
+    2361/     ECD : 42                  	DB	42h
+    2362/     ECE : 41                  	DB	41h
+    2363/     ECF : 53                  	DB	53h
+    2364/     ED0 : 49                  	DB	49h
+    2365/     ED1 : 43                  	DB	43h
+    2366/     ED2 : 20                  	DB	20h
+    2367/     ED3 : 56                  	DB	56h
+    2368/     ED4 : 45                  	DB	45h
+    2369/     ED5 : 52                  	DB	52h
+    2370/     ED6 : 53                  	DB	53h
+    2371/     ED7 : 49                  	DB	49h
+    2372/     ED8 : 4F                  	DB	4Fh
+    2373/     ED9 : 4E                  	DB	4Eh
+    2374/     EDA : 20                  	DB	20h
+    2375/     EDB : 33                  	DB	33h
+    2376/     EDC : 2E                  	DB	2Eh
+    2377/     EDD : B2                  	DB	0B2h
+    2378/     EDE : 0D                  	DB	0Dh
+    2379/     EDF : 5B                  	DB	5Bh
+    2380/     EE0 : 34                  	DB	34h
+    2381/     EE1 : 4B                  	DB	4Bh
+    2382/     EE2 : 20                  	DB	20h
+    2383/     EE3 : 56                  	DB	56h
+    2384/     EE4 : 45                  	DB	45h
+    2385/     EE5 : 52                  	DB	52h
+    2386/     EE6 : 53                  	DB	53h
+    2387/     EE7 : 49                  	DB	49h
+    2388/     EE8 : 4F                  	DB	4Fh
+    2389/     EE9 : 4E                  	DB	4Eh
+    2390/     EEA : DD                  	DB	0DDh
+    2391/     EEB : 0D                  	DB	0Dh
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 41 - 12/11/2020 11:27:45 PM
+
+
+    2392/     EEC : 00                  	DB	00h
+    2393/     EED : 4D                  S264:	DB	4Dh
+    2394/     EEE : 45                  	DB	45h
+    2395/     EEF : 4D                  	DB	4Dh
+    2396/     EF0 : 4F                  	DB	4Fh
+    2397/     EF1 : 52                  	DB	52h
+    2398/     EF2 : 59                  	DB	59h
+    2399/     EF3 : 20                  	DB	20h
+    2400/     EF4 : 53                  	DB	53h
+    2401/     EF5 : 49                  	DB	49h
+    2402/     EF6 : 5A                  	DB	5Ah
+    2403/     EF7 : C5                  	DB	0C5h
+    2404/     EF8 : 00                  	DB	00h
+    2405/     EF9 :                     
+    2406/     EF9 : 00                  S265:	DB	00
+    2407/     EFA :                     
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 42 - 12/11/2020 11:27:45 PM
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+*ARCHITECTURE :                                      "x86_64-unknown-linux" - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - | *CONSTPI :        3.141592653589793 - |
+*DATE :                "12/11/2020" - | *FALSE :                          0 - |
+*FULLPMMU :                       1 - | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+*INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
+*LISTON :                         1 - | *MACEXP :                         7 - |
+*MOMCPU :                      8080 - | *MOMCPUNAME :                "8080" - |
+*NESTMAX :                      100 - | *PACKING :                        0 - |
+*PADDING :                        1 - | *RELAXED :                        0 - |
+ S001 :                           0 C | *S002 :                           8 C |
+ S003 :                          10 C | *S004 :                          18 C |
+*S005 :                          20 C |  S006 :                          26 C |
+ S007 :                          27 C |  S008 :                          28 C |
+*S009 :                          30 C |  S010 :                          3A C |
+ S011 :                          3D C |  S012 :                          4B C |
+ S013 :                          57 C |  S014 :                         0D2 C |
+ S015 :                         0FA C |  S016 :                         113 C |
+ S017 :                         15B C |  S018 :                         15C C |
+ S019 :                         15D C |  S020 :                         15F C |
+ S021 :                         161 C |  S022 :                         163 C |
+ S023 :                         165 C |  S024 :                         167 C |
+ S025 :                         169 C |  S026 :                         16B C |
+ S027 :                         16D C |  S028 :                         16F C |
+ S029 :                         170 C |  S030 :                         171 C |
+ S031 :                         17E C |  S032 :                         185 C |
+ S033 :                         18A C |  S034 :                         18F C |
+ S035 :                         1A4 C |  S036 :                         1AA C |
+ S037 :                         1B3 C |  S038 :                         1C0 C |
+ S039 :                         1CA C |  S040 :                         1CD C |
+ S041 :                         1D0 C |  S042 :                         1D2 C |
+ S043 :                         1F4 C |  S044 :                         1F6 C |
+ S045 :                         1FC C | *S046 :                         219 C |
+*S047 :                         225 C |  S048 :                         229 C |
+ S049 :                         236 C |  S050 :                         252 C |
+ S051 :                         25D C |  S052 :                         262 C |
+ S053 :                         26E C |  S054 :                         27A C |
+ S055 :                         292 C |  S056 :                         29E C |
+ S057 :                         29F C |  S058 :                         2A3 C |
+ S059 :                         2B2 C |  S060 :                         2BF C |
+ S061 :                         2C9 C |  S062 :                         2E6 C |
+ S063 :                         2FC C |  S064 :                         2FF C |
+ S065 :                         309 C |  S066 :                         312 C |
+ S067 :                         319 C |  S068 :                         31D C |
+ S069 :                         326 C |  S070 :                         32F C |
+ S071 :                         335 C |  S072 :                         339 C |
+ S073 :                         33E C |  S074 :                         367 C |
+ S075 :                         36B C |  S076 :                         374 C |
+ S077 :                         37F C |  S078 :                         38B C |
+ S079 :                         394 C |  S080 :                         3AB C |
+ S081 :                         3BD C |  S082 :                         3C8 C |
+ S083 :                         3D2 C |  S084 :                         3DF C |
+ S085 :                         411 C |  S086 :                         41A C |
+ S087 :                         41E C |  S088 :                         43B C |
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 43 - 12/11/2020 11:27:45 PM
+
+
+ S089 :                         45B C |  S090 :                         466 C |
+ S091 :                         46B C |  S092 :                         470 C |
+ S093 :                         47D C |  S094 :                         485 C |
+ S095 :                         495 C |  S096 :                         49A C |
+ S097 :                         49E C |  S098 :                         4BB C |
+ S099 :                         4CC C |  S100 :                         4DC C |
+ S101 :                         4F2 C |  S102 :                         4F4 C |
+ S103 :                         4F6 C |  S104 :                         4FF C |
+ S105 :                         504 C |  S106 :                         513 C |
+ S107 :                         51C C |  S108 :                         52F C |
+ S109 :                         554 C |  S110 :                         582 C |
+ S111 :                         587 C |  S112 :                         593 C |
+ S113 :                         5A0 C |  S114 :                         5B0 C |
+ S115 :                         5BB C |  S116 :                         5C4 C |
+ S117 :                         5D3 C |  S118 :                         5D7 C |
+ S119 :                         5DC C |  S120 :                         5E1 C |
+ S121 :                         5F3 C |  S122 :                         5F7 C |
+ S123 :                         5FE C |  S124 :                         61D C |
+ S125 :                         632 C |  S126 :                         646 C |
+ S127 :                         680 C |  S128 :                         687 C |
+ S129 :                         696 C |  S130 :                         6C1 C |
+ S131 :                         6DF C |  S132 :                         6E7 C |
+ S133 :                         6F0 C |  S134 :                         6FA C |
+ S135 :                         70E C |  S136 :                         713 C |
+ S137 :                         718 C |  S138 :                         738 C |
+ S139 :                         744 C |  S140 :                         74F C |
+ S141 :                         773 C |  S142 :                         77F C |
+ S143 :                         782 C |  S144 :                         787 C |
+ S145 :                         79E C |  S146 :                         7BC C |
+ S147 :                         7CA C |  S148 :                         7DE C |
+ S149 :                         7EC C | *S150 :                         7F6 C |
+ S151 :                         7FE C |  S152 :                         801 C |
+ S153 :                         807 C |  S154 :                         80D C |
+ S155 :                         829 C |  S156 :                         84A C |
+ S157 :                         858 C |  S158 :                         862 C |
+ S159 :                         87B C |  S160 :                         88D C |
+ S161 :                         897 C |  S162 :                         8A1 C |
+ S163 :                         8A6 C |  S164 :                         8B2 C |
+ S165 :                         8C6 C |  S166 :                         8CA C |
+ S167 :                         8D3 C |  S168 :                         8E0 C |
+ S169 :                         902 C |  S170 :                         907 C |
+ S171 :                         916 C |  S172 :                         91E C |
+ S173 :                         920 C |  S174 :                         92C C |
+ S175 :                         951 C |  S176 :                         95C C |
+ S177 :                         96E C |  S178 :                         998 C |
+ S179 :                         9BB C |  S180 :                         9C0 C |
+ S181 :                         9D7 C |  S182 :                         9DB C |
+*S183 :                         9DC C |  S184 :                         9E1 C |
+ S185 :                         9E2 C |  S186 :                         9F5 C |
+ S187 :                         9F7 C |  S188 :                         9FF C |
+ S189 :                        0A0C C |  S190 :                        0A0F C |
+ S191 :                        0A1A C |  S192 :                        0A1D C |
+ S193 :                        0A24 C |  S194 :                        0A26 C |
+ S195 :                        0A2B C |  S196 :                        0A34 C |
+ S197 :                        0A49 C |  S198 :                        0A61 C |
+ S199 :                        0A74 C |  S200 :                        0A98 C |
+ S201 :                        0A9F C |  S202 :                        0AB0 C |
+ S203 :                        0AB9 C | *S204 :                        0AC7 C |
+ S205 :                        0AD5 C |  S206 :                        0AE1 C |
+ S207 :                        0AE5 C |  S208 :                        0AE8 C |
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 44 - 12/11/2020 11:27:45 PM
+
+
+ S209 :                        0AF4 C |  S210 :                        0AF9 C |
+ S211 :                        0B01 C |  S212 :                        0B20 C |
+ S213 :                        0B2C C |  S214 :                        0B34 C |
+ S215 :                        0B3F C |  S216 :                        0B4B C |
+ S217 :                        0B5A C |  S218 :                        0B6E C |
+ S219 :                        0B77 C |  S220 :                        0B92 C |
+ S221 :                        0B98 C |  S222 :                        0BA7 C |
+ S223 :                        0BCC C |  S224 :                        0BD8 C |
+ S225 :                        0BE8 C |  S226 :                        0BEA C |
+ S227 :                        0BF7 C |  S228 :                        0BFA C |
+ S229 :                        0C08 C |  S230 :                        0C0C C |
+ S231 :                        0C1E C |  S232 :                        0C36 C |
+ S233 :                        0C5C C |  S234 :                        0C79 C |
+ S235 :                        0C8E C |  S236 :                        0C92 C |
+ S237 :                        0CC0 C |  S238 :                        0CE6 C |
+ S239 :                        0D00 C |  S240 :                        0D14 C |
+ S241 :                        0D1E C |  S242 :                        0D3F C |
+ S243 :                        0D48 C |  S244 :                        0D6C C |
+ S245 :                        0D84 C |  S246 :                        0D88 C |
+ S247 :                        0D8A C |  S248 :                        0D8B C |
+ S249 :                        0DCA C |  S250 :                        0DDB C |
+ S251 :                        0DE7 C |  S252 :                        0DE9 C |
+ S253 :                        0E0B C |  S254 :                        0E18 C |
+ S255 :                        0E1B C |  S256 :                        0E2F C |
+ S257 :                        0E44 C |  S258 :                        0E82 C |
+ S259 :                        0E96 C |  S260 :                        0E9F C |
+ S261 :                        0EA8 C |  S262 :                        0EB1 C |
+ S263 :                        0EC0 C |  S264 :                        0EED C |
+ S265 :                        0EF9 C | *TIME :               "11:27:45 PM" - |
+*TRUE :                           1 - | *VERSION :                     142F - |
+*Z80SYNTAX :                      0 - |
+
+    294 symbols
+     38 unused symbols
+
+ AS V1.42 Beta [Bld 183] - Source File happyASM.asm - Page 45 - 12/11/2020 11:27:45 PM
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.02 seconds assembly time
+
+   2407 lines source file
+      2 passes
+      0 errors
+      0 warnings

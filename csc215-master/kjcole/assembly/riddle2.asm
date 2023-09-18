@@ -1,0 +1,14 @@
+	LDA	103o
+	STA	015o
+	LDA	100o
+	MOV	B,A
+	LDA	101o
+	ADD	B
+	STA	102o
+	JMP	000o
+
+	ORG	100o
+	DB	005o
+	DB	010o
+	DB	000o
+	DB	220o

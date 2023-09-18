@@ -1,0 +1,256 @@
+ AS V1.42 Beta [Bld 183] - Source File mult.asm - Page 1 - 12/04/2020 09:35:07 PM
+
+
+       1/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+       2/       0 :                     ;
+       3/       0 :                     ; NAME:    mult.asm
+       4/       0 :                     ; EDITOR:  Kevin Cole ("The Ubuntourist") <kevin.cole@novawebdevelopment.org>
+       5/       0 :                     ; LASTMOD: 2020.11.22 (kjc)
+       6/       0 :                     ;
+       7/       0 :                     ; DESCRIPTION:
+       8/       0 :                     ;
+       9/       0 :                     ;     Multiply the contents of registers C and D
+      10/       0 :                     ;
+      11/       0 :                     ;     See Intel 8080 Assembly Prograamming Manual, pages 53-56.
+      12/       0 :                     ;
+      13/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      14/       0 :                     
+      15/       0 :                     ;;;;;;;;;;;;;
+      16/       0 :                     ; Constants ;
+      17/       0 :                     ;;;;;;;;;;;;;
+      18/       0 :                     
+      19/       0 :                     ; ASCII characters
+      20/       0 :                     
+      21/       0 : =15O                CR:	EQU	0Dh	; ASCII CR  (Carriage Return, a.k.a. Ctrl-M)
+      22/       0 : =12O                LF:	EQU	0Ah	; ASCII LF  (Line Feed        a.k.a. Ctrl-J)
+      23/       0 : =33O                ESC:	EQU	1Bh	; ASCII ESC (Escape,          a.k.a. Ctrl-[)
+      24/       0 : =0O                 NUL:	EQU	00h	; ASCII NUL (Null)
+      25/       0 :                     
+      26/       0 :                     ; I/O
+      27/       0 :                     
+      28/       0 : =20O                SIO1S:	EQU	10h	; Serial I/O communications port 1 STATUS
+      29/       0 : =21O                SIO1D:	EQU	11h	; Serial I/O communications port 1 DATA
+      30/       0 :                     
+      31/       0 : =3O                 MRST:	EQU	03h	; UART Master Reset
+      32/       0 : =1O                 RCVD:	EQU	01h	; Character received
+      33/       0 : =2O                 SENT:	EQU	002h	; Data sent. Output complete
+      34/       0 :                     
+      35/       0 :                     ; Code segment
+      36/       0 :                     
+      37/       0 :                     	ORG	0000h	; Load at memory location 000 (hex)
+      38/       0 :                     
+      39/       0 : 076 003             	MVI	A,MRST
+      40/       2 : 323 020             	OUT	SIO1S	; Reset the UART
+      41/       4 : 076 025             	MVI	A,15h	; Settings: No RI, No XI, RTS Low, 8N1, /16
+      42/       6 : 323 020             	OUT	SIO1S	; Configure the UART with above settings
+      43/      10 :                     
+      44/      10 : 001 001 002         	LXI	B,WORDS	; Point to WORDS
+      45/      13 : 041 000 002         	LXI	H,WATCH	; Set location to increment
+      46/      16 : 066 000             	MVI	M,00h	; Reset WATCH to 0
+      47/      20 :                     
+      48/      20 : 333 020             FETCH:	IN	SIO1S	; Check serial I/O status bit 1 (XMIT status)
+      49/      22 : 346 002             	ANI	SENT	; If data not sent (i.e. XMIT not finished)...
+      50/      24 : 312 020 000         	JZ	FETCH	; ...spin wheels: continue checking status. Else...
+      51/      27 : 012                 	LDAX	B	; ...Fetch byte
+      52/      30 : 376 000             	CPI	NUL	; ...If byte is ASCII NUL...
+      53/      32 : 312 043 000         	JZ	COUNT	; ......start counting. Else...
+      54/      35 : 323 021             	OUT	SIO1D	; ......output byte
+      55/      37 : 003                 	INX	B	; ......point to next byte
+      56/      40 : 303 020 000         	JMP	FETCH	; ......lather, rinse, repeat: Fetch next byte.
+      57/      43 :                     
+      58/      43 : 333 020             COUNT:	IN	SIO1S	; Check serial I/O status bit
+      59/      45 : 346 001             	ANI	RCVD	; If no data received...
+      60/      47 : 312 043 000         	JZ	COUNT	; ...spin wheels: continue checking status. Else...
+ AS V1.42 Beta [Bld 183] - Source File mult.asm - Page 2 - 12/04/2020 09:35:07 PM
+
+
+      61/      52 : 333 021             	IN	SIO1D	; ...read the character
+      62/      54 : 323 021             	OUT	SIO1D	; ...echo it
+      63/      56 : 064                 	INR	M	; ...increment the watched counter
+      64/      57 : 303 043 000         	JMP	COUNT	; ...wait for next character
+      65/      62 :                     	
+      66/      62 :                     ; Data segment
+      67/      62 :                     
+      68/    1000 :                     	ORG	200h	; Load at memory locaton 200 (hex)
+      69/    1000 :                     
+      70/    1000 : 000                 WATCH:	DB	000h	; Initialize to zero
+      71/    1001 :                     
+      72/    1001 : 033 133 062 112     WORDS:	DB	ESC,"[2J"
+      73/    1005 : 015 012             	DB	CR,LF
+      74/    1007 : 015 012 040 040     	DB	CR,LF,"            "
+             1013 : 040 040 040 040 
+             1017 : 040 040 040 040 
+             1023 : 040 040         
+      75/    1025 : 040 040 040 040     	DB	"                ",ESC,"[31m","SLOW COUNTER",ESC,"[0m",CR,LF
+             1031 : 040 040 040 040 
+             1035 : 040 040 040 040 
+             1041 : 040 040 040 040 
+             1045 : 033 133 063 061 
+             1051 : 155 123 114 117 
+             1055 : 127 040 103 117 
+             1061 : 125 116 124 105 
+             1065 : 122 033 133 060 
+             1071 : 155 015 012     
+      76/    1074 : 015 012 040 040     	DB	CR,LF,"            "
+             1100 : 040 040 040 040 
+             1104 : 040 040 040 040 
+             1110 : 040 040         
+      77/    1112 : 120 162 145 163     	DB	"Press a printable key slowly several times,"
+             1116 : 163 040 141 040 
+             1122 : 160 162 151 156 
+             1126 : 164 141 142 154 
+             1132 : 145 040 153 145 
+             1136 : 171 040 163 154 
+             1142 : 157 167 154 171 
+             1146 : 040 163 145 166 
+             1152 : 145 162 141 154 
+             1156 : 040 164 151 155 
+             1162 : 145 163 054     
+      78/    1165 : 015 012 040 040     	DB	CR,LF,"            "
+             1171 : 040 040 040 040 
+             1175 : 040 040 040 040 
+             1201 : 040 040         
+      79/    1203 : 167 150 151 154     	DB	"while keeping track of the number of presses.",CR,LF
+             1207 : 145 040 153 145 
+             1213 : 145 160 151 156 
+             1217 : 147 040 164 162 
+             1223 : 141 143 153 040 
+             1227 : 157 146 040 164 
+             1233 : 150 145 040 156 
+             1237 : 165 155 142 145 
+             1243 : 162 040 157 146 
+             1247 : 040 160 162 145 
+             1253 : 163 163 145 163 
+             1257 : 056 015 012     
+      80/    1262 : 015 012 040 040     	DB	CR,LF,"            "
+             1266 : 040 040 040 040 
+ AS V1.42 Beta [Bld 183] - Source File mult.asm - Page 3 - 12/04/2020 09:35:07 PM
+
+
+             1272 : 040 040 040 040 
+             1276 : 040 040         
+      81/    1300 : 124 150 145 156     	DB	"Then, toggle the ",ESC,"[31m","RUN/STOP",ESC,"[0m"
+             1304 : 054 040 164 157 
+             1310 : 147 147 154 145 
+             1314 : 040 164 150 145 
+             1320 : 040 033 133 063 
+             1324 : 061 155 122 125 
+             1330 : 116 057 123 124 
+             1334 : 117 120 033 133 
+             1340 : 060 155         
+      82/    1342 : 040 163 167 151     	DB	" switch to ",ESC,"[31m","STOP",ESC,"[0m",".",CR,LF
+             1346 : 164 143 150 040 
+             1352 : 164 157 040 033 
+             1356 : 133 063 061 155 
+             1362 : 123 124 117 120 
+             1366 : 033 133 060 155 
+             1372 : 056 015 012     
+      83/    1375 : 015 012 040 040     	DB	CR,LF,"            "
+             1401 : 040 040 040 040 
+             1405 : 040 040 040 040 
+             1411 : 040 040         
+      84/    1413 : 124 157 147 147     	DB	"Toggle the address switches to 1000 octal"
+             1417 : 154 145 040 164 
+             1423 : 150 145 040 141 
+             1427 : 144 144 162 145 
+             1433 : 163 163 040 163 
+             1437 : 167 151 164 143 
+             1443 : 150 145 163 040 
+             1447 : 164 157 040 061 
+             1453 : 060 060 060 040 
+             1457 : 157 143 164 141 
+             1463 : 154             
+      85/    1464 : 015 012 040 040     	DB	CR,LF,"            "
+             1470 : 040 040 040 040 
+             1474 : 040 040 040 040 
+             1500 : 040 040         
+      86/    1502 : 050 062 060 060     	DB	"(200 hex), then toggle the "
+             1506 : 040 150 145 170 
+             1512 : 051 054 040 164 
+             1516 : 150 145 156 040 
+             1522 : 164 157 147 147 
+             1526 : 154 145 040 164 
+             1532 : 150 145 040     
+      87/    1535 : 033 133 063 061     	DB	ESC,"[31m","EXAMINE",ESC,"[0m"," switch.",CR,LF
+             1541 : 155 105 130 101 
+             1545 : 115 111 116 105 
+             1551 : 033 133 060 155 
+             1555 : 040 163 167 151 
+             1561 : 164 143 150 056 
+             1565 : 015 012         
+      88/    1567 : 015 012 040 040     	DB	CR,LF,"            "
+             1573 : 040 040 040 040 
+             1577 : 040 040 040 040 
+             1603 : 040 040         
+      89/    1605 : 104 060 055 104     	DB	"D0-D7 will equal to the number of key presses."
+             1611 : 067 040 167 151 
+             1615 : 154 154 040 145 
+             1621 : 161 165 141 154 
+             1625 : 040 164 157 040 
+ AS V1.42 Beta [Bld 183] - Source File mult.asm - Page 4 - 12/04/2020 09:35:07 PM
+
+
+             1631 : 164 150 145 040 
+             1635 : 156 165 155 142 
+             1641 : 145 162 040 157 
+             1645 : 146 040 153 145 
+             1651 : 171 040 160 162 
+             1655 : 145 163 163 145 
+             1661 : 163 056         
+      90/    1663 : 015 012             	DB	CR,LF
+      91/    1665 : 015 012             	DB	CR,LF
+      92/    1667 : 015 012             	DB	CR,LF
+      93/    1671 : 000                 	DB	NUL	; NULL string terminator
+      94/    1672 :                     
+      95/    1672 :                     ; ANSI escape sequences
+      96/    1672 :                     
+      97/    1672 :                     
+      98/    1672 :                     	END		; End
+ AS V1.42 Beta [Bld 183] - Source File mult.asm - Page 5 - 12/04/2020 09:35:07 PM
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+*ARCHITECTURE :                                      "x86_64-unknown-linux" - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - | *CONSTPI :        3.141592653589793 - |
+ COUNT :                         43 C |  CR :                            15 - |
+*DATE :                "12/04/2020" - |  ESC :                           33 - |
+*FALSE :                          0 - |  FETCH :                         20 C |
+*FULLPMMU :                       1 - | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+*INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
+ LF :                            12 - | *LISTON :                         1 - |
+*MACEXP :                         7 - | *MOMCPU :                    100200 - |
+*MOMCPUNAME :                "8080" - |  MRST :                           3 - |
+*NESTMAX :                      400 - |  NUL :                            0 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+ RCVD :                           1 - | *RELAXED :                        0 - |
+ SENT :                           2 - |  SIO1D :                         21 - |
+ SIO1S :                         20 - | *TIME :               "09:35:07 PM" - |
+*TRUE :                           1 - | *VERSION :                    12057 - |
+ WATCH :                       1000 C |  WORDS :                       1001 C |
+*Z80SYNTAX :                      0 - |
+
+     42 symbols
+     29 unused symbols
+
+ AS V1.42 Beta [Bld 183] - Source File mult.asm - Page 6 - 12/04/2020 09:35:07 PM
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.00 seconds assembly time
+
+    100 lines source file
+      2 passes
+      0 errors
+      0 warnings

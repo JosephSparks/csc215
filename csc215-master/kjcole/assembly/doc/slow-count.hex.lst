@@ -1,0 +1,231 @@
+ AS V1.42 Beta [Bld 183] - Source File slow-count.asm - Page 1 - 12/04/2020 09:35:07 PM
+
+
+       1/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+       2/       0 :                     ;
+       3/       0 :                     ; NAME:    slow-count.asm
+       4/       0 :                     ; EDITOR:  Kevin Cole ("The Ubuntourist") <kevin.cole@novawebdevelopment.org>
+       5/       0 :                     ; LASTMOD: 2020.10.06 (kjc)
+       6/       0 :                     ;
+       7/       0 :                     ; DESCRIPTION:
+       8/       0 :                     ;
+       9/       0 :                     ;     Increment a memory location each time a key is pressed.
+      10/       0 :                     ;
+      11/       0 :                     ;     To take full advantage of the included ANSI escape sequences,
+      12/       0 :                     ;     start minicom with the `-c on` option:
+      13/       0 :                     ;
+      14/       0 :                     ;         $ minicom -c on altair
+      15/       0 :                     ;
+      16/       0 :                     ;     or include it in the MINICOM environment variable:
+      17/       0 :                     ;
+      18/       0 :                     ;         $ export MINICOM="-m -c on"
+      19/       0 :                     ;         $ minicom altair
+      20/       0 :                     ;
+      21/       0 :                     ;     NOTES: For help with ANSI escape sequences see:
+      22/       0 :                     ;
+      23/       0 :                     ;                https://en.wikipedia.org/wiki/ANSI_escape_code
+      24/       0 :                     ;
+      25/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      26/       0 :                     
+      27/       0 :                     ;;;;;;;;;;;;;
+      28/       0 :                     ; Constants ;
+      29/       0 :                     ;;;;;;;;;;;;;
+      30/       0 :                     
+      31/       0 :                     ; ASCII characters
+      32/       0 :                     
+      33/       0 : =0DH                CR:	EQU	0Dh	; ASCII CR  (Carriage Return, a.k.a. Ctrl-M)
+      34/       0 : =0AH                LF:	EQU	0Ah	; ASCII LF  (Line Feed        a.k.a. Ctrl-J)
+      35/       0 : =1BH                ESC:	EQU	1Bh	; ASCII ESC (Escape,          a.k.a. Ctrl-[)
+      36/       0 : =0H                 NUL:	EQU	00h	; ASCII NUL (Null)
+      37/       0 :                     
+      38/       0 :                     ; I/O
+      39/       0 :                     
+      40/       0 : =10H                SIO1S:	EQU	10h	; Serial I/O communications port 1 STATUS
+      41/       0 : =11H                SIO1D:	EQU	11h	; Serial I/O communications port 1 DATA
+      42/       0 :                     
+      43/       0 : =3H                 MRST:	EQU	03h	; UART Master Reset
+      44/       0 : =1H                 RCVD:	EQU	01h	; Character received
+      45/       0 : =2H                 SENT:	EQU	002h	; Data sent. Output complete
+      46/       0 :                     
+      47/       0 :                     ; Code segment
+      48/       0 :                     
+      49/       0 :                     	ORG	0000h	; Load at memory location 000 (hex)
+      50/       0 :                     
+      51/       0 : 3E 03               	MVI	A,MRST
+      52/       2 : D3 10               	OUT	SIO1S	; Reset the UART
+      53/       4 : 3E 15               	MVI	A,15h	; Settings: No RI, No XI, RTS Low, 8N1, /16
+      54/       6 : D3 10               	OUT	SIO1S	; Configure the UART with above settings
+      55/       8 :                     
+      56/       8 : 01 01 02            	LXI	B,WORDS	; Point to WORDS
+      57/       B : 21 00 02            	LXI	H,WATCH	; Set location to increment
+      58/       E : 36 00               	MVI	M,00h	; Reset WATCH to 0
+      59/      10 :                     
+      60/      10 : DB 10               FETCH:	IN	SIO1S	; Check serial I/O status bit 1 (XMIT status)
+ AS V1.42 Beta [Bld 183] - Source File slow-count.asm - Page 2 - 12/04/2020 09:35:07 PM
+
+
+      61/      12 : E6 02               	ANI	SENT	; If data not sent (i.e. XMIT not finished)...
+      62/      14 : CA 10 00            	JZ	FETCH	; ...spin wheels: continue checking status. Else...
+      63/      17 : 0A                  	LDAX	B	; ...Fetch byte
+      64/      18 : FE 00               	CPI	NUL	; ...If byte is ASCII NUL...
+      65/      1A : CA 23 00            	JZ	COUNT	; ......start counting. Else...
+      66/      1D : D3 11               	OUT	SIO1D	; ......output byte
+      67/      1F : 03                  	INX	B	; ......point to next byte
+      68/      20 : C3 10 00            	JMP	FETCH	; ......lather, rinse, repeat: Fetch next byte.
+      69/      23 :                     
+      70/      23 : DB 10               COUNT:	IN	SIO1S	; Check serial I/O status bit
+      71/      25 : E6 01               	ANI	RCVD	; If no data received...
+      72/      27 : CA 23 00            	JZ	COUNT	; ...spin wheels: continue checking status. Else...
+      73/      2A : DB 11               	IN	SIO1D	; ...read the character
+      74/      2C : D3 11               	OUT	SIO1D	; ...echo it
+      75/      2E : 34                  	INR	M	; ...increment the watched counter
+      76/      2F : C3 23 00            	JMP	COUNT	; ...wait for next character
+      77/      32 :                     	
+      78/      32 :                     ; Data segment
+      79/      32 :                     
+      80/     200 :                     	ORG	200h	; Load at memory locaton 200 (hex)
+      81/     200 :                     
+      82/     200 : 00                  WATCH:	DB	000h	; Initialize to zero
+      83/     201 :                     
+      84/     201 : 1B 5B 32 4A         WORDS:	DB	ESC,"[2J"
+      85/     205 : 0D 0A               	DB	CR,LF
+      86/     207 : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+              20D : 20 20 20 20 20 20 
+              213 : 20 20             
+      87/     215 : 20 20 20 20 20 20   	DB	"                ",ESC,"[31m","SLOW COUNTER",ESC,"[0m",CR,LF
+              21B : 20 20 20 20 20 20 
+              221 : 20 20 20 20 1B 5B 
+              227 : 33 31 6D 53 4C 4F 
+              22D : 57 20 43 4F 55 4E 
+              233 : 54 45 52 1B 5B 30 
+              239 : 6D 0D 0A          
+      88/     23C : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+              242 : 20 20 20 20 20 20 
+              248 : 20 20             
+      89/     24A : 50 72 65 73 73 20   	DB	"Press a printable key slowly several times,"
+              250 : 61 20 70 72 69 6E 
+              256 : 74 61 62 6C 65 20 
+              25C : 6B 65 79 20 73 6C 
+              262 : 6F 77 6C 79 20 73 
+              268 : 65 76 65 72 61 6C 
+              26E : 20 74 69 6D 65 73 
+              274 : 2C                
+      90/     275 : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+              27B : 20 20 20 20 20 20 
+              281 : 20 20             
+      91/     283 : 77 68 69 6C 65 20   	DB	"while keeping track of the number of presses.",CR,LF
+              289 : 6B 65 65 70 69 6E 
+              28F : 67 20 74 72 61 63 
+              295 : 6B 20 6F 66 20 74 
+              29B : 68 65 20 6E 75 6D 
+              2A1 : 62 65 72 20 6F 66 
+              2A7 : 20 70 72 65 73 73 
+              2AD : 65 73 2E 0D 0A    
+      92/     2B2 : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+              2B8 : 20 20 20 20 20 20 
+              2BE : 20 20             
+ AS V1.42 Beta [Bld 183] - Source File slow-count.asm - Page 3 - 12/04/2020 09:35:07 PM
+
+
+      93/     2C0 : 54 68 65 6E 2C 20   	DB	"Then, toggle the ",ESC,"[31m","RUN/STOP",ESC,"[0m"
+              2C6 : 74 6F 67 67 6C 65 
+              2CC : 20 74 68 65 20 1B 
+              2D2 : 5B 33 31 6D 52 55 
+              2D8 : 4E 2F 53 54 4F 50 
+              2DE : 1B 5B 30 6D       
+      94/     2E2 : 20 73 77 69 74 63   	DB	" switch to ",ESC,"[31m","STOP",ESC,"[0m",".",CR,LF
+              2E8 : 68 20 74 6F 20 1B 
+              2EE : 5B 33 31 6D 53 54 
+              2F4 : 4F 50 1B 5B 30 6D 
+              2FA : 2E 0D 0A          
+      95/     2FD : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+              303 : 20 20 20 20 20 20 
+              309 : 20 20             
+      96/     30B : 54 6F 67 67 6C 65   	DB	"Toggle the address switches to 1000 octal"
+              311 : 20 74 68 65 20 61 
+              317 : 64 64 72 65 73 73 
+              31D : 20 73 77 69 74 63 
+              323 : 68 65 73 20 74 6F 
+              329 : 20 31 30 30 30 20 
+              32F : 6F 63 74 61 6C    
+      97/     334 : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+              33A : 20 20 20 20 20 20 
+              340 : 20 20             
+      98/     342 : 28 32 30 30 20 68   	DB	"(200 hex), then toggle the "
+              348 : 65 78 29 2C 20 74 
+              34E : 68 65 6E 20 74 6F 
+              354 : 67 67 6C 65 20 74 
+              35A : 68 65 20          
+      99/     35D : 1B 5B 33 31 6D 45   	DB	ESC,"[31m","EXAMINE",ESC,"[0m"," switch.",CR,LF
+              363 : 58 41 4D 49 4E 45 
+              369 : 1B 5B 30 6D 20 73 
+              36F : 77 69 74 63 68 2E 
+              375 : 0D 0A             
+     100/     377 : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+              37D : 20 20 20 20 20 20 
+              383 : 20 20             
+     101/     385 : 44 30 2D 44 37 20   	DB	"D0-D7 will equal to the number of key presses."
+              38B : 77 69 6C 6C 20 65 
+              391 : 71 75 61 6C 20 74 
+              397 : 6F 20 74 68 65 20 
+              39D : 6E 75 6D 62 65 72 
+              3A3 : 20 6F 66 20 6B 65 
+              3A9 : 79 20 70 72 65 73 
+              3AF : 73 65 73 2E       
+     102/     3B3 : 0D 0A               	DB	CR,LF
+     103/     3B5 : 0D 0A               	DB	CR,LF
+     104/     3B7 : 0D 0A               	DB	CR,LF
+     105/     3B9 : 00                  	DB	NUL	; NULL string terminator
+     106/     3BA :                     
+     107/     3BA :                     ; ANSI escape sequences
+     108/     3BA :                     
+     109/     3BA :                     
+     110/     3BA :                     	END		; End
+ AS V1.42 Beta [Bld 183] - Source File slow-count.asm - Page 4 - 12/04/2020 09:35:07 PM
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+*ARCHITECTURE :                                      "x86_64-unknown-linux" - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - | *CONSTPI :        3.141592653589793 - |
+ COUNT :                         23 C |  CR :                            0D - |
+*DATE :                "12/04/2020" - |  ESC :                           1B - |
+*FALSE :                          0 - |  FETCH :                         10 C |
+*FULLPMMU :                       1 - | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+*INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
+ LF :                            0A - | *LISTON :                         1 - |
+*MACEXP :                         7 - | *MOMCPU :                      8080 - |
+*MOMCPUNAME :                "8080" - |  MRST :                           3 - |
+*NESTMAX :                      100 - |  NUL :                            0 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+ RCVD :                           1 - | *RELAXED :                        0 - |
+ SENT :                           2 - |  SIO1D :                         11 - |
+ SIO1S :                         10 - | *TIME :               "09:35:07 PM" - |
+*TRUE :                           1 - | *VERSION :                     142F - |
+ WATCH :                        200 C |  WORDS :                        201 C |
+*Z80SYNTAX :                      0 - |
+
+     42 symbols
+     29 unused symbols
+
+ AS V1.42 Beta [Bld 183] - Source File slow-count.asm - Page 5 - 12/04/2020 09:35:07 PM
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.00 seconds assembly time
+
+    112 lines source file
+      2 passes
+      0 errors
+      0 warnings

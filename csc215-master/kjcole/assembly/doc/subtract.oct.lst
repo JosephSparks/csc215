@@ -1,0 +1,106 @@
+ AS V1.42 Beta [Bld 183] - Source File subtract.asm - Page 1 - 12/04/2020 09:35:07 PM
+
+
+       1/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+       2/       0 :                     ;
+       3/       0 :                     ; NAME:    subtract.asm
+       4/       0 :                     ; AUTHOR:  Kevin Cole ("The Ubuntourist") <kevin.cole@novawebdevelopment.org>
+       5/       0 :                     ; LASTMOD: 2020.11.13 (kjc)
+       6/       0 :                     ;
+       7/       0 :                     ; DESCRIPTION:
+       8/       0 :                     ;
+       9/       0 :                     ;     A demonstration of subtracting and conditional branching. And
+      10/       0 :                     ;     an opportunity to investigate 2's-complement arithmetic.
+      11/       0 :                     ;
+      12/       0 :                     ;     Completely arbitrary values that should be easy to see in LEDs
+      13/       0 :                     ;     or memory dumps:
+      14/       0 :                     ;
+      15/       0 :                     ;        AA (10101010) indicates the sign of the result is unknown
+      16/       0 :                     ;        00 (00000000) indicates the sign of the result is 0 (no sign)
+      17/       0 :                     ;        F0 (11110000) indicates the sign of the result is - (negative)
+      18/       0 :                     ;        0F (00001111) indicates the sign of the result is + (positive)
+      19/       0 :                     ;
+      20/       0 :                     ;     The HLT (halt instruction) should never be reached. If it is,
+      21/       0 :                     ;     something has gone terribly wrong.
+      22/       0 :                     ;
+      23/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      24/       0 :                     
+      25/       0 :                     ; Code segment:
+      26/       0 :                     
+      27/       0 :                     	ORG	000h	; Set Program Counter to address 0
+      28/       0 : 041 000 001         	LXI	H,SIGN	; Point to sign indicator
+      29/       3 : 066 252             	MVI	M,0AAh	; Set sign indicator to 10101010 (unknown)
+      30/       5 : 072 002 001         LOOP:	LDA	LESS	; Load value at LESS into Accumulator
+      31/      10 : 107                 	MOV	B,A	; Move value in Accumulator to Register B
+      32/      11 : 072 001 001         	LDA	TOTAL	; Load value at TOTAL into Accumulator
+      33/      14 : 220                 	SUB	B	; Accumulator (TOTAL) minus Reg. B (LESS)
+      34/      15 : 062 003 001         	STA	DIFF	; Store accumulator at DIFF (DIFF = TOTAL - LESS)
+      35/      20 : 312 032 000         	JZ	ZERO	; If the difference equals       zero (no sign)...
+      36/      23 : 372 037 000         	JM	MINUS	; If the difference is less than zero (negative)...
+      37/      26 : 362 044 000         	JP	PLUS	; If the difference is more than zero (positive)...
+      38/      31 : 166                 	HLT		; WARNING! WARNING! DANGER, WILL ROBINSON!
+      39/      32 :                     
+      40/      32 : 066 000             ZERO:	MVI	M,000h	; Set sign indicator to 00000000
+      41/      34 : 303 005 000         	JMP	LOOP	; Jump to start of code (infinite loop)
+      42/      37 :                     
+      43/      37 : 066 360             MINUS:	MVI	M,0F0h	; Set sign indicator to 11110000
+      44/      41 : 303 005 000         	JMP	LOOP	; Jump to start of code (infinite loop)
+      45/      44 :                     
+      46/      44 : 066 017             PLUS:	MVI	M,00Fh	; Set sign indicator to 00001111
+      47/      46 : 303 005 000         	JMP	LOOP	; Jump to start of code (infinite loop)
+      48/      51 :                     
+      49/      51 :                     ; Data segment:
+      50/      51 :                     
+      51/     400 :                     	ORG	100h	; Set Program Counter to address 100 (hex)
+      52/     400 :                     
+      53/     400 : 252                 SIGN:	DB	0AAh	; Sign of the result (address 100) = unknown (AA hex)
+      54/     401 : 005                 TOTAL:	DB	005h	; Data Byte at address 101 = 5
+      55/     402 : 020                 LESS:	DB	010h	; Data Byte at address 102 = 16 (10 octal)
+      56/     403 : 000                 DIFF:	DB	000h	; Data Byte at address 103 = 0
+      57/     404 :                     
+      58/     404 :                     	END		; End
+ AS V1.42 Beta [Bld 183] - Source File subtract.asm - Page 2 - 12/04/2020 09:35:07 PM
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+*ARCHITECTURE :                                      "x86_64-unknown-linux" - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - | *CONSTPI :        3.141592653589793 - |
+*DATE :                "12/04/2020" - |  DIFF :                         403 C |
+*FALSE :                          0 - | *FULLPMMU :                       1 - |
+*HAS64 :                          1 - | *HASDSP :                         0 - |
+*HASFPU :                         0 - | *HASPMMU :                        0 - |
+*INEXTMODE :                      0 - | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - |  LESS :                         402 C |
+*LISTON :                         1 - |  LOOP :                           5 C |
+*MACEXP :                         7 - |  MINUS :                         37 C |
+*MOMCPU :                    100200 - | *MOMCPUNAME :                "8080" - |
+*NESTMAX :                      400 - | *PACKING :                        0 - |
+*PADDING :                        1 - |  PLUS :                          44 C |
+*RELAXED :                        0 - |  SIGN :                         400 C |
+*TIME :               "09:35:07 PM" - |  TOTAL :                        401 C |
+*TRUE :                           1 - | *VERSION :                    12057 - |
+*Z80SYNTAX :                      0 - |  ZERO :                          32 C |
+
+     37 symbols
+     29 unused symbols
+
+ AS V1.42 Beta [Bld 183] - Source File subtract.asm - Page 3 - 12/04/2020 09:35:07 PM
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.00 seconds assembly time
+
+     59 lines source file
+      2 passes
+      0 errors
+      0 warnings

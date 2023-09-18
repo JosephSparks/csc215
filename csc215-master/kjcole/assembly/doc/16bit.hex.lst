@@ -1,0 +1,101 @@
+ AS V1.42 Beta [Bld 183] - Source File 16bit.asm - Page 1 - 12/04/2020 09:35:06 PM
+
+
+       1/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+       2/       0 :                     ;
+       3/       0 :                     ; NAME:    add.asm
+       4/       0 :                     ; AUTHOR:  Adrian Buchholz, Francesco Crisafulli, Peter Yuan
+       5/       0 :                     ; LASTMOD: 2020.12.02
+       6/       0 :                     ;
+       7/       0 :                     ; DESCRIPTION:
+       8/       0 :                     ;
+       9/       0 :                     ;     This is the assembly source code that adds two 16 bit numbers
+      10/       0 :                     ;
+      11/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      12/       0 :                     
+      13/       0 :                     
+      14/       0 :                             ORG    0o       
+      15/       0 : 3A 80 00            START:  LDA    VAL1     ; VAL1 (200) | low byte
+      16/       3 : 47                          MOV    B,A      ; Move to Register B
+      17/       4 : 3A 81 00                    LDA    VAL2     ; VAL2 (201) | low byte
+      18/       7 : 80                          ADD    B        ; Add two low bytes | Sets Carry Bit to 0 or 1
+      19/       8 : 32 85 00                    STA    SUMLOW   ; Store in (205)
+      20/       B :                     
+      21/       B :                             ; Add the second byte (Doesn't affect carry bit)
+      22/       B : 3A 82 00                    LDA    VAL3     ; VAL2 (202) | high byte
+      23/       E : 4F                          MOV    C,A      ; Move to Register C
+      24/       F : 3A 83 00                    LDA    VAL4     ; VAL4 (203) | high byte
+      25/      12 :                     
+      26/      12 : D2 16 00                    JNC     ADD_2   ; Check for Carry from the first byte add | if 0 jump to ADD_2 else increment by one and go to ADD_2
+      27/      15 : 3C                          INR     A       ; Add the carry bit from the lower byte
+      28/      16 :                     
+      29/      16 :                     ADD_2:
+      30/      16 : 81                          ADD    C        ; Add two high bytes
+      31/      17 : 32 86 00                    STA    SUMHIGH  ; Store in (206)
+      32/      1A :                     
+      33/      1A : C3 00 00                    JMP    START    
+      34/      1D :                     
+      35/      1D :                     
+      36/      80 :                                   ORG    200o 
+      37/      80 :                     ; Low Bytes     
+      38/      80 : F2                  VAL1:         DB     11110010b        
+      39/      81 : 25                  VAL2:         DB     00100101b 
+      40/      82 :                     
+      41/      82 :                     ; High Bytes
+      42/      82 : 54                  VAL3:         DB     01010100b   
+      43/      83 : 56                  VAL4:         DB     01010110b 
+      44/      84 :                     
+      45/      84 :                     ; Carry bit
+      46/      84 : 01                  CARRY:        DB     00000001b ; Memory Register 204
+      47/      85 :                     
+      48/      85 :                     ; Story High and Low Byte Sum
+      49/      85 : 00                  SUMLOW:       DB     00000000b
+      50/      86 : 00                  SUMHIGH:      DB     00000000b     
+      51/      87 :                     
+      52/      87 :                             END
+ AS V1.42 Beta [Bld 183] - Source File 16bit.asm - Page 2 - 12/04/2020 09:35:06 PM
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+ ADD_2 :                         16 C |
+*ARCHITECTURE :                                      "x86_64-unknown-linux" - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CARRY :                         84 C | *CASESENSITIVE :                  0 - |
+*CONSTPI :        3.141592653589793 - | *DATE :                "12/04/2020" - |
+*FALSE :                          0 - | *FULLPMMU :                       1 - |
+*HAS64 :                          1 - | *HASDSP :                         0 - |
+*HASFPU :                         0 - | *HASPMMU :                        0 - |
+*INEXTMODE :                      0 - | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - | *LISTON :                         1 - |
+*MACEXP :                         7 - | *MOMCPU :                      8080 - |
+*MOMCPUNAME :                "8080" - | *NESTMAX :                      100 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+*RELAXED :                        0 - |  START :                          0 C |
+ SUMHIGH :                       86 C |  SUMLOW :                        85 C |
+*TIME :               "09:35:06 PM" - | *TRUE :                           1 - |
+ VAL1 :                          80 C |  VAL2 :                          81 C |
+ VAL3 :                          82 C |  VAL4 :                          83 C |
+*VERSION :                     142F - | *Z80SYNTAX :                      0 - |
+
+     38 symbols
+     30 unused symbols
+
+ AS V1.42 Beta [Bld 183] - Source File 16bit.asm - Page 3 - 12/04/2020 09:35:06 PM
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.00 seconds assembly time
+
+     54 lines source file
+      2 passes
+      0 errors
+      0 warnings

@@ -1,0 +1,10 @@
+	LDA	000o
+	STA	200o
+
+	LDA	001o
+	STA	201o
+
+	LDA	002o
+	STA	202o
+
+	JMP	000o

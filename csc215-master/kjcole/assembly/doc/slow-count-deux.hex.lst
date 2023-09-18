@@ -1,0 +1,348 @@
+ AS V1.42 Beta [Bld 183] - Source File slow-count-deux.asm - Page 1 - 12/04/2020 09:35:07 PM
+
+
+       1/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+       2/       0 :                     ;
+       3/       0 :                     ; NAME:    slow-count-deux.asm
+       4/       0 :                     ; EDITOR:  Kevin Cole ("The Ubuntourist") <kevin.cole@novawebdevelopment.org>
+       5/       0 :                     ; LASTMOD: 2020.10.06 (kjc)
+       6/       0 :                     ;
+       7/       0 :                     ; DESCRIPTION:
+       8/       0 :                     ;
+       9/       0 :                     ;     Increment a memory location each time a key is pressed.
+      10/       0 :                     ;
+      11/       0 :                     ;     To take full advantage of the included ANSI escape sequences,
+      12/       0 :                     ;     start minicom with the `-c on` option:
+      13/       0 :                     ;
+      14/       0 :                     ;         $ minicom -c on altair
+      15/       0 :                     ;
+      16/       0 :                     ;     or include it in the MINICOM environment variable:
+      17/       0 :                     ;
+      18/       0 :                     ;         $ export MINICOM="-m -c on"
+      19/       0 :                     ;         $ minicom altair
+      20/       0 :                     ;
+      21/       0 :                     ;     NOTES: For help with ANSI escape sequences see:
+      22/       0 :                     ;
+      23/       0 :                     ;                https://en.wikipedia.org/wiki/ANSI_escape_code
+      24/       0 :                     ;
+      25/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      26/       0 :                     
+      27/       0 :                     ;;;;;;;;;;;;;
+      28/       0 :                     ; Constants ;
+      29/       0 :                     ;;;;;;;;;;;;;
+      30/       0 :                     
+      31/       0 :                     ; ASCII characters
+      32/       0 :                     
+      33/       0 : =0H                 NUL:	EQU	00h	; ASCII NUL (Null)
+      34/       0 : =9H                 TAB:	EQU	09h	; ASCII TAB (Tab              a.k.a. Ctrl-I)
+      35/       0 : =0AH                LF:	EQU	0Ah	; ASCII LF  (Line Feed        a.k.a. Ctrl-J)
+      36/       0 : =0DH                CR:	EQU	0Dh	; ASCII CR  (Carriage Return, a.k.a. Ctrl-M)
+      37/       0 : =1BH                ESC:	EQU	1Bh	; ASCII ESC (Escape,          a.k.a. Ctrl-[)
+      38/       0 :                     
+      39/       0 :                     ; I/O
+      40/       0 :                     
+      41/       0 : =10H                SIO1S:	EQU	10h	; Serial I/O communications port 1 STATUS
+      42/       0 : =11H                SIO1D:	EQU	11h	; Serial I/O communications port 1 DATA
+      43/       0 :                     
+      44/       0 : =3H                 MRST:	EQU	03h	; UART Master Reset
+      45/       0 : =1H                 RCVD:	EQU	01h	; Character received
+      46/       0 : =2H                 SENT:	EQU	002h	; Data sent. Output complete
+      47/       0 :                     
+      48/       0 :                     ; Code segment
+      49/       0 :                     
+      50/       0 :                     	ORG	0000h	; Load at address 0
+      51/       0 :                     
+      52/       0 : 3E 03               	MVI	A,MRST
+      53/       2 : D3 10               	OUT	SIO1S	; Reset the UART
+      54/       4 : 3E 15               	MVI	A,15h	; Settings: No RI, No XI, RTS Low, 8N1, /16
+      55/       6 : D3 10               	OUT	SIO1S	; Configure the UART with above settings
+      56/       8 :                     
+      57/       8 : 01 02 01            	LXI	B,WORDS	; Point to WORDS
+      58/       B : 21 00 01            	LXI	H,WATCH	; Set location to increment
+      59/       E :                     
+      60/       E : DB 10               FETCH:	IN	SIO1S	; Check serial I/O status bit 1 (XMIT status)
+ AS V1.42 Beta [Bld 183] - Source File slow-count-deux.asm - Page 2 - 12/04/2020 09:35:07 PM
+
+
+      61/      10 : E6 02               	ANI	SENT	; If data not sent (i.e. XMIT not finished)...
+      62/      12 : CA 0E 00            	JZ	FETCH	; ...spin wheels: continue checking status. Else...
+      63/      15 : 0A                  	LDAX	B	; ...Fetch byte
+      64/      16 : FE 00               	CPI	NUL	; ...If byte is ASCII NUL...
+      65/      18 : CA 21 00            	JZ	COUNT	; ......begin counting. Else...
+      66/      1B : D3 11               	OUT	SIO1D	; ......output byte
+      67/      1D : 03                  	INX	B	; ......point to next byte
+      68/      1E : C3 0E 00            	JMP	FETCH	; ......lather, rinse, repeat: Fetch next byte.
+      69/      21 :                     
+      70/      21 : DB 10               COUNT:	IN	SIO1S	; Check serial I/O status bit
+      71/      23 : E6 01               	ANI	RCVD	; If no data received...
+      72/      25 : CA 21 00            	JZ	COUNT	; ...spin wheels: continue checking status. Else...
+      73/      28 : DB 11               	IN	SIO1D	; ...read the character
+      74/      2A : FE 09               	CPI	TAB	; ...If it is a TAB character...
+      75/      2C : CA 35 00            	JZ	DONE	; ......stop counting. Else...
+      76/      2F : D3 11               	OUT	SIO1D	; ...echo it
+      77/      31 : 34                  	INR	M	; ...increment the watched counter
+      78/      32 : C3 21 00            	JMP	COUNT	; ...wait for next character
+      79/      35 : 6E                  DONE:	MOV	L,M	; Put the contents of WATCH in the low byte of HL
+      80/      36 : E9                  	PCHL		; Jump to value of WATCH to display in LEDs
+      81/      37 :                     	
+      82/      37 :                     ; Data segment
+      83/      37 :                     
+      84/     100 :                     	ORG	100h	; Load at memory locaton 256
+      85/     100 :                     
+      86/     100 : 00                  WATCH:	DB	00h	; Initialize to zero
+      87/     101 : 02                  	DB	02h	; offset for use as high byte of HL register pair
+      88/     102 :                     
+      89/     102 : 1B 5B 32 4A         WORDS:	DB	ESC,"[2J"
+      90/     106 : 0D 0A               	DB	CR,LF
+      91/     108 : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+              10E : 20 20 20 20 20 20 
+              114 : 20 20             
+      92/     116 : 20 20 20 20 20 20   	DB	"                ",ESC,"[31m","SLOW COUNTER DEUX",ESC,"[0m",CR,LF
+              11C : 20 20 20 20 20 20 
+              122 : 20 20 20 20 1B 5B 
+              128 : 33 31 6D 53 4C 4F 
+              12E : 57 20 43 4F 55 4E 
+              134 : 54 45 52 20 44 45 
+              13A : 55 58 1B 5B 30 6D 
+              140 : 0D 0A             
+      93/     142 : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+              148 : 20 20 20 20 20 20 
+              14E : 20 20             
+      94/     150 : 50 72 65 73 73 20   	DB	"Press a printable key slowly several times,"
+              156 : 61 20 70 72 69 6E 
+              15C : 74 61 62 6C 65 20 
+              162 : 6B 65 79 20 73 6C 
+              168 : 6F 77 6C 79 20 73 
+              16E : 65 76 65 72 61 6C 
+              174 : 20 74 69 6D 65 73 
+              17A : 2C                
+      95/     17B : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+              181 : 20 20 20 20 20 20 
+              187 : 20 20             
+      96/     189 : 77 68 69 6C 65 20   	DB	"while keeping track of the number of presses.",CR,LF
+              18F : 6B 65 65 70 69 6E 
+              195 : 67 20 74 72 61 63 
+              19B : 6B 20 6F 66 20 74 
+              1A1 : 68 65 20 6E 75 6D 
+ AS V1.42 Beta [Bld 183] - Source File slow-count-deux.asm - Page 3 - 12/04/2020 09:35:07 PM
+
+
+              1A7 : 62 65 72 20 6F 66 
+              1AD : 20 70 72 65 73 73 
+              1B3 : 65 73 2E 0D 0A    
+      97/     1B8 : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+              1BE : 20 20 20 20 20 20 
+              1C4 : 20 20             
+      98/     1C6 : 54 68 65 6E 2C 20   	DB	"Then, press the ",ESC,"[31m","TAB",ESC,"[0m"
+              1CC : 70 72 65 73 73 20 
+              1D2 : 74 68 65 20 1B 5B 
+              1D8 : 33 31 6D 54 41 42 
+              1DE : 1B 5B 30 6D       
+      99/     1E2 : 20 6B 65 79 20 74   	DB	" key to stop.",CR,LF
+              1E8 : 6F 20 73 74 6F 70 
+              1EE : 2E 0D 0A          
+     100/     1F1 : 0D 0A 20 20 20 20   	DB	CR,LF,"            "
+              1F7 : 20 20 20 20 20 20 
+              1FD : 20 20             
+     101/     1FF : 44 30 2D 44 37 20   	DB	"D0-D7 will equal to the number of key presses."
+              205 : 77 69 6C 6C 20 65 
+              20B : 71 75 61 6C 20 74 
+              211 : 6F 20 74 68 65 20 
+              217 : 6E 75 6D 62 65 72 
+              21D : 20 6F 66 20 6B 65 
+              223 : 79 20 70 72 65 73 
+              229 : 73 65 73 2E       
+     102/     22D : 0D 0A               	DB	CR,LF
+     103/     22F : 0D 0A               	DB	CR,LF
+     104/     231 : 0D 0A               	DB	CR,LF
+     105/     233 : 00                  	DB	NUL	; NULL string terminator
+     106/     234 :                     
+     107/     234 :                     ; Abuse of LEDs segment
+     108/     234 :                     
+     109/     200 :                     	ORG	200h	; Load at memory location 512
+     110/     200 :                     
+     111/     200 : E9                  ABUSE:	PCHL		; Abuse the Program Counter load instruction
+     112/     201 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     113/     202 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     114/     203 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     115/     204 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     116/     205 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     117/     206 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     118/     207 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     119/     208 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     120/     209 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     121/     20A : E9                  	PCHL		; Abuse the Program Counter load instruction
+     122/     20B : E9                  	PCHL		; Abuse the Program Counter load instruction
+     123/     20C : E9                  	PCHL		; Abuse the Program Counter load instruction
+     124/     20D : E9                  	PCHL		; Abuse the Program Counter load instruction
+     125/     20E : E9                  	PCHL		; Abuse the Program Counter load instruction
+     126/     20F : E9                  	PCHL		; Abuse the Program Counter load instruction
+     127/     210 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     128/     211 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     129/     212 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     130/     213 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     131/     214 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     132/     215 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     133/     216 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     134/     217 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     135/     218 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     136/     219 : E9                  	PCHL		; Abuse the Program Counter load instruction
+ AS V1.42 Beta [Bld 183] - Source File slow-count-deux.asm - Page 4 - 12/04/2020 09:35:07 PM
+
+
+     137/     21A : E9                  	PCHL		; Abuse the Program Counter load instruction
+     138/     21B : E9                  	PCHL		; Abuse the Program Counter load instruction
+     139/     21C : E9                  	PCHL		; Abuse the Program Counter load instruction
+     140/     21D : E9                  	PCHL		; Abuse the Program Counter load instruction
+     141/     21E : E9                  	PCHL		; Abuse the Program Counter load instruction
+     142/     21F : E9                  	PCHL		; Abuse the Program Counter load instruction
+     143/     220 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     144/     221 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     145/     222 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     146/     223 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     147/     224 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     148/     225 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     149/     226 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     150/     227 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     151/     228 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     152/     229 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     153/     22A : E9                  	PCHL		; Abuse the Program Counter load instruction
+     154/     22B : E9                  	PCHL		; Abuse the Program Counter load instruction
+     155/     22C : E9                  	PCHL		; Abuse the Program Counter load instruction
+     156/     22D : E9                  	PCHL		; Abuse the Program Counter load instruction
+     157/     22E : E9                  	PCHL		; Abuse the Program Counter load instruction
+     158/     22F : E9                  	PCHL		; Abuse the Program Counter load instruction
+     159/     230 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     160/     231 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     161/     232 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     162/     233 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     163/     234 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     164/     235 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     165/     236 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     166/     237 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     167/     238 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     168/     239 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     169/     23A : E9                  	PCHL		; Abuse the Program Counter load instruction
+     170/     23B : E9                  	PCHL		; Abuse the Program Counter load instruction
+     171/     23C : E9                  	PCHL		; Abuse the Program Counter load instruction
+     172/     23D : E9                  	PCHL		; Abuse the Program Counter load instruction
+     173/     23E : E9                  	PCHL		; Abuse the Program Counter load instruction
+     174/     23F : E9                  	PCHL		; Abuse the Program Counter load instruction
+     175/     240 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     176/     241 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     177/     242 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     178/     243 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     179/     244 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     180/     245 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     181/     246 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     182/     247 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     183/     248 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     184/     249 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     185/     24A : E9                  	PCHL		; Abuse the Program Counter load instruction
+     186/     24B : E9                  	PCHL		; Abuse the Program Counter load instruction
+     187/     24C : E9                  	PCHL		; Abuse the Program Counter load instruction
+     188/     24D : E9                  	PCHL		; Abuse the Program Counter load instruction
+     189/     24E : E9                  	PCHL		; Abuse the Program Counter load instruction
+     190/     24F : E9                  	PCHL		; Abuse the Program Counter load instruction
+     191/     250 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     192/     251 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     193/     252 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     194/     253 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     195/     254 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     196/     255 : E9                  	PCHL		; Abuse the Program Counter load instruction
+ AS V1.42 Beta [Bld 183] - Source File slow-count-deux.asm - Page 5 - 12/04/2020 09:35:07 PM
+
+
+     197/     256 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     198/     257 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     199/     258 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     200/     259 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     201/     25A : E9                  	PCHL		; Abuse the Program Counter load instruction
+     202/     25B : E9                  	PCHL		; Abuse the Program Counter load instruction
+     203/     25C : E9                  	PCHL		; Abuse the Program Counter load instruction
+     204/     25D : E9                  	PCHL		; Abuse the Program Counter load instruction
+     205/     25E : E9                  	PCHL		; Abuse the Program Counter load instruction
+     206/     25F : E9                  	PCHL		; Abuse the Program Counter load instruction
+     207/     260 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     208/     261 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     209/     262 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     210/     263 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     211/     264 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     212/     265 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     213/     266 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     214/     267 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     215/     268 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     216/     269 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     217/     26A : E9                  	PCHL		; Abuse the Program Counter load instruction
+     218/     26B : E9                  	PCHL		; Abuse the Program Counter load instruction
+     219/     26C : E9                  	PCHL		; Abuse the Program Counter load instruction
+     220/     26D : E9                  	PCHL		; Abuse the Program Counter load instruction
+     221/     26E : E9                  	PCHL		; Abuse the Program Counter load instruction
+     222/     26F : E9                  	PCHL		; Abuse the Program Counter load instruction
+     223/     270 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     224/     271 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     225/     272 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     226/     273 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     227/     274 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     228/     275 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     229/     276 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     230/     277 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     231/     278 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     232/     279 : E9                  	PCHL		; Abuse the Program Counter load instruction
+     233/     27A : E9                  	PCHL		; Abuse the Program Counter load instruction
+     234/     27B : E9                  	PCHL		; Abuse the Program Counter load instruction
+     235/     27C : E9                  	PCHL		; Abuse the Program Counter load instruction
+     236/     27D : E9                  	PCHL		; Abuse the Program Counter load instruction
+     237/     27E : E9                  	PCHL		; Abuse the Program Counter load instruction
+     238/     27F :                     
+     239/     27F :                     	END		; End
+ AS V1.42 Beta [Bld 183] - Source File slow-count-deux.asm - Page 6 - 12/04/2020 09:35:07 PM
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+*ABUSE :                        200 C |
+*ARCHITECTURE :                                      "x86_64-unknown-linux" - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - | *CONSTPI :        3.141592653589793 - |
+ COUNT :                         21 C |  CR :                            0D - |
+*DATE :                "12/04/2020" - |  DONE :                          35 C |
+ ESC :                           1B - | *FALSE :                          0 - |
+ FETCH :                         0E C | *FULLPMMU :                       1 - |
+*HAS64 :                          1 - | *HASDSP :                         0 - |
+*HASFPU :                         0 - | *HASPMMU :                        0 - |
+*INEXTMODE :                      0 - | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - |  LF :                            0A - |
+*LISTON :                         1 - | *MACEXP :                         7 - |
+*MOMCPU :                      8080 - | *MOMCPUNAME :                "8080" - |
+ MRST :                           3 - | *NESTMAX :                      100 - |
+ NUL :                            0 - | *PACKING :                        0 - |
+*PADDING :                        1 - |  RCVD :                           1 - |
+*RELAXED :                        0 - |  SENT :                           2 - |
+ SIO1D :                         11 - |  SIO1S :                         10 - |
+ TAB :                            9 - | *TIME :               "09:35:07 PM" - |
+*TRUE :                           1 - | *VERSION :                     142F - |
+ WATCH :                        100 C |  WORDS :                        102 C |
+*Z80SYNTAX :                      0 - |
+
+     45 symbols
+     30 unused symbols
+
+ AS V1.42 Beta [Bld 183] - Source File slow-count-deux.asm - Page 7 - 12/04/2020 09:35:07 PM
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.00 seconds assembly time
+
+    241 lines source file
+      2 passes
+      0 errors
+      0 warnings

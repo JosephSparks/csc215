@@ -1,0 +1,19 @@
+ AS V1.42 Beta [Bld 183] - Source File test_mult.asm - Page 1 - 12/04/2020 09:35:07 PM
+
+
+       1/       0 :                     	PAGE	40		; 40 lines per page
+       2/       0 :                     	TITLE	"test_mult - Copyright (C) Kevin Cole 2020.11.26 (GPL)"
+       3/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+       4/       0 :                     ;
+       5/       0 :                     ; NAME:    test_mult.asm
+       6/       0 :                     ; EDITOR:  Kevin Cole ("The Ubuntourist") <kevin.cole@novawebdevelopment.org>
+       7/       0 :                     ; LASTMOD: 2020.11.26 (kjc)
+       8/       0 :                     ;
+       9/       0 :                     ; DESCRIPTION:
+      10/       0 :                     ;
+      11/       0 :                     ;     Test string to integer conversion
+      12/       0 :                     ;
+      13/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      14/       0 :                     
+      15/       0 :                     ; Code segment
+      16/       0 :                     

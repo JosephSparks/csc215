@@ -1,0 +1,70 @@
+ AS V1.42 Beta [Bld 188] - Source File scram.asm - Page 1 - 01/13/2021 07:48:01 AM
+
+
+       1/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+       2/       0 :                     ;
+       3/       0 :                     ; NAME:    scram.asm
+       4/       0 :                     ; AUTHOR:  Kevin Cole ("The Ubuntourist") <kevin.cole@novawebdevelopment.org>
+       5/       0 :                     ; LASTMOD: 2021.01.11 (kjc)
+       6/       0 :                     ;
+       7/       0 :                     ; DESCRIPTION:
+       8/       0 :                     ;
+       9/       0 :                     ;     Set to Clear all RAM (SCRAM)
+      10/       0 :                     ;
+      11/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      12/       0 :                     
+      13/       0 :                     ; Code segment
+      14/       0 :                     
+      15/       0 :                             ORG     0000h   ; Set the location counter to 0 (hex)
+      16/       0 :                     
+      17/       0 : 21 09 00                    LXI     H,AFTER ; Point to first byte after the end of the program
+      18/       3 : 36 00               LOOP:   MVI     M,00h   ; Move zero into memory location
+      19/       5 : 23                          INX     H       ; Point to next memory location
+      20/       6 : C3 03 00                    JMP     LOOP    ; You go back, Jack, and do it again, wheels turnin'...
+      21/       9 :                     
+      22/       9 : =9H                 AFTER:  EQU     $       ; Define constant AFTER as current location counter
+      23/       9 :                     
+      24/       9 :                             END             ; End
+ AS V1.42 Beta [Bld 188] - Source File scram.asm - Page 2 - 01/13/2021 07:48:01 AM
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+ AFTER :                          9 - |
+*ARCHITECTURE :                                     "arm-unknown-linux-arm" - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - | *COMPMODE :                       0 - |
+*CONSTPI :        3.141592653589793 - | *DATE :                "01/13/2021" - |
+*FALSE :                          0 - | *FULLPMMU :                       1 - |
+*HAS64 :                          1 - | *HASDSP :                         0 - |
+*HASFPU :                         0 - | *HASPMMU :                        0 - |
+*INEXTMODE :                      0 - | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - | *LISTON :                         1 - |
+ LOOP :                           3 C | *MACEXP :                         7 - |
+*MOMCPU :                      8080 - | *MOMCPUNAME :                "8080" - |
+*NESTMAX :                      100 - | *PACKING :                        0 - |
+*PADDING :                        1 - | *RELAXED :                        0 - |
+*TIME :               "07:48:01 AM" - | *TRUE :                           1 - |
+*VERSION :                     142F - | *Z80SYNTAX :                      0 - |
+
+     32 symbols
+     30 unused symbols
+
+ AS V1.42 Beta [Bld 188] - Source File scram.asm - Page 3 - 01/13/2021 07:48:01 AM
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.01 seconds assembly time
+
+     25 lines source file
+      2 passes
+      0 errors
+      0 warnings

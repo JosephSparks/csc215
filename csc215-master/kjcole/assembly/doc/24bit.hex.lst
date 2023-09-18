@@ -1,0 +1,123 @@
+ AS V1.42 Beta [Bld 183] - Source File 24bit.asm - Page 1 - 12/04/2020 09:35:06 PM
+
+
+       1/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+       2/       0 :                     ;
+       3/       0 :                     ; NAME:    24bit.asm
+       4/       0 :                     ; AUTHOR:  Adrian Buchholz, Francesco Crisafulli, Peter Yuan
+       5/       0 :                     ; LASTMOD: 2020.12.04
+       6/       0 :                     ;
+       7/       0 :                     ; DESCRIPTION:
+       8/       0 :                     ;
+       9/       0 :                     ;     This is the assembly source code that adds two 24 bit numbers
+      10/       0 :                     ;
+      11/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      12/       0 :                     
+      13/       0 :                     
+      14/       0 :                             ORG    0o       
+      15/       0 : 3A 80 00            START:  LDA    VAL1     ; VAL1 (200) | low byte
+      16/       3 : 47                          MOV    B,A      ; Move to Register B
+      17/       4 : 3A 81 00                    LDA    VAL2     ; VAL2 (201) | low byte
+      18/       7 : 80                          ADD    B        ; Add two low bytes | Sets Carry Bit to 0 or 1
+      19/       8 : 32 87 00                    STA    SUMLOW   ; Store in (206)
+      20/       B :                     
+      21/       B :                             ; Add the second byte (Doesn't affect carry bit)
+      22/       B : 3A 82 00                    LDA    VAL3     ; VAL2 (202) | mid byte
+      23/       E : 4F                          MOV    C,A      ; Move to Register C
+      24/       F : 3A 83 00                    LDA    VAL4     ; VAL4 (203) | mid byte
+      25/      12 :                     
+      26/      12 : D2 16 00                    JNC    ADD_2   ; Check for Carry from the first byte add | if 0 jump to ADD_2 else increment by one and go to ADD_2
+      27/      15 : 3C                          INR    A       ; Add the carry bit from the lower byte
+      28/      16 :                     
+      29/      16 :                     ADD_2:
+      30/      16 : 81                          ADD    C        ; Add two mid bytes
+      31/      17 : 32 88 00                    STA    SUMMID   ; Store in (207)
+      32/      1A :                     
+      33/      1A : 3A 84 00                    LDA    VAL5     ; VAL5 (204)
+      34/      1D : 57                          MOV    D,A      ; Move value to Reigester D
+      35/      1E : 3A 85 00                    LDA    VAL6     ; VAL6 (205)
+      36/      21 :                     
+      37/      21 : D2 25 00                    JNC    ADD_3    ; Check carry conditional
+      38/      24 : 3C                          INR    A
+      39/      25 :                     
+      40/      25 :                     
+      41/      25 :                     ADD_3:
+      42/      25 : 82                          ADD    D        ; Add two high bytes    
+      43/      26 : 32 89 00                    STA    SUMHIGH  ; Store in (210)
+      44/      29 :                     
+      45/      29 : C3 00 00                    JMP    START    
+      46/      2C :                     
+      47/      2C :                     
+      48/      80 :                                   ORG    200o 
+      49/      80 :                     ; Low Bytes     
+      50/      80 : 81                  VAL1:         DB     10000001b ; 200       
+      51/      81 : 81                  VAL2:         DB     10000001b ; 201
+      52/      82 :                     
+      53/      82 :                     ; Mid Bytes
+      54/      82 : C1                  VAL3:         DB     11000001b ; 202 
+      55/      83 : 41                  VAL4:         DB     01000001b ; 203
+      56/      84 :                     
+      57/      84 :                     ; High Bytes
+      58/      84 : 41                  VAL5:          DB     01000001b ; 204
+      59/      85 : 11                  VAL6:         DB     00010001b ; 205
+      60/      86 :                     
+ AS V1.42 Beta [Bld 183] - Source File 24bit.asm - Page 2 - 12/04/2020 09:35:06 PM
+
+
+      61/      86 :                     ; Carry bit
+      62/      86 : 01                  CARRY:        DB     00000001b ; 206
+      63/      87 :                     
+      64/      87 :                     ; Story High and Low Byte Sum
+      65/      87 : 00                  SUMLOW:       DB     00000000b ; 207
+      66/      88 : 00                  SUMMID:       DB     00000000b ; 210
+      67/      89 : 00                  SUMHIGH:      DB     00000000b ; 211  
+      68/      8A :                     
+      69/      8A :                             END 
+ AS V1.42 Beta [Bld 183] - Source File 24bit.asm - Page 3 - 12/04/2020 09:35:06 PM
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+ ADD_2 :                         16 C |  ADD_3 :                         25 C |
+*ARCHITECTURE :                                      "x86_64-unknown-linux" - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CARRY :                         86 C | *CASESENSITIVE :                  0 - |
+*CONSTPI :        3.141592653589793 - | *DATE :                "12/04/2020" - |
+*FALSE :                          0 - | *FULLPMMU :                       1 - |
+*HAS64 :                          1 - | *HASDSP :                         0 - |
+*HASFPU :                         0 - | *HASPMMU :                        0 - |
+*INEXTMODE :                      0 - | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - | *LISTON :                         1 - |
+*MACEXP :                         7 - | *MOMCPU :                      8080 - |
+*MOMCPUNAME :                "8080" - | *NESTMAX :                      100 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+*RELAXED :                        0 - |  START :                          0 C |
+ SUMHIGH :                       89 C |  SUMLOW :                        87 C |
+ SUMMID :                        88 C | *TIME :               "09:35:06 PM" - |
+*TRUE :                           1 - |  VAL1 :                          80 C |
+ VAL2 :                          81 C |  VAL3 :                          82 C |
+ VAL4 :                          83 C |  VAL5 :                          84 C |
+ VAL6 :                          85 C | *VERSION :                     142F - |
+*Z80SYNTAX :                      0 - |
+
+     42 symbols
+     30 unused symbols
+
+ AS V1.42 Beta [Bld 183] - Source File 24bit.asm - Page 4 - 12/04/2020 09:35:06 PM
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.00 seconds assembly time
+
+     69 lines source file
+      2 passes
+      0 errors
+      0 warnings

@@ -1,0 +1,109 @@
+ AS V1.42 Beta [Bld 183] - Source File add.asm - Page 1 - 12/04/2020 09:35:07 PM
+
+
+       1/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+       2/       0 :                     ;
+       3/       0 :                     ; NAME:    add.asm
+       4/       0 :                     ; AUTHOR:  Kevin Cole ("The Ubuntourist") <kevin.cole@novawebdevelopment.org>
+       5/       0 :                     ; LASTMOD: 2020.10.06 (kjc)
+       6/       0 :                     ;
+       7/       0 :                     ; DESCRIPTION:
+       8/       0 :                     ;
+       9/       0 :                     ;     This is the assembly source code that produces the same machine
+      10/       0 :                     ;     op codes as shown by the first example (add two numbers) in the
+      11/       0 :                     ;     Altair 8800 Operator's Manual.
+      12/       0 :                     ;
+      13/       0 :                     ;     On a modern (as of 2020) Linux machine, install the
+      14/       0 :                     ;     Macroassembler AS found at:
+      15/       0 :                     ;
+      16/       0 :                     ;         http://john.ccac.rwth-aachen.de:8000/as/
+      17/       0 :                     ;
+      18/       0 :                     ;     Then assemble this source file with the command:
+      19/       0 :                     ;
+      20/       0 :                     ;         asl -a -cpu 8080 -L -listradix 8 add.asm
+      21/       0 :                     ;
+      22/       0 :                     ;     to compare the generated list file (add.lst) to the octal machine
+      23/       0 :                     ;     op codes provided in the manual.
+      24/       0 :                     ;
+      25/       0 :                     ;     However, if you have installed "most" -- you know you want it --
+      26/       0 :                     ;     it is VERY instructive to instead assemble the source file with
+      27/       0 :                     ;     the command:
+      28/       0 :                     ;
+      29/       0 :                     ;         asl -a -cpu 8080 -L -listradix 16 add.asm
+      30/       0 :                     ;
+      31/       0 :                     ;     This produces the same binary file (add.p) but changes the format
+      32/       0 :                     ;     of the list file, displaying the machine op codes in hexadecimal,
+      33/       0 :                     ;     rather than octal, and, together with the command:
+      34/       0 :                     ;
+      35/       0 :                     ;         most add.p
+      36/       0 :                     ;
+      37/       0 :                     ;      you can study the actual binary "executable" produced, and
+      38/       0 :                     ;      "debug" it by finding the machine op codes (in hex) embedded
+      39/       0 :                     ;      in the executable (by comparing it to add.lst).
+      40/       0 :                     ;
+      41/       0 :                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      42/       0 :                     
+      43/       0 :                     ; Code segment:
+      44/       0 :                     
+      45/       0 :                     	ORG	0o	; Set Program Counter to address 0
+      46/       0 : 072 200 000         START:	LDA	VAL1	; Load value (5) at VAL1 (200) into Accumulator
+      47/       3 : 107                 	MOV	B,A	; Move value in Accumulator to Register B
+      48/       4 : 072 201 000         	LDA	VAL2	; Load value (8) at VAL2 (201) into Accumulator
+      49/       7 : 200                 	ADD	B	; Add value in Register B to value in Accumulator
+      50/      10 : 062 202 000         	STA	SUM	; Store accumulator at SUM (202)
+      51/      13 : 303 000 000         	JMP	START	; Jump to start of code (infinite loop)
+      52/      16 :                     
+      53/      16 :                     ; Data segment:
+      54/      16 :                     
+      55/     200 :                     	ORG	200o	; Set Program Counter to address 200
+      56/     200 : 005                 VAL1:	DB	5o	; Data Byte at address 200 = 5
+      57/     201 : 010                 VAL2:	DB	10o	; Data Byte at address 201 = 8 (10 octal)
+      58/     202 : 000                 SUM:	DB	0o	; Data Byte at address 202 = 0
+      59/     203 :                     
+      60/     203 :                     	END		; End
+ AS V1.42 Beta [Bld 183] - Source File add.asm - Page 2 - 12/04/2020 09:35:07 PM
+
+
+ AS V1.42 Beta [Bld 183] - Source File add.asm - Page 3 - 12/04/2020 09:35:07 PM
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+*ARCHITECTURE :                                      "x86_64-unknown-linux" - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - | *CONSTPI :        3.141592653589793 - |
+*DATE :                "12/04/2020" - | *FALSE :                          0 - |
+*FULLPMMU :                       1 - | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+*INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
+*LISTON :                         1 - | *MACEXP :                         7 - |
+*MOMCPU :                    100200 - | *MOMCPUNAME :                "8080" - |
+*NESTMAX :                      400 - | *PACKING :                        0 - |
+*PADDING :                        1 - | *RELAXED :                        0 - |
+ START :                          0 C |  SUM :                          202 C |
+*TIME :               "09:35:07 PM" - | *TRUE :                           1 - |
+ VAL1 :                         200 C |  VAL2 :                         201 C |
+*VERSION :                    12057 - | *Z80SYNTAX :                      0 - |
+
+     33 symbols
+     29 unused symbols
+
+ AS V1.42 Beta [Bld 183] - Source File add.asm - Page 4 - 12/04/2020 09:35:07 PM
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.00 seconds assembly time
+
+     61 lines source file
+      2 passes
+      0 errors
+      0 warnings

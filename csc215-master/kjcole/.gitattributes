@@ -1,0 +1,66 @@
+# Copied by Kevin Cole <dc.loco@gmail.com> 2017.02.17
+# Source:
+# http://stackoverflow.com/questions/13819764/indentation-configuration-only-for-some-files
+#
+
+*.c	text diff=cpp	 whitespace=trailing-space,space-before-tab,tab-in-indent
+*.cpp	text diff=cpp	 whitespace=trailing-space,space-before-tab,tab-in-indent
+*.h	text diff=cpp	 whitespace=trailing-space,space-before-tab,tab-in-indent
+*.hpp	text diff=cpp	 whitespace=trailing-space,space-before-tab,tab-in-indent
+*.py	text diff=python whitespace=trailing-space,space-before-tab,tab-in-indent
+*.js	text diff=js     whitespace=trailing-space,space-before-tab,tab-in-indent
+*.tex	text diff=tex	 whitespace=trailing-space,space-before-tab,tab-in-indent
+*.java	text diff=java	 whitespace=trailing-space,space-before-tab,tab-in-indent
+*.pl	text diff=perl	 whitespace=trailing-space,space-before-tab,tab-in-indent
+*.php	text diff=php	 whitespace=trailing-space,space-before-tab,tab-in-indent
+*.rb	text diff=ruby	 whitespace=trailing-space,space-before-tab,tab-in-indent
+*.html	text diff=html	 whitespace=trailing-space,space-before-tab,tab-in-indent
+*.css	text diff=css	 whitespace=trailing-space,space-before-tab,tab-in-indent
+*.sh	text eol=lf
+
+*.vcproj	eol=crlf
+*.dsp		eol=crlf
+*.dsw		eol=crlf
+
+*.db	binary
+*.a	binary
+*.o	binary
+*.py[co]	binary
+*.so	binary
+*.sw[nop]	binary
+.xvpics	binary
+*.pdf	binary
+*.od[pst]	binary
+*.sxw	binary
+*.wpd	binary
+*.doc	binary
+*.ppt	binary
+*.xls	binary
+*.avi	binary
+*.swf	binary
+*.svg	binary
+*.ico	binary diff=exif
+*.gif	binary diff=exif
+*.tif	binary diff=exif
+*.tiff	binary diff=exif
+*.jpg	binary diff=exif
+*.png	binary diff=exif
+*.xbm	binary
+*.xcf	binary
+*.mpg	binary
+*.mov	binary
+*.mp3	binary
+*.ogg	binary
+*.gz	binary
+*.tgz	binary
+*.bz2	binary
+*.zip	binary
+*.rpm	binary
+*.deb	binary
+*.hqx	binary
+*.spo	binary
+*.db	binary
+*.mdb	binary
+*.djvu	binary
+*.fig	binary
+*.egg	binary
