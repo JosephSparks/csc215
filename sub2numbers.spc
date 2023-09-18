@@ -1,0 +1,6 @@
+LDA 00111010
+Memory Address 1 00 010 000
+Memory Address 2 00 000 000
+MOV (A->B) 01 000 111
+LDA 00 111 010
+Memory Address 3 00 010 001
