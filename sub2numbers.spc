@@ -1,26 +1,17 @@
-# LDA
-3A
-# First memory address, in our case, 9
-10
+3A # LDA
+80
 00
-# Moving accumulator to memory B
-47
-# LDA again
-3A
-# Second memory address
+47 # Moving accumulator to memory B
+3A # LDA again
+81 # Second memory address
+00
 81
+32 # STA
+82 # Loading memory address where output will be displayed
 00
-# Subtracts accumulator, 5, from memory B, 9
-81
-# STA
-32
-# Loading memory address where output will be displayed
-82
-00
-# JMP
-C3
+C3 # JMP
 00
 00
 ===
-10:09
-11:05
+80:09
+81:05
