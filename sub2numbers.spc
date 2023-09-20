@@ -5,7 +5,7 @@
 3A # LDA again
 81 # Second memory address
 00
-81
+90 # subtract
 32 # STA
 82 # Loading memory address where output will be displayed
 00
