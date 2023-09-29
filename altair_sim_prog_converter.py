@@ -18,7 +18,7 @@ def remove_comments_split_lines(s):
       >>> remove_comments_split_lines(src2)
       ['F3', '3B', 'C4', '===', '1B:53', '1C:8F', '1D:00', '1E:02']
     """
-    no_comments = re.sub("[\t\ ]*#[\ \w\-()\[\]:;.&]*", '', s)
+    no_comments = re.sub("[\t\ ]*#.*", '', s)
     return [line for line in no_comments.splitlines() if line]
 
 
