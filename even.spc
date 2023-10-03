@@ -5,15 +5,20 @@
 01
 A0 # AND acc with B
 00
-# need to figure out how to call
+3A # Load from 47 into acc
+# Jumps to even if AND is 0
+CA
+11
+00
 
+# ODD
 07 # Rotate accumulator left
 32 # Store accumulator in 47
 47
 00
 76 # halt
-# need to figure out how to call
 
+# EVEN
 0F # Rotate accumulator right
 32 # Store accumulator in 47
 47
