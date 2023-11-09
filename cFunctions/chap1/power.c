@@ -3,7 +3,7 @@
 int power(int m, int n);
 
 /* Power function */
-main()
+int main()
 { 
     int i;
 

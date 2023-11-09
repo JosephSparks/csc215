@@ -1,9 +1,8 @@
 #include <stdio.h>
 
-/* Counting characters in inpit */
+/* Counting characters in input */
 
-main()
-{
+int main() {
     long nc;
 
     nc = 0;
