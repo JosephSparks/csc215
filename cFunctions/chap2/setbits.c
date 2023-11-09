@@ -1,19 +1,27 @@
 #include <stdio.h>
 #include <ctype.h>
 
-unsigned setbits(unsigned x, int p, int n, unsigned y);
-/* output should be an unsigned integer represented by bits*/
+void printBinary(unsigned n) {
+    if (n > 1)
+        printBinary(n >> 1);
+    printf("%d", n & 1);
+}
 
-int main()
-{
-    unsigned x = 123; /* number 1*/
-    unsigned y = 456; /* number 2 */
-    int p = 3; /* position value (3 bits from the right) */
-    int n = 3; /* number of bits taken from second number */
+unsigned setbits(unsigned x, int p, int n, unsigned y);
+
+int main() {
+    unsigned x = 213; // number 1
+    unsigned y = 121; // number 2
+    int p = 4;       // position value (4 bits from the right)
+    int n = 4;       // number of bits taken from the second number
 
     unsigned r = setbits(x, p, n, y);
-    printf("%u\n", r);
+    printf("Result: %u (Binary: ", r);
+    printBinary(r);
+    printf(")\n");
+    return 0;
 }
-unsigned setbits(unsigned x, int p, int n, unsigned y){
-    return x & ~(~(~0 << n) << (p + 1 - n)) | (y & ~(~0 << n)) << (p + 1 - n);
+
+unsigned setbits(unsigned x, int p, int n, unsigned y) {
+    return x & ~(~(~0U << n) << (p + 1 - n)) | ((y & ~(~0U << n)) << (p + 1 - n));
 }
