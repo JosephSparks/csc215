@@ -3,10 +3,13 @@
 
 int main()
 {
-    float n = 147.08012;
-    int tN; int result;
-    tN = n / 1;
-    result = tN % 10;
+    double n;
 
-    printf("%d",result);
+    printf("Enter a float value: ");
+    scanf("%lf", &n);
+
+    int integralTruncated = n / 1;
+    int finalResult = integralTruncated % 10;
+    
+    printf("%d",finalResult);
 }
