@@ -43,12 +43,12 @@ int main()
     //Print statements
     printf("Average grades for each course:\n");
     for(j=0;j<5;j++){
-        printf("Course %d: %2f\n", j+1, subjectAverage[j]);
+        printf("Course %d: %.2f\n", j+1, subjectAverage[j]);
     }
 
     printf("\nAverage grades for each student:\n");
     for(i=0;i<20;i++){
-        printf("Student %d: %2f\n", i+1, studentAverage[i]);
+        printf("Student %d: %.2f\n", i+1, studentAverage[i]);
     }
 
     printf("There were %d students with a grade average below 50\n", sub50);
