@@ -5,8 +5,8 @@ int main()
     int marks[20][5]={{78,67,90,67,78},{78,89,90,80,78},{67,90,89,78,90},{69,40,89,88,67},{78,90,36,34,67},{56,45,89,34,90},{67,78,90,67,56},
                     {56,89,56,78,90},{67,90,34,23,89},{56,39,37,40,68},{90,99,78,89,67},{67,34,23,78,49},{37,70,34,23,39},{56,49,37,40,68},
                     {80,99,28,89,67},{47,34,23,78,49},{37,90,84,63,89},{56,99,37,40,98},{90,89,78,89,47},{77,34,93,98,29}};
+    
     int i,j;
-
     float subjectAverage[5]={0};
     float studentAverage[20]={0};
     int sub50 = 0;
@@ -14,7 +14,7 @@ int main()
     // Calculate the average of 20 students across each subject
     // Running the for loop for each subject, then each student allows me to calculate the subject average
 
-    for(j=0;j<20;j++){
+    for(j=0;j<5;j++){
         for(i=0;i<20;i++){
             subjectAverage[j] += (float)marks[i][j]; //Empty array subject average takes in the indexed value of the 
         }
