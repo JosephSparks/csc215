@@ -2,8 +2,10 @@
 
 int main()
 {
-    char word[] = 'Haywood';
-    char;
+    char word[100];
+    printf("Enter a string: ");
+    scanf("%s", &word);
+
     int i, counter = 0;
 
     for(i = 0; word[i]; i++)
