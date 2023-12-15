@@ -8,7 +8,6 @@ int main(){
 
     int i,j;
     int arraySize = sizeof(array) / sizeof(array[0]);
-
     int product = 1;
 
     for(i=0,j=1;i<arraySize && j<arraySize;i++,j++){
