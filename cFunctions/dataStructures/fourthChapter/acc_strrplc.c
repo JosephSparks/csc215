@@ -11,10 +11,10 @@ int main()
     fgets(pat, 20, stdin);
     printf("\nEnter the replacement pattern: ");
     fgets(rep_pat, 100, stdin);
-    while(str[i] != '\0')
+    while(str[i]!='\0')
     {
         j=0,k=i;
-        while(str[k]==pat[j] && pat[j] != '\0')
+        while(str[k]==pat[j] && pat[j]!='\0')
         {
             k++;
             j++;
@@ -22,7 +22,7 @@ int main()
         if(pat[j] == '\0')
         {
             copy_loop=k;
-            while(rep_pat[rep_index] != '\0')
+            while(rep_pat[rep_index]!='\0')
             {
                 new_str[n] = rep_pat[rep_index];
                 rep_index++;
