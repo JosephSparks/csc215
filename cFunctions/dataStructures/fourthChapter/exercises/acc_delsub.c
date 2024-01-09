@@ -19,8 +19,9 @@ int main()
             k++;
             j++;
         }
-        if(str[j]=='\0')
+        if(str[j]=='\0'){
             copy_loop = k;
+        }
         new_text[n] = text[copy_loop];
         i++;
         copy_loop++;
