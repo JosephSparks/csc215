@@ -106,4 +106,19 @@ int acc_strinsrt(char* text, char* ins_str, char* merge_str, int pos){
 char* acc_delsub(char* text, char* str, char* new_text){
     int i = 0, j = 0, found = 0, n = 0, copy_loop = 0;
     int k;
+    while(text[i] != '\0'){
+        j = 0, found = 0, k = i;
+        while(text[k] == str[j] && str[j] != '\0'){
+            k++;
+            j++;
+        }
+        if(str[j] == '\0'){
+            copy_loop = k;
+        }
+        new_text[n] = text[copy_loop];
+        i++;
+        copy_loop++;
+        n++;
+    }
+    return new_text;
 }
