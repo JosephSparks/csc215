@@ -87,3 +87,23 @@ char* acc_strrev(char *str){
     }
     return str;
 }
+
+// Exercise 7
+int acc_strinsrt(char* text, char* ins_str, char* merge_str, int pos){
+    int i = 0, j = 0, k = 0;
+    while(text[i] != '\0'){
+        if (i == pos){
+            while(ins_str[k] != '\0'){
+                merge_str[j++] = ins_str[k++];
+            }
+        }
+        merge_str[j++] = text[i++];
+    }
+    merge_str[j] = '\0';
+}
+
+// Exercise 8
+char* acc_delsub(char* text, char* str, char* new_text){
+    int i = 0, j = 0, found = 0, n = 0, copy_loop = 0;
+    int k;
+}
