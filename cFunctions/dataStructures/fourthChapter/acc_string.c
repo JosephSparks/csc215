@@ -13,7 +13,7 @@ int acc_strlen(char *str){
 }
 
 // Exercise 2
-int acc_low2up(char *str){
+char acc_low2up(char *str){
     char str[100], upStr[100];
     int i = 0;
     while(str[i] != '\0'){
@@ -23,4 +23,9 @@ int acc_low2up(char *str){
             upStr[i] = str[i];
         i++;
     }
+}
+
+// Exercise 3
+char* acc_strcat(char *bStr, char *aStr){
+    
 }
