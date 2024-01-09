@@ -58,3 +58,32 @@ int acc_strcmp(char *str1, char *str2){
     }
     i++;
 }
+
+// Exercise 5
+char* acc_strextr(const char *str, int i, int j, int m, int n){
+    char substr[100];
+    i = m;
+    while(str[i] != '\0' && n > 0){
+        substr[j] = str[i];
+        i++;
+        j++;
+        n--;
+    }
+    substr[j] = '\0';
+    return substr;
+}
+
+// Exercise 6
+char* acc_strrev(char *str){
+    char temp;
+    int i = 0, j = 0;
+    j = strlen(str) - 1;
+    while(i < j){
+        temp = str[j];
+        str[j] = str[i];
+        str[i] = temp;
+        i++;
+        j--;
+    }
+    return str;
+}
