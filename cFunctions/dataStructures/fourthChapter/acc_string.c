@@ -26,6 +26,15 @@ char acc_low2up(char *str){
 }
 
 // Exercise 3
-char* acc_strcat(char *bStr, char *aStr){
-    
+char* acc_strcat(char *destinationStr, char *sourceStr){
+    int i = 0, j = 0;
+    while(destinationStr[i] != '\0'){
+        i++;
+    }
+    while(sourceStr[j] != '\0'){
+        destinationStr[i] = sourceStr[j];
+        i++;
+        j++;
+    }
+    destinationStr[i] = '\0'
 }
