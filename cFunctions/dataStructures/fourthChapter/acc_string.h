@@ -14,7 +14,7 @@ int acc_strlen(char *str){
 
 // Exercise 2
 char acc_low2up(char *str){
-    char str[100], upStr[100];
+    char upStr[100];
     int i = 0;
     while(str[i] != '\0'){
         if(str[i] >= 'a' && str[i] <= 'z')
