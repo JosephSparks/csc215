@@ -90,7 +90,7 @@ char* acc_strrev(char *str){
 }
 
 // Exercise 7
-int acc_strinsrt(char* text, char* ins_str, char* merge_str, int pos){
+char* acc_strinsrt(char* text, char* ins_str, char* merge_str, int pos){
     int i = 0, j = 0, k = 0;
     while(text[i] != '\0'){
         if (i == pos){
@@ -101,6 +101,7 @@ int acc_strinsrt(char* text, char* ins_str, char* merge_str, int pos){
         merge_str[j++] = text[i++];
     }
     merge_str[j] = '\0';
+    return merge_str;
 }
 
 // Exercise 8
