@@ -58,6 +58,7 @@ int acc_strcmp(char *str1, char *str2){
         }
     }
     i++;
+    return 0;
 }
 
 // Exercise 5
