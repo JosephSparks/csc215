@@ -66,9 +66,10 @@ int acc_strcmp(const char *str1, const char *str2) {
 }
 
 // Exercise 5
-char* acc_strextr(const char *str, int i, int j, int m, int n){
+char* acc_strextr(const char *str, int m, int n){
     char substr[100];
-    i = m;
+    int i,j;
+    i = m - 1;
     while(str[i] != '\0' && n > 0){
         substr[j] = str[i];
         i++;

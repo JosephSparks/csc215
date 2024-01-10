@@ -20,6 +20,20 @@ int main(){
     printf("%s", acc_strcat(str,str2));
 
     printf("\nTesting acc_strcmp\n");
+    if(acc_strcmp(str,str) != strcmp(str, str)){
+        printf("Failure");
+    }
+    else {
+        printf("Success!");
+    }
+
+    printf("\nTesting acc_strextr");
+    char extractedStr[10] = "Astro";
+    if(strcmp(extractedStr,acc_strextr(str,1,5))){
+        printf("Success!");
+    }
+    else{
+        printf("Better luck next time");}
     return 0;
 }
 
