@@ -3,7 +3,7 @@
 #include "acc_string.h"
 
 int main(){
-    char str[30] = "Astrophysics";
+    const char str[30] = "Astrophysics";
     printf("Testing acc_strlen\n");
     if(strlen(str) == acc_strlen(str)){
         printf("Success!");
@@ -13,7 +13,8 @@ int main(){
     }
 
     printf("\nTesting acc_strlow2up\n");
-    printf("%s",acc_low2up(str));
+    char upStr[30];
+    printf("%s", acc_low2up(str, upStr));
 
     printf("\nTesting acc_strcat\n");
     char str2[30] = "Chinese";

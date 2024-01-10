@@ -13,8 +13,7 @@ int acc_strlen(char *str){
 }
 
 // Exercise 2
-char* acc_low2up(char *str){
-    char upStr[100];
+void acc_low2up(const char *str, char *upStr){
     int i = 0;
     while(str[i] != '\0'){
         if(str[i] >= 'a' && str[i] <= 'z')
@@ -23,7 +22,6 @@ char* acc_low2up(char *str){
             upStr[i] = str[i];
         i++;
     }
-    return upStr;
 }
 
 // Exercise 3
@@ -56,7 +54,7 @@ int acc_strcmp(const char *str1, const char *str2) {
         i++;
     }
 
-    if (len1 == len2) {
+    if(len1 == len2){
         return 0; // Both strings are equal
     } else if (len1 > len2) {
         return 1; // str1 is greater than str2
@@ -66,8 +64,7 @@ int acc_strcmp(const char *str1, const char *str2) {
 }
 
 // Exercise 5
-char* acc_strextr(const char *str, int m, int n){
-    char substr[100];
+char* acc_strextr(const char *str, char *substr, int m, int n){
     int i,j;
     i = m - 1;
     while(str[i] != '\0' && n > 0){
@@ -77,7 +74,6 @@ char* acc_strextr(const char *str, int m, int n){
         n--;
     }
     substr[j] = '\0';
-    return substr;
 }
 
 // Exercise 6
