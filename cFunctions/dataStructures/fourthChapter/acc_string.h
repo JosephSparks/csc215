@@ -64,7 +64,7 @@ int acc_strcmp(const char *str1, const char *str2) {
 }
 
 // Exercise 5
-char* acc_strextr(const char *str, char *substr, int m, int n){
+void acc_strextr(const char *str, char *substr, int m, int n){
     int i,j;
     i = m - 1;
     while(str[i] != '\0' && n > 0){
