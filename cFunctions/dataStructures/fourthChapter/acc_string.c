@@ -14,7 +14,7 @@ int main(){
 
     printf("\nTesting acc_strlow2up\n");
     char upStr[30];
-    printf("%s", acc_low2up(str, upStr));
+    printf("%s", acc_low2up(str,upStr));
 
     printf("\nTesting acc_strcat\n");
     char str2[30] = "Chinese";
