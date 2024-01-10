@@ -28,7 +28,7 @@ int main(){
     }
 
     printf("\nTesting acc_strextr");
-    char extractedStr[10] = "Astro";
+    char extractedStr[6] = "Astro";
     if(strcmp(extractedStr,acc_strextr(str,1,5))){
         printf("Success!");
     }
