@@ -21,7 +21,7 @@ int main(){
     printf("%s", acc_strcat(str,str2));
 
     printf("\nTesting acc_strcmp\n");
-    if(acc_strcmp(str,str) != strcmp(str, str)){
+    if(acc_strcmp(str,str2) != strcmp(str,str2)){
         printf("Failure");
     }
     else {

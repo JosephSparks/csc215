@@ -41,20 +41,20 @@ char* acc_strcat(char *destinationStr, char *sourceStr){
 
 // Exercise 4
 int acc_strcmp(const char *str1, const char *str2) {
-    int i = 0, len1 = strlen(str1), len2 = strlen(str2);
-
-    while (i < len1 && i < len2) {
-        if (str1[i] != str2[i]) {
-            if (str1[i] > str2[i]) {
-                return 1; // str1 is greater than str2
-            } else {
-                return -1; // str2 is greater than str1
-            }
-        }
-        i++;
-    }
+    int i = 0;
+    int len1 = strlen(str1), len2 = strlen(str2);
 
     if(len1 == len2){
+        while(i < len1){
+            if(str1[i] != str2[i]){
+                if (str1[i] > str2[i]) {
+                    return 1; // str1 is greater than str2
+                } else {
+                    return -1; // str2 is greater than str1
+                }
+            }
+        i++;
+        }
         return 0; // Both strings are equal
     } else if (len1 > len2) {
         return 1; // str1 is greater than str2
