@@ -3,14 +3,14 @@
 
 int main()
 {
-    char students[10][20] = {{"Abraham"}, {"Benjamin"}, {"Charles"}, {"Devin"}, {"Edward"}};
+    char students[7][20] = {{"Abraham"}, {"Benjamin"}, {"Charles"}, {"Devin"}, {"Edward"}};
     char newStudent[20];
 
     int pos, i;
     int numberStudents = 5;
 
     printf("Initial list of students:\n");
-    for (int i = 0; i < numberStudents; i++) {
+    for(int i = 0; i < numberStudents; i++) {
         printf("%s\n", students[i]);
     }
 
