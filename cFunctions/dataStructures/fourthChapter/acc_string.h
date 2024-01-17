@@ -154,3 +154,20 @@ char* acc_strrplc(char* str, const char* pat, const char* rep_pat) {
     new_str[n] = '\0';
     return new_str;
 }
+
+// Exercise 10
+char (*acc_sort_strs(char names[][10], int n))[10] {
+    char temp[10];
+    int i, j;
+
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n - 1; j++) {
+            if (strcmp(names[j], names[j + 1]) > 0) {
+                strcpy(temp, names[j]);
+                strcpy(names[j], names[j + 1]);
+                strcpy(names[j + 1], temp);
+            }
+        }
+    }
+    return names;
+}
