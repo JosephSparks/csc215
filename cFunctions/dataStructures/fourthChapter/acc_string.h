@@ -126,3 +126,31 @@ char* acc_delsub(char* text, char* str, char* new_text){
     }
     return new_text;
 }
+
+// Exercise 9
+char* acc_strrplc(char* str, const char* pat, const char* rep_pat) {
+    char* new_str = (char*)malloc(200 * sizeof(char));
+
+    int i = 0, j = 0, k, n = 0, copy_loop = 0, rep_index = 0;
+    while (str[i] != '\0') {
+        j = 0, k = i;
+        while (str[k] == pat[j] && pat[j] != '\0') {
+            k++;
+            j++;
+        }
+        if (pat[j] == '\0') {
+            copy_loop = k;
+            while (rep_pat[rep_index] != '\0') {
+                new_str[n] = rep_pat[rep_index];
+                rep_index++;
+                n++;
+            }
+        }
+        new_str[n] = str[copy_loop];
+        i++;
+        copy_loop++;
+        n++;
+    }
+    new_str[n] = '\0';
+    return new_str;
+}
