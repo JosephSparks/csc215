@@ -190,3 +190,27 @@ void acc_count(const char *text, int *word_count, int *line_count, int *char_cou
         i++;
     }
 }
+
+// Exercise 12
+int is_palindrome(const char *str) {
+    int i = 0, j, length = 0;
+
+    while (str[i] != '\0' && str[i] != '\n') {
+        length++;
+        i++;
+    }
+
+    i = 0;
+    j = length - 1;
+
+    while (i < length / 2) {
+        if (str[i] == str[j]) {
+            i++;
+            j--;
+        } else {
+            return 0;  // Not a palindrome
+        }
+    }
+
+    return 1;  // Palindrome
+}
