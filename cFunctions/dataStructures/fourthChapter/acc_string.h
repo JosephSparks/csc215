@@ -171,3 +171,22 @@ char (*acc_sort_strs(char names[][10], int n))[10] {
     }
     return names;
 }
+
+// Exercise 11
+void acc_count(const char *text, int *word_count, int *line_count, int *char_count) {
+    int i = 0;
+
+    printf("\n This is text %s", text);
+
+    while (text[i] != '\0') {
+        (*char_count)++;
+
+        if (text[i] == '\n' || i == 79)
+            (*line_count)++;
+
+        if (text[i] == ' ' && text[i + 1] != ' ')
+            (*word_count)++;
+
+        i++;
+    }
+}
