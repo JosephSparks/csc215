@@ -8,7 +8,7 @@ int main() {
 
     // Lists students
     printf("Initial list of students:\n");
-    for (int i = 0; i < numStudents; i++) {
+    for(int i = 0; i < numStudents; i++) {
         printf("%s\n", students[i]);
     }
 
@@ -19,14 +19,14 @@ int main() {
 
     // Find the position of the name to delete
     int position;
-    for (position = 0; position < numStudents; position++) {
+    for(position = 0; position < numStudents; position++) {
         if (strcmp(deletedStudent, students[position]) == 0) {
             break;
         }
     }
 
     // Checking for name
-    if (position == numStudents) {
+    if(position == numStudents) {
         printf("Name '%s' not found in the list.\n", deletedStudent);
     }
 
@@ -34,7 +34,7 @@ int main() {
     for (int i = position; i < numStudents - 1; i++) {
         strcpy(students[i], students[i + 1]);
     }
-    (numStudents)--;
+    numStudents--;
 
     printf("\nUpdated list of students after deleting '%s':\n", deletedStudent);
     for (int i = 0; i < numStudents; i++) {

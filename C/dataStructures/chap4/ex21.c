@@ -4,13 +4,15 @@
 int main()
 {
     char str[100];
+    int i = 0, j = 0;
     printf ("\n Enter the string: "); 
     fgets(str, 100, stdin); 
 
-    for(int i = 0; str[i] != '\0'; i++){
+    for(str[i] != '\0'; i++;){
         if(str[i] == ';'){
+            j++;
             str[i] = str[i + 1];
-            } // Move back to recheck the current position
+            }
         }
 
     // Period to commas
