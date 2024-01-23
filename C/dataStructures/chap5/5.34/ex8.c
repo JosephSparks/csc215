@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 struct student{
     int r_no;
@@ -21,7 +22,6 @@ int main(){
     printf("\n FEES: ");
     scanf("%d", &ptr->fees);
     display(ptr);
-    getch();
     return 0;
 }
 
