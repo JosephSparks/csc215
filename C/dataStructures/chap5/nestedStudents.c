@@ -14,7 +14,22 @@ int main()
         float fees;
         struct DOB date;
     };
-    struct student stud1;
+    
+    struct student createStudent()
+    {
+        struct student stud1;
+
+        printf("\nEnter the roll number: ");
+        scanf("%d", &stud1.roll_no);
+        printf("Enter the name: ");
+        scanf(" %s", stud1.name);  // Using %[^\n] to read a line with spaces
+        printf("Enter the fees: ");
+        scanf("%f", &stud1.fees);
+        printf("Enter the DOB: ");
+        scanf(" %d %d %d", &stud1.date.day, &stud1.date.month, &stud1.date.year);
+
+        return stud1;
+    }
 
     printf("\n Enter the roll number: ");
     scanf("%d", &stud1.roll_no);
@@ -24,3 +39,10 @@ int main()
     scanf("%f", &stud1.fees);
     printf("\n Enter the DOB: ");
     scanf("%d %d %d", &stud1.date.day, &stud1.date.month, &stud1.date.year);
+    printf("\n ********STUDENT'S DETAILS *******");
+    printf("\n ROLL No. = %d", stud1.roll_no);
+    printf("\n NAME = %s", stud1.name);
+    printf("\n FEES = %f", stud1.fees);
+    printf("\n DOB = %d-%d-%d", stud1.date.day, stud1.date.month, stud1.date.year); getch();
+    return 0;
+}
