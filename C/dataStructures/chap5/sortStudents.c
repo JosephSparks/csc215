@@ -18,16 +18,14 @@ STUDENT studentList[6] = {
 
 void sortFirst() {
     int i, j;
-    while (i < 6 - 1) {
-        while (j < 6 - 1) {
+    for (i = 0; i < 6 - 1; i++) {
+        for (j = 0; j < 6 - i - 1; j++) {
             if (strcmp(studentList[j].first, studentList[j + 1].first) > 0) {
                 STUDENT temp = studentList[j];
                 studentList[j] = studentList[j + 1];
                 studentList[j + 1] = temp;
             }
-            j++;
         }
-        i++;
     }
 
     printf("Here is the list of students sorted by first name: \n");
@@ -38,16 +36,14 @@ void sortFirst() {
 
 void sortLast() {
     int i, j;
-    while (i < 6 - 1) {
-        while (j < 6 - 1) {
+    for (i = 0; i < 6 - 1; i++) {
+        for (j = 0; j < 6 - i - 1; j++) {
             if (strcmp(studentList[j].last, studentList[j + 1].last) > 0) {
                 STUDENT temp = studentList[j];
                 studentList[j] = studentList[j + 1];
                 studentList[j + 1] = temp;
             }
-            j++;
         }
-        i++;
     }
 
     printf("Here is the list of students sorted by last name: \n");
@@ -58,18 +54,16 @@ void sortLast() {
 
 void sortBalance() {
     int i, j;
-    while (i < 6 - 1) {
-        while (j < 6 - i - 1) {
+    for (i = 0; i < 6 - 1; i++) {
+        for (j = 0; j < 6 - i - 1; j++) {
             if (studentList[j].lunch > studentList[j + 1].lunch) {
                 STUDENT temp = studentList[j];
                 studentList[j] = studentList[j + 1];
                 studentList[j + 1] = temp;
             }
-            j++;
         }
-        i++;
     }
-
+    
     printf("Here is the list of students sorted by lunch balance: \n");
     for (i = 0; i < 6; i++) {
         printf("First: %s, Last: %s, Lunch: %.2f\n", studentList[i].first, studentList[i].last, studentList[i].lunch);
