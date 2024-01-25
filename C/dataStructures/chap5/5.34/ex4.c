@@ -21,11 +21,11 @@ int main(){
         printf("\n Enter the roll number : ");
         scanf("%d", &stud[i].roll_no);
         printf("\n Enter the name : ");
-        gets(stud[i].name);
+        scanf("%[^\n]", &stud[i].name);
         printf("\n Enter the fees : ");
         scanf("%d",&stud[i].fees);
         printf("\n Enter the DOB : ");
-        gets(stud[i].DOB);
+        scanf("%[^\n]", &stud[i].DOB);
     }
     for(i=0;i<n;i++){
         printf("\n ********DETAILS OF STUDENT %d*******", i+1);
@@ -40,11 +40,11 @@ int main(){
     printf("\n Enter the new roll number: ");
     scanf("%d", &new_rolno);
     printf("\n Enter the new name: ");
-    gets(new_name);
+    scanf("%[^\n]", &new_name);
     printf("\n Enter the new fees: ");
     scanf("%d", &new_fees);
     printf("\n Enter the new DOB : ");
-    fgets(new_DOB, 10, stdin);
+    scanf("%[^\n]", &new_DOB);
     stud[num].roll_no = new_rolno;
     strcpy(stud[num].name, new_name);
     stud[num].fees = new_fees;

@@ -15,7 +15,7 @@ struct student createStudent()
     printf("\nEnter the roll number: ");
     scanf("%d", &stud1.roll_no);
     printf("Enter the name: ");
-    scanf(" %s", stud1.name);  // Using %[^\n] to read a line with spaces
+    scanf("%s", stud1.name);  // Using %[^\n] to read a line with spaces
     printf("Enter the fees: ");
     scanf("%f", &stud1.fees);
     printf("Enter the DOB: ");
