@@ -14,10 +14,10 @@ int main(){
     printf("\n Enter the details of the student: ");
 
     printf("\n Enter the Name: ");
-    fgets(ptr_stud1->name, 100, stdin);
+    scanf("%[^\n]", &ptr_stud1->name);
 
     printf("\n Enter the Course: ");
-    fgets(ptr_stud1->course, 100, stdin);
+    scanf("%[^\n]", &ptr_stud1->course);
 
 
     printf("\n Enter the student ID: ");
