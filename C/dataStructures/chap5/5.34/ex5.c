@@ -29,12 +29,12 @@ int main()
                 printf("\n Enter the first distance in kilometers, meters, and centimeters: ");
                 scanf("%d %d %d", &d1.kms, &d1.meters, &d1.cms);
                 printf("\n Enter the second distance in kilometers, meters, and centimeters: ");
-                scanf("%d %d", &d2.kms, &d2.meters, &d2.cms);
+                scanf("%d %d %d", &d2.kms, &d2.meters, &d2.cms);
                 break;
             case 2:
                 printf("\n The first distance is: %d kms %d meters %d cms",
                 d1.kms, d1.meters, d1.cms);
-                printf("\n The second distance is : %d kms %d meters %d",
+                printf("\n The second distance is : %d kms %d meters %d cms",
                 d2.kms, d2.meters, d2.cms);
                 break;
             case 3:
