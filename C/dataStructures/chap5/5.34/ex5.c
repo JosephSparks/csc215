@@ -16,12 +16,12 @@ int main()
     do
     {
         printf("\n ******** MAIN MENU *********");
-        printf("\n 1. Read the distances ");
+        printf("\n 1. Enter the distances");
         printf("\n 2. Display the distances");
         printf("\n 3. Add the distances");
         printf("\n 4. Subtract the distances");
         printf("\n 5. EXIT");
-        printf("\n Enter your option : ");
+        printf("\n Enter your option: ");
         scanf("%d", &option);
         switch(option)
         {
